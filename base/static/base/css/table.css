@@ -2,7 +2,7 @@
   border-radius: 5px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .my-table {
   border-collapse: collapse;
@@ -11,9 +11,43 @@
 .my-table thead th {
   background: #759AA5;
   padding: .5rem;
+  color: white;
+  /* border: 1px solid transparent */
 }
+.my-table thead th:first-child {
+  border-top-left-radius: 5px;
+}
+.my-table thead th:last-child {
+  border-top-right-radius: 5px;
+}
+
 .my-table tbody tr td {
   padding: .5rem;
+  /* border: 1px solid transparent */
+}
+
+.my-table tbody tr td,
+.my-table thead tr th{
+  border:1px solid #9b9b9b;
+  border-bottom: none;
+  border-top: none;
+}
+/* .my-table tbody tr:first-child td,
+.my-table thead tr:first-child th{
+  border-top: none;
+}
+.my-table tbody tr:last-child td,
+.my-table thead tr:last-child th{
+  border-bottom: none;
+} */
+.my-table tbody tr td:first-child,
+.my-table thead tr th:first-child{
+  border-left: none;
+}
+
+.my-table tbody tr td:last-child,
+.my-table thead tr th:last-child{
+  border-right: none;
 }
 
 .my-table tbody tr:nth-child(even) {

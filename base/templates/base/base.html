@@ -5,7 +5,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome -->
+  <link href="https://kit-pro.fontawesome.com/releases/v5.15.3/css/pro.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="{% static 'base/css/main.css' %}">
   <link rel="stylesheet" href="{% static 'base/css/navbar.css' %}">
 
@@ -19,19 +23,27 @@
 
 </head>
 <body>
-  {% include 'base/navbar.html' %}
-  <main class="main">
-    <section class="header-main-content">
-    {% block header_main %}
-    {% endblock header_main %}
-    </section>
-    <section class="sidemenu_content">
-      {% include 'base/sidemenu.html' %}
-    </section>
-    <section class="page_content">
-      {% block content %}
-      {% endblock content %}
-    </section>
-  </main>
+  <div class="app">
+    {% include 'base/navbar.html' %}
+    <main class="main">
+      <section class="header-main-content">
+      {% block header_main %}
+      {% endblock header_main %}
+      </section>
+      <section class="sidemenu_content">
+        {% include 'base/sidemenu.html' %}
+      </section>
+      <section class="page_content">
+        {% block content %}
+        {% endblock content %}
+      </section>
+    </main>
+  </div>
+
+
+  <script src="{% static 'base/js/functions.js' %}"></script>
+  {% block js_block %}
+  {% endblock js_block %}
+
 </body>
 </html>

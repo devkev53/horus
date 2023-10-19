@@ -8,7 +8,10 @@
       </a>
     </li>
     <li>
-      <a href="{% url 'clients' %}" class="nav-link {% if request.path == clients %}active{%endif%}">
+      <a
+        href="{% url 'clients' %}"
+        class="nav-link {% if request.path == clients %}active{%endif%}"
+        >
         <span>Clientes</span>
       </a>
     </li>
