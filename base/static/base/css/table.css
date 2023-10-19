@@ -1,0 +1,21 @@
+.table-container {
+  border-radius: 5px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  overflow: hidden;
+}
+.my-table {
+  border-collapse: collapse;
+}
+
+.my-table thead th {
+  background: #759AA5;
+  padding: .5rem;
+}
+.my-table tbody tr td {
+  padding: .5rem;
+}
+
+.my-table tbody tr:nth-child(even) {
+  background: #ccc;
+}

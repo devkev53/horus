@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{% static 'base/css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'base/css/navbar.css' %}">
+
+  {% block css_block %}
+  {% endblock css_block %}
+
+  <title>
+    {% block title %}
+    {% endblock title %}
+  </title>
+
+</head>
+<body>
+  {% include 'base/navbar.html' %}
+  <main class="main">
+    <section class="header-main-content">
+    {% block header_main %}
+    {% endblock header_main %}
+    </section>
+    <section class="sidemenu_content">
+      {% include 'base/sidemenu.html' %}
+    </section>
+    <section class="page_content">
+      {% block content %}
+      {% endblock content %}
+    </section>
+  </main>
+</body>
+</html>

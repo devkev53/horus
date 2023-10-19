@@ -1,0 +1,53 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% url 'clients_add' as addClient%}
+
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'base/css/table.css' %}">
+{% endblock css_block %}
+
+
+
+{% block header_main %}
+<div class="content_header">
+  <div></div>
+  <div></div>
+  <div class="button-container">
+    <a href="{% url 'clients_add' %}" class="btn primary-btn hover:shadow hover:shadow-md">Ingresar Cliente</a>
+  </div>
+</div>
+{% endblock header_main %}
+
+
+
+{% block content %}
+
+<div class="table-container">
+  <table class="my-table w-full">
+    <thead>
+      <tr>
+        <th>Nombres</th>
+        <th>Apellidos</th>
+        <th>Dirección</th>
+        <th>NIT</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for client in clients %}
+      <tr>
+        <td>{{client.name}}</td>
+        <td>{{client.last_name}}</td>
+        <td>{{client.address}}</td>
+        <td>{{client.nit}}</td>
+        <td>
+          <button>Editar</button>
+          <button>Eliminar</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock content %}

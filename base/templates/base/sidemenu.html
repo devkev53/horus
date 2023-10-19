@@ -1,0 +1,36 @@
+{% url 'clients' as clients%}
+
+<aside class="sidemenu">
+  <ul>
+    <li>
+      <a href="">
+        <span>Bolteas de Venta</span>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'clients' %}" class="nav-link {% if request.path == clients %}active{%endif%}">
+        <span>Clientes</span>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <span>Productos</span>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <span>Categorias</span>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <span>Proveedores</span>
+      </a>
+    </li>
+    <li>
+      <a href="">
+        <span>Devoluciones</span>
+      </a>
+    </li>
+  </ul>
+</aside>

@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+<form action="" class="flex">
+  {% csrf_token %}
+  <div class="input">
+    <div>
+      <label for="" class="block mb-2 text-sm font-medium text-grat-900">Nombres</label>
+      <input type="text" class="bg-gray-50 border border-zinc-300 ficus:outline-zinc-700 text-gray-900 rounded-lg">
+    </div>
+    <div>
+      <label for="" class="block mb-2 text-sm font-medium text-grat-900">Apellidos</label>
+    </div>
+    <div>
+      <label for="" class="block mb-2 text-sm font-medium text-grat-900">Dirección</label>
+    </div>
+    <div>
+      <label for="" class="block mb-2 text-sm font-medium text-grat-900">Teléfono</label>
+    </div>
+    <div>
+      <label for="" class="block mb-2 text-sm font-medium text-grat-900">NIT</label>
+    </div>
+  </div>
+  <div class="options">
+    <button class="btn btn-primary">Guardar</button>
+    <a class="btn btn-primary">Volver</a>
+  </div>
+</form>
+{% endblock content %}
