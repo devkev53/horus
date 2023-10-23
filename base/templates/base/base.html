@@ -10,8 +10,11 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="{% static 'base/css/_reset.css' %}">
   <link rel="stylesheet" href="{% static 'base/css/main.css' %}">
   <link rel="stylesheet" href="{% static 'base/css/navbar.css' %}">
+  <link rel="stylesheet" href="{% static 'base/css/modal.css' %}">
+  <link rel="stylesheet" href="{% static 'base/css/forms.css' %}">
 
   {% block css_block %}
   {% endblock css_block %}
@@ -23,6 +26,9 @@
 
 </head>
 <body>
+  {% block modal %}
+  {% endblock modal %}
+
   <div class="app">
     {% include 'base/navbar.html' %}
     <main class="main">
@@ -40,6 +46,7 @@
     </main>
   </div>
 
+  <div class="modal fade" id="popup"></div>
 
   <script src="{% static 'base/js/functions.js' %}"></script>
   {% block js_block %}

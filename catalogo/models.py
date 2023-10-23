@@ -10,6 +10,7 @@ class Category(BaseModel):
 
   # TODO: Define fields here
   name = models.CharField(_('Name'), max_length=255)
+  image = models.ImageField(upload_to='categories/image', blank=True, null=True)
 
 
   class Meta:
@@ -25,6 +26,11 @@ class Category(BaseModel):
 
   # TODO: Define custom methods here
 
+  def get_url_img(self):
+    if self.image:
+      return 'http://localhost:8000{}'.format(self.image.url)
+    else:
+      return ''
 
 
 class Product(BaseModel):
@@ -34,9 +40,6 @@ class Product(BaseModel):
   name = models.CharField(_('Name'), max_length=255)
   description = models.TextField(_('Description'), blank=True, null=True)
   image = models.ImageField(_('Image'), upload_to='product/', blank=True, null=True)
-  price_cost = models.DecimalField(_('Price_Cost'), max_digits=10, decimal_places=2)
-  sale_price = models.DecimalField(_('Sale_Price'), max_digits=10, decimal_places=2)
-  stock = models.PositiveSmallIntegerField(_('Stock'), default=0)
   category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
 
   class Meta:

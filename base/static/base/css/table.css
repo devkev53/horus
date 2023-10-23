@@ -3,14 +3,28 @@
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   /* overflow: hidden; */
+  overflow-x: scroll;
 }
+.table-container::-webkit-scrollbar {
+  width: 12px;               /* width of the entire scrollbar */
+}
+
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: blue;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+}
+
 .my-table {
   border-collapse: collapse;
+  min-width: 100%;
+  width: max-content;
+  border-bottom: 4px solid #759AA5;
 }
 
 .my-table thead th {
   background: #759AA5;
-  padding: .5rem;
+  padding: .5rem 1rem;
   color: white;
   /* border: 1px solid transparent */
 }
@@ -22,7 +36,8 @@
 }
 
 .my-table tbody tr td {
-  padding: .5rem;
+  padding: .5rem 1rem;
+  width: max-content;
   /* border: 1px solid transparent */
 }
 
@@ -48,8 +63,16 @@
 .my-table tbody tr td:last-child,
 .my-table thead tr th:last-child{
   border-right: none;
+  border: none;
 }
 
 .my-table tbody tr:nth-child(even) {
   background: #ccc;
+}
+
+
+@media (min-width: 768px) {
+  .sidemenu ul .link-item a span {
+    display: flex;
+  }
 }

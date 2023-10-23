@@ -12,7 +12,9 @@
   <div class='page_title'>
     <h3 class="font-bold text-6xl title">
       <i class="fas fa-user"></i>
-      Ingresar Cliente
+      <span>
+        Ingresar Cliente
+      </span>
     </h3>
   </div>
   <div class="button-container align-middle">
@@ -21,37 +23,39 @@
 {% endblock header_main %}
 
 {% block content %}
-<form class="client_form" id="client_form" method="post" class="flex">
+<form class="form-add my-6" id="client_form" method="POST" class="flex">
   {% csrf_token %}
   <div class="input-groups">
     <div class="flex flex-col mb-4">
       <label for="" class="block mb-2 text-grat-900">Nombres</label>
       <input
+        required
         id="id_name"
         name="name"
         type="text"
         class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
         >
     </div>
-    <div>
+    <div class="flex flex-col mb-4">
       <label for="" class="block mb-2 text-grat-900">Apellidos</label>
       <input
-        id="last_name"
+        id="id_last_name"
         name="last_name"
         type="text"
         class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
         >
     </div>
-    <div>
+    <div class="flex flex-col mb-4">
       <label for="" class="block mb-2 text-grat-900">Dirección</label>
       <input
+        required
         id="id_address"
         name="address"
         type="text"
         class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
         >
     </div>
-    <div>
+    <div class="flex flex-col mb-4">
       <label for="" class="block mb-2 text-grat-900">Teléfono</label>
       <input
         id="id_phone"
@@ -60,9 +64,11 @@
         class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
         >
     </div>
-    <div>
+    <div class="flex flex-col mb-4">
       <label for="" class="block mb-2 text-grat-900">NIT</label>
       <input
+        required
+        value="C/F"
         id="id_nit"
         name="nit"
         type="text"
@@ -70,17 +76,19 @@
         >
     </div>
   </div>
-  <div class="options">
-    <button class="btn primary-btn">Guardar</button>
-    <a class="btn secondary-btn">Volver</a>
+  <div class="options mb-4">
+    <div class="icon-action add-icon">
+      <i class="fas fa-file-alt"></i>
+    </div>
+
+    <button class="btn primary-btn">
+      <i class="fas fa-save"></i>
+      <span>Guardar</span>
+    </button>
+    <a href="{{request.META.HTTP_REFERER|escape}}" class="btn secondary-btn">
+      <i class="fas fa-undo-alt"></i>
+      <span>Volver</span>
+    </a>
   </div>
 </form>
 {% endblock content %}
-
-
-{% block js_block %}
-  <script>
-    var redirectUrl = '{{lazyUrl}}'
-  </script>
-  <script src="{% static 'cliente/js/form_client.js' %}"></script>
-{% endblock js_block %}

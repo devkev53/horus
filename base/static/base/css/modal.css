@@ -1,0 +1,52 @@
+.modal {
+  position: fixed;
+  background: rgba(0,0,0,.95);
+  min-width: 100vw;
+  min-height: 100vh;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  display: none;
+}
+.modal.show {
+  display: grid;
+}
+
+.card_modal {
+  width: 100%;
+  max-width: 400px;
+  background: #ededed;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(51,51,51,.7);
+}
+
+.card_title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid #ccc;
+  position: relative;
+  padding: 1rem 2rem;
+}
+
+.card_title h3 {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+.card_title button {
+  color: rgb(222, 55, 25);
+  font-size: 28px;
+  position: absolute;
+  right: 2rem;
+}
+
+
+.card_modal .body form {
+  padding: 2rem;
+}
+.card_modal .buttons {
+  display: flex;
+  gap: 2rem;
+}

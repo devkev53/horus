@@ -1,0 +1,96 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css_block %}
+  <link rel="stylesheet" href="{% static 'cliente/css/form.css' %}">
+{% endblock css_block %}
+
+
+{% block header_main %}
+<div class="content_header">
+  <div></div>
+  <div class='page_title'>
+    <h3 class="font-bold text-6xl title">
+      <i class="fas fa-user"></i>
+      Editar Cliente
+    </h3>
+  </div>
+  <div class="button-container align-middle">
+  </div>
+</div>
+{% endblock header_main %}
+
+{% block content %}
+<form class="form-add my-6" id="client_form" method="POST" class="flex">
+  {% csrf_token %}
+  <div class="input-groups">
+    <div class="flex flex-col mb-4">
+      <label for="" class="block mb-2 text-grat-900">Nombres</label>
+      <input
+        required
+        value="{{object.name}}"
+        id="id_name"
+        name="name"
+        type="text"
+        class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+        >
+    </div>
+    <div class="flex flex-col mb-4">
+      <label for="" class="block mb-2 text-grat-900">Apellidos</label>
+      <input
+        value="{{object.last_name}}"
+        id="last_name"
+        name="last_name"
+        type="text"
+        class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+        >
+    </div>
+    <div class="flex flex-col mb-4">
+      <label for="" class="block mb-2 text-grat-900">Dirección</label>
+      <input
+        required
+        value="{{object.address}}"
+        id="id_address"
+        name="address"
+        type="text"
+        class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+        >
+    </div>
+    <div class="flex flex-col mb-4">
+      <label for="" class="block mb-2 text-grat-900">Teléfono</label>
+      <input
+        value="{{object.phone}}"
+        id="id_phone"
+        name="phone"
+        type="text"
+        class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+        >
+    </div>
+    <div class="flex flex-col mb-4">
+      <label for="" class="block mb-2 text-grat-900">NIT</label>
+      <input
+        required
+        value="{{object.nit}}"
+        id="id_nit"
+        name="nit"
+        type="text"
+        class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+        >
+    </div>
+  </div>
+  <div class="options mb-4">
+    <div class="icon-action edit-icon">
+      <i class="fas fa-edit"></i>
+    </div>
+
+    <button class="btn primary-btn">
+      <i class="fas fa-save"></i>
+      <span>Guardar</span>
+    </button>
+    <a href="{{request.META.HTTP_REFERER|escape}}" class="btn secondary-btn">
+      <i class="fas fa-undo-alt"></i>
+      <span>Volver</span>
+    </a>
+  </div>
+</form>
+{% endblock content %}

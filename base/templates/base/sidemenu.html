@@ -2,36 +2,46 @@
 
 <aside class="sidemenu">
   <ul>
-    <li>
+    <li class='link-item'>
       <a href="">
+        <i class="fas fa-clipboard-list"></i>
         <span>Bolteas de Venta</span>
       </a>
     </li>
-    <li>
+    <li class='link-item'>
       <a
         href="{% url 'clients' %}"
-        class="nav-link {% if request.path == clients %}active{%endif%}"
+        class="nav-link clients"
         >
+        <i class="fas fa-user"></i>
         <span>Clientes</span>
       </a>
     </li>
-    <li>
+    <li class='link-item'>
       <a href="">
+        <i class="fas fa-box-open"></i>
         <span>Productos</span>
       </a>
     </li>
-    <li>
-      <a href="">
+    <li class='link-item'>
+      <a
+        class="nav-link categories"
+        href="{% url 'categories' %}">
+        <i class="fas fa-tags"></i>
         <span>Categorias</span>
       </a>
     </li>
-    <li>
-      <a href="">
+    <li class='link-item'>
+      <a
+        class="nav-link providers"
+        href="{% url 'providers_list' %}">
+        <i class="fas fa-user-tie"></i>
         <span>Proveedores</span>
       </a>
     </li>
-    <li>
+    <li class='link-item'>
       <a href="">
+        <i class="fas fa-archive"></i>
         <span>Devoluciones</span>
       </a>
     </li>

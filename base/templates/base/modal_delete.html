@@ -1,0 +1,33 @@
+<div class="modal" id="modal-delete">
+
+  <div class="card_modal">
+
+    <div class="card_title">
+      <h3 class="title_card">
+        {% block title_modal %}
+        {% endblock title_modal %}
+      </h3>
+      <button onclick="closeDeleteModal()">
+        <i class="fas fa-times-circle"></i>
+      </button>
+    </div>
+
+    <div class="body">
+      <form method="POST" action="{% block url_action %}{% endblock url_action %}">
+        {% csrf_token %}
+
+        {% block form_content %}
+        {% endblock form_content %}
+
+        <div class="buttons">
+          <button onclick="confirmDeleteBtn()" class="btn primary-btn" type="submit">Eliminar</button>
+          <button onclick="closeDeleteModal()" class="btn secondary-btn" type="button">Cancelar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="footer">
+    </div>
+  </div>
+
+</div>

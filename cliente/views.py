@@ -8,7 +8,7 @@ from django.views.generic.edit import CreateView, FormView
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from base.views import CreateBaseView
+from base.views import CreateBaseView, UpdateBaseView
 
 
 from cliente.models import Client
@@ -38,3 +38,33 @@ class CreateClientView(CreateBaseView):
     success_url = reverse_lazy('clients')
     url_redirect = success_url
 
+
+
+class UpdateClientView(UpdateBaseView):
+    model=Client
+    form_class=ClientForm
+    success_url = reverse_lazy('clients')
+    url_redirect=success_url
+    template_name_suffix="_update"
+
+
+
+def deactivateClient(request, pk):
+    object = Client.objects.filter(pk=pk).first()
+    template_name='cliente/cliente_delete.html'
+    success_url = reverse_lazy('clients')
+    url_redirect=success_url
+    context = {}
+
+    if not object:
+        return redirect
+
+    if request.method == 'GET':
+        context={'object':object}
+
+    if request.method == 'POST':
+        object.is_active = False
+        object.save()
+        return redirect(url_redirect)
+
+    return render(request, template_name, context)

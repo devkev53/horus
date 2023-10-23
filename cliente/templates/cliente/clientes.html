@@ -11,11 +11,16 @@
 {% block header_main %}
 <div class="content_header">
   <div class="page_title">
-    <h3 class="font-bold text-6xl title">
+    <h3 class="font-bold title">
       <i class="fas fa-user"></i>
       Clientes
     </h3>
-    <a href="{% url 'clients_add' %}" class="btn primary-btn hover:shadow hover:shadow-md title_button">Ingresar Cliente</a>
+    <div class="content_title_button">
+      <a href="{% url 'clients_add' %}" class="btn primary-btn hover:shadow hover:shadow-md title_button">
+        <i class="fas fa-plus"></i>
+        <span>Ingresar Cliente</span>
+      </a>
+    </div>
   </div>
 </div>
 {% endblock header_main %}
@@ -24,32 +29,52 @@
 
 {% block content %}
 
-<div class="table-container">
-  <table class="my-table w-full">
-    <thead>
-      <tr>
-        <th>Nombres</th>
-        <th>Apellidos</th>
-        <th>Dirección</th>
-        <th>NIT</th>
-        <th>Opciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for client in clients %}
-      <tr>
-        <td>{{client.name}}</td>
-        <td>{{client.last_name}}</td>
-        <td>{{client.address}}</td>
-        <td>{{client.nit}}</td>
-        <td>
-          <button>Editar</button>
-          <button>Eliminar</button>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+{% if instance|length <= 0 %}
+  <div class="message-none">
+    <i class="fas fa-exclamation-circle"></i>
+    <span>No se han resgistrado clientes..!</span>
+  </div>
+{% else %}
+  <div class="table-container">
+    <table class="my-table">
+      <thead>
+        <tr>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Dirección</th>
+          <th>NIT</th>
+          <th>Opciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for client in clients %}
+        <tr>
+          <td>{{client.name}}</td>
+          <td>{{client.last_name}}</td>
+          <td>{{client.address}}</td>
+          <td>{{client.nit}}</td>
+          <td class="actions">
+            <div class="actions-container">
+              <a href="/clients/update/{{client.id}}" class='table-btn btn-edit'>
+                <i class="fas fa-edit"></i>
+                <span>Editar</span>
+              </a>
+              <a href="{% url 'clients_delete' client.id %}" class='table-btn btn-delete edit_client'>
+                <i class="fas fa-trash-alt"></i>
+                <span>Eliminar</span>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
+
 
 {% endblock content %}
+
+{% block js_block %}
+  <script src="{% static 'cliente/js/delete_client.js' %}"></script>
+{% endblock js_block %}

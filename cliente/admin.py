@@ -7,7 +7,9 @@ from cliente.models import Client
 class ClientAdmin(admin.ModelAdmin):
   '''Admin View for Client'''
 
-  list_display = ('id', 'get_full_name', 'nit', 'phone', 'address')
+  list_display = (
+    'id', 'get_full_name', 'nit', 'phone', 'address', 'is_active'
+  )
   # list_filter = ('',)
   # inlines = [
   #   Inline,
