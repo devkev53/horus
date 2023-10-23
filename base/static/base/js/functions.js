@@ -129,7 +129,7 @@ function active_link() {
     linksItem.forEach((link) => {
       if (link.classList.contains("clients")) {
         link.classList.add("active");
-        console.log("Activar link clientes");
+        console.log("Activar link Clientes");
       } else {
         link.classList.remove("active");
       }
@@ -138,7 +138,7 @@ function active_link() {
     linksItem.forEach((link) => {
       if (link.classList.contains("categories")) {
         link.classList.add("active");
-        console.log("Activar link categories");
+        console.log("Activar link Categorias");
       } else {
         link.classList.remove("active");
       }
@@ -147,7 +147,16 @@ function active_link() {
     linksItem.forEach((link) => {
       if (link.classList.contains("providers")) {
         link.classList.add("active");
-        console.log("Activar link providers");
+        console.log("Activar link Proveedores");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  } else if (path.includes("products")) {
+    linksItem.forEach((link) => {
+      if (link.classList.contains("products")) {
+        link.classList.add("active");
+        console.log("Activar link Productos");
       } else {
         link.classList.remove("active");
       }

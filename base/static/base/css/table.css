@@ -1,20 +1,9 @@
 .table-container {
-  border-radius: 5px;
+  /* border-radius: 5px; */
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  /* overflow: hidden; */
   overflow-x: scroll;
 }
-.table-container::-webkit-scrollbar {
-  width: 12px;               /* width of the entire scrollbar */
-}
-
-
-.table-container::-webkit-scrollbar-thumb {
-  background-color: blue;    /* color of the scroll thumb */
-  border-radius: 20px;       /* roundness of the scroll thumb */
-}
-
 .my-table {
   border-collapse: collapse;
   min-width: 100%;
@@ -22,57 +11,71 @@
   border-bottom: 4px solid #759AA5;
 }
 
+/* TABLE HEAD STYLES */
+
 .my-table thead th {
   background: #759AA5;
   padding: .5rem 1rem;
   color: white;
-  /* border: 1px solid transparent */
-}
-.my-table thead th:first-child {
-  border-top-left-radius: 5px;
-}
-.my-table thead th:last-child {
-  border-top-right-radius: 5px;
 }
 
-.my-table tbody tr td {
-  padding: .5rem 1rem;
-  width: max-content;
-  /* border: 1px solid transparent */
-}
 
 .my-table tbody tr td,
 .my-table thead tr th{
-  border:1px solid #9b9b9b;
-  border-bottom: none;
-  border-top: none;
+  border-right:1px solid #9b9b9b;
 }
-/* .my-table tbody tr:first-child td,
-.my-table thead tr:first-child th{
-  border-top: none;
-}
-.my-table tbody tr:last-child td,
-.my-table thead tr:last-child th{
-  border-bottom: none;
-} */
-.my-table tbody tr td:first-child,
-.my-table thead tr th:first-child{
-  border-left: none;
-}
-
 .my-table tbody tr td:last-child,
 .my-table thead tr th:last-child{
-  border-right: none;
-  border: none;
+  border-right:none;
 }
 
+.my-table tr th,
+.my-table tr td {
+  text-align: center;
+}
+.my-table tr th {
+  padding: .5rem 1rem;
+}
+.my-table tr td {
+  padding: .5rem 1rem;
+}
 .my-table tbody tr:nth-child(even) {
   background: #ccc;
 }
 
 
-@media (min-width: 768px) {
-  .sidemenu ul .link-item a span {
-    display: flex;
-  }
+
+/* ACTIONS TD STYLES */
+.actions {
 }
+.actions-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+.table-btn {
+  display: flex;
+  padding: 10px;
+  box-shadow: 2px 2px 5px rgba(51,51,51,.7);
+  border-radius: 5px;
+}
+.table-btn span {
+  display: none;
+}
+
+
+/* IMAGE TD STYLES */
+.table-img {
+  display: flex;
+  justify-content: center;
+}
+.table-img picture {
+  display: flex;
+  height: 50px;
+  width: 50px;
+}
+.table-img img {
+  object-fit: cover;
+}
+

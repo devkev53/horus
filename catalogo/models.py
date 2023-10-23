@@ -1,7 +1,9 @@
+from decimal import Decimal
 from django.db import models
 from django.utils.translation import gettext as _
 from django.utils.html import format_html
 from base.models import BaseModel
+from proveedor.models import Providers
 
 # Create your models here.
 
@@ -41,6 +43,10 @@ class Product(BaseModel):
   description = models.TextField(_('Description'), blank=True, null=True)
   image = models.ImageField(_('Image'), upload_to='product/', blank=True, null=True)
   category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+  price_cost = models.DecimalField(_('Cost Price'), max_digits=10, decimal_places=2, default=0.00)
+  price_sale = models.DecimalField(_('Sale Price'), max_digits=10, decimal_places=2, default=0.00)
+  stock = models.PositiveSmallIntegerField(_('Stock'), default=0)
+  provider_id = models.ForeignKey(Providers, on_delete=models.CASCADE)
 
   class Meta:
     """Meta definition for Producto."""
@@ -51,9 +57,24 @@ class Product(BaseModel):
 
   def __str__(self):
     """Unicode representation of Producto."""
-    return "{} - {}".format(self.name, self.sale_price)
+    return "{} - {}".format(self.name, self.get_price())
 
   # TODO: Define custom methods here
+
+  def get_stock(self):
+    return self.stock
+
+  def get_price(self):
+    return "Q. {:.2f}".format(Decimal(0.00))
+
+  def get_garanty(self):
+    return False
+
+  def get_url_img(self):
+    if self.image:
+      return 'http://localhost:8000{}'.format(self.image.url)
+    else:
+      return ''
 
   def preview_img(self):
     if not self.image:
