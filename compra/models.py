@@ -1,4 +1,86 @@
 from django.db import models
 from base.models import BaseModel
+from django.utils.translation import gettext as _
+from proveedor.models import Providers
+from catalogo.models import Product
+
 # Create your models here.
+
+
+
+
+class Buy(BaseModel):
+  """Model definition for Buy."""
+
+  # TODO: Define fields here
+  date = models.DateField(_('Date'))
+  serie = models.CharField(_('Serie'), max_length=255, blank=True, null=True)
+  reference = models.CharField(_('Reference'), max_length=255, blank=True, null=True)
+  provider_id = models.ForeignKey(Providers, on_delete=models.CASCADE)
+  is_paid = models.BooleanField(_('Is Paid'), default=False)
+  document = models.FileField(_('Document'), upload_to='buy/document/', blank=True, null=True)
+  total = models.DecimalField(_('Total'), decimal_places=2, max_digits=10, default=0.00)
+
+  class Meta:
+    """Meta definition for Buy."""
+
+    verbose_name = 'Compra'
+    verbose_name_plural = 'Compras'
+
+  def __str__(self):
+    """Unicode representation of Buy."""
+    return '%s - %s - %s'
+
+  # TODO: Define custom methods here
+
+
+
+class BuyDetail(BaseModel):
+  """Model definition for BuyDetail."""
+
+  # TODO: Define fields here
+  buy_id = models.ForeignKey(Buy, on_delete=models.CASCADE)
+  product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
+  quantity = models.PositiveSmallIntegerField(_('Quantity'), default=1)
+  sub_total = models.DecimalField(_('Subtotal'), max_digits=10, decimal_places=2)
+
+  class Meta:
+    """Meta definition for BuyDetail."""
+
+    verbose_name = 'Detalle de compra'
+    verbose_name_plural = 'Detalle de compras'
+
+  def __str__(self):
+    """Unicode representation of BuyDetail."""
+    return '%s : %s - %s -%s' % (self.buy_id, self.product_id, self.quantity, self.sub_total)
+
+  # TODO: Define custom methods here
+
+
+
+
+
+
+class Payment(BaseModel):
+  """Model definition for Payment."""
+
+  # TODO: Define fields here
+  buy_id = models.ForeignKey(Buy, on_delete=models.CASCADE)
+  reference = models.CharField(_('Reference'), max_length=255, blank=True, null=True)
+  payment_type = models.CharField(_('Payment Type'),max_length=255)
+  document = models.FileField(_('Document'), upload_to='payment/document/', blank=True, null=True)
+  total = models.DecimalField(_('Total'), max_digits=10, decimal_places=2)
+
+  class Meta:
+    """Meta definition for Payment."""
+
+    verbose_name = 'Pago'
+    verbose_name_plural = 'Pagos'
+
+  def __str__(self):
+    """Unicode representation of Payment."""
+    return '%s - %s - %s' % (self.buy_id, self.payment_type, self.total)
+
+
+  # TODO: Define custom methods here
 

@@ -1,0 +1,92 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% url 'clients_add' as addClient%}
+
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'base/css/table.css' %}">
+{% endblock css_block %}
+
+
+
+{% block header_main %}
+<div class="content_header">
+  <div class="page_title">
+    <h3 class="font-bold title">
+      <i class="fas fa-shopping-basket"></i>
+      <span>Compras</span>
+    </h3>
+    <div class="content_title_button">
+      <a href="{% url 'buy_add' %}" class="btn primary-btn hover:shadow hover:shadow-md title_button">
+        <i class="fas fa-plus"></i>
+        <span>Ingresar Compra</span>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock header_main %}
+
+
+
+{% block content %}
+
+  {% if instance|length <= 0 %}
+    <div class="message-none">
+      <i class="fas fa-exclamation-circle"></i>
+      <span>No se han resgistrado compras..!</span>
+    </div>
+  {% else %}
+    <div class="table-container">
+      <table class="my-table">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Existencias</th>
+            <th>Garatía</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in instance %}
+          <tr>
+            <td>{{product.pk}}</td>
+            <td class="table-img">
+              <picture class="">
+              {% if product.image %}
+                <img src="{{product.get_url_img}}" /></td>
+              {% else %}
+                <img src="{% static 'base/img/not-found.png' %}" /></td>
+              {% endif %}
+              </picture>
+            <td>{{product.name}}</td>
+            <td>{{product.get_price}}</td>
+            <td>{{product.get_stock}}</td>
+            <td>
+              {% if product.get_garanty %}
+                <i class="fas fa-check-circle text-green-200 text-4xl"></i>
+              {% else %}
+                <i class="fas fa-times-circle text-red-700 text-4xl"></i>
+              {% endif %}
+            </td>
+            <td class="actions">
+              <div class="actions-container">
+                <a href="{% url 'products_edit' product.pk %}" class='table-btn btn-edit'>
+                  <i class="fas fa-edit"></i>
+                  <span>Editar</span>
+                </a>
+                <a href="{% url 'products_delete' product.id %}" class='table-btn btn-delete edit_client'>
+                  <i class="fas fa-trash-alt"></i>
+                  <span>Eliminar</span>
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% endif %}
+
+{% endblock content %}

@@ -1,11 +1,13 @@
 from decimal import Decimal
 from django.db import models
+from django.forms import model_to_dict
 from django.utils.translation import gettext as _
 from django.utils.html import format_html
 from base.models import BaseModel
 from proveedor.models import Providers
 
 # Create your models here.
+
 
 class Category(BaseModel):
   """Model definition for Categoria."""
@@ -45,8 +47,8 @@ class Product(BaseModel):
   category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
   price_cost = models.DecimalField(_('Cost Price'), max_digits=10, decimal_places=2, default=0.00)
   price_sale = models.DecimalField(_('Sale Price'), max_digits=10, decimal_places=2, default=0.00)
-  stock = models.PositiveSmallIntegerField(_('Stock'), default=0)
-  provider_id = models.ForeignKey(Providers, on_delete=models.CASCADE)
+  # stock = models.PositiveSmallIntegerField(_('Stock'), default=0)
+  provider_id = models.ForeignKey(Providers, on_delete=models.CASCADE, blank=True, null=True)
 
   class Meta:
     """Meta definition for Producto."""
@@ -62,7 +64,7 @@ class Product(BaseModel):
   # TODO: Define custom methods here
 
   def get_stock(self):
-    return self.stock
+    return 0
 
   def get_price(self):
     return "Q. {:.2f}".format(Decimal(0.00))
@@ -88,3 +90,9 @@ class Product(BaseModel):
       data,
     )
   preview_img.short_description = _('Image')
+
+  def toJSON(self):
+    item = model_to_dict(self)
+    item['image'] = self.get_url_img()
+    item['stock'] = self.get_stock()
+    return item

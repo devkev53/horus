@@ -119,6 +119,10 @@
   columns: #333;
 }
 
+input:read-only {
+  background: rgba(117, 154, 165,.3);
+  color: rgba(51,51,51,.5);
+}
 
 
 

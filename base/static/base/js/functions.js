@@ -161,6 +161,15 @@ function active_link() {
         link.classList.remove("active");
       }
     });
+  } else if (path.includes("buys")) {
+    linksItem.forEach((link) => {
+      if (link.classList.contains("buys")) {
+        link.classList.add("active");
+        console.log("Activar link Ventas");
+      } else {
+        link.classList.remove("active");
+      }
+    });
   }
 }
 
