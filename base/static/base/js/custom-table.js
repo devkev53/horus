@@ -1,39 +1,18 @@
-class DataTable {
-  element;
-  headers;
-  items;
-  copyItems;
-  selected;
-  pagination;
-  numberOfEntries;
-  headerButtons;
-
-  constructor(selector, headerButtons) {
-    this.element = document.querySelector(selector);
-    this.headers = [];
-    this.items = [];
-    this.pagination = {
-      total: 0,
-      noItemsPorPage: 0,
-      noPages: 0,
-      actual: 0,
-      pointer: 0,
-      diff: 0,
-      lastPageBeforeDots: 0,
-      noButtonsBeforeDots: 4,
-    };
-    this.selected = [];
-    this.numberOfEntries = 5;
-    this.headerButtons = headerButtons;
-  }
-
-  parse() {
-    const headers = [...this.element.querySelector("thead tr").children];
-    // const trs = [...this.element.querySelector("tbody").children];
-
-    headers.forEach((element) => {
-      this.headers.push(element.textContent);
-    });
-    console.log(this.headers);
-  }
-}
+var changeLanguageDataTable = {
+  lengthMenu: "Mostrar _MENU_ registros por página",
+  zeroRecords: "No se encontraron Registros - Lo sentimos..!",
+  info: "Mostrando página _PAGE_ de _PAGES_",
+  infoEmpty: "",
+  search: "Buscar:",
+  infoFiltered: "(filtered from _MAX_ total records)",
+  loadingRecords: "Cargando...",
+  processing: "Procesando...",
+  thousands: ",",
+  decimal: "",
+  paginate: {
+    first: "Primero",
+    last: "Ultimo",
+    next: "Siguiente",
+    previous: "Anterior",
+  },
+};

@@ -67,7 +67,7 @@ class Product(BaseModel):
     return 0
 
   def get_price(self):
-    return "Q. {:.2f}".format(Decimal(0.00))
+    return "Q. {:.2f}".format(Decimal(self.price_sale))
 
   def get_garanty(self):
     return False

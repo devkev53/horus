@@ -18,18 +18,23 @@
   background: #d4d4d4;
 }
 
+.swal2-html-container {
+  font-size: 14px;
+}
+
 .app {
   max-width: 1280px;
   margin: 0 auto;
   min-height: 100vh;
 }
 .main {
+  min-height: calc(100vh - 10rem);
   display: grid;
   grid-template-areas:
   "search search"
   "sidemenu content";
   grid-template-columns: auto minmax(200px, 1fr);
-  grid-auto-rows: 100px 1fr;
+  grid-auto-rows: 100px auto;
   padding: 1rem 2rem;
 }
 
@@ -110,11 +115,20 @@
 .secondary-btn:hover {
   background: #18181b;
 }
-.btn-delete {
+.table-btn.btn-delete {
   background: rgb(222, 55, 25);
   color: #efefef;
 }
-.btn-edit {
+.search-btn {
+  background: rgb(179, 43, 19);
+  color: #efefef;
+  transition: .3s ease all;
+}
+.search-btn:hover {
+  background: rgb(222, 55, 25);
+}
+
+.table-btn.btn-edit {
   background: rgb(232, 177, 15);
   columns: #333;
 }

@@ -14,7 +14,7 @@ class BuyForm(forms.ModelForm):
   class Meta:
     model = Buy
     fields=(
-      'date', 'serie', 'reference',
+      'id', 'date', 'serie', 'reference',
       'provider_id', 'is_paid', 'total',
       )
     widgets = {
@@ -30,3 +30,10 @@ class BuyForm(forms.ModelForm):
         }
       ),
     }
+
+class BuyDetailForm(forms.ModelForm):
+  class Meta:
+    model = BuyDetail
+    fields = (
+      'buy_id', 'product_id', 'quantity', 'sub_total',
+    )

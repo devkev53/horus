@@ -1,3 +1,42 @@
+// Funcion de mensaje de alerta y accion
+const alert_action = (title, text, cb) => {
+  Swal.fire({
+    icon: "warning",
+    title: title,
+    html: text,
+    confirmButtonColor: "#759AA5",
+    cancleButtonColor: "#52525b",
+    showCancelButton: true,
+    confirmButtonText: "Si, Eliminar!",
+    cancleButtonText: "No, Cancelar",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      cb();
+    }
+  });
+};
+
+// Funcion de alert y OK
+const myAlert = (title, text) => {
+  Swal.fire({
+    icon: "warning",
+    title: title,
+    html: text,
+    confirmButtonColor: "#759AA5",
+    confirmButtonText: "Si, Eliminar!",
+  });
+};
+
+const myError = (title, text) => {
+  Swal.fire({
+    icon: "danger",
+    title: title,
+    html: text,
+    confirmButtonColor: "#759AA5",
+    confirmButtonText: "OK",
+  });
+};
+
 // funcion que realiza el post con axios
 async function postAxios(urlPath, params, callback) {
   let response = await axios.post(urlPath, params);
@@ -5,8 +44,8 @@ async function postAxios(urlPath, params, callback) {
     callback(response.data);
     return false;
   }
-  let msgError = error_alert(response.data.error);
-  myErrorSwal("Error", msgError);
+  let msgError = error_alert(errorObj);
+  myErrorSwal("Error", errorObj);
 }
 
 // function que realiza la inactivacion (Delete) con axios
@@ -20,7 +59,7 @@ async function deleteAxios(urlPath) {
     location.href = redirectUrl;
     return false;
   }
-  let msgError = error_alert(response.data.error);
+  let msgError = error_alert(error);
   myErrorSwal("Error", msgError);
 }
 
@@ -33,7 +72,7 @@ const myErrorSwal = (title, text) =>
   });
 
 // Funcion para convertir los errores en una lista html
-function error_alert(obj) {
+function error_to_html(obj) {
   // console.log(obj);
   let html = "";
   if (typeof obj === "object") {
@@ -174,3 +213,30 @@ function active_link() {
 }
 
 active_link();
+
+const submit_with_axios = (url, title, text, params, callback) => {
+  Swal.fire({
+    icon: "info",
+    title: title,
+    text: text,
+    confirmButtonColor: "#759AA5",
+    cancleButtonColor: "#52525b",
+    showCancelButton: true,
+    confirmButtonText: "Si, Guardar!",
+    cancleButtonText: "No, Cancelar",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      let response = await axios.post(url, params);
+      console.log(response.status);
+      console.log(response.data.hasOwnProperty("error"));
+      if (!response.data.hasOwnProperty("error")) {
+        callback();
+        return false;
+      } else {
+        let errorHtml = error_to_html(response.data.error);
+        console.log(errorHtml);
+        myError("Error", errorHtml);
+      }
+    }
+  });
+};

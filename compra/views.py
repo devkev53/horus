@@ -1,16 +1,19 @@
 from decimal import Decimal
+import json
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from base.views import ListBaseView, CreateBaseView
+from django.db import transaction
+
 
 
 
 from catalogo.models import Product
 
-from compra.forms import BuyForm
+from compra.forms import BuyForm, BuyDetailForm
 # Create your views here.
 
 
@@ -39,7 +42,7 @@ class BuyCreateView(CreateBaseView):
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            print(request.POST)
+            # print(request.POST)
             action = request.POST['action']
             if action == 'search_products':
                 data = []
@@ -52,9 +55,54 @@ class BuyCreateView(CreateBaseView):
                         item['quantity'] = 1
                         item['subtotal'] = Decimal(item['price_sale'] * item['quantity'])
                         data.append(item)
+            elif action == 'add':
+                with transaction.atomic():
+                    # Transforma el array en JSON
+                    buys = json.loads(request.POST['buys'])
+
+                    # Crea el diccionario del encabezado de la compra
+                    buy = {
+                        "date":buys['date'],
+                        "serie":buys['serie'],
+                        "reference":buys['reference'],
+                        "provider_id":buys['provider_id'],
+                        "total": buys['total']
+                    }
+                    # Pasa los datos del encabezado al formulario
+                    instance = self.form_class(data=buy)
+                    # Valida si es correcto
+                    if instance.is_valid():
+                        # Guarda el objecto
+                        buy_data = instance.save()
+                    else:
+                        data['error'] = instance.errors
+
+                    # Tomla el listado de productos de la compra
+                    products_list = buys['products']
+                    for product in products_list:
+                        print(product)
+                        productDict = {
+                            "buy_id":buy_data.id,
+                            "product_id":product['id'],
+                            "quantity": product['quantity'],
+                            "sub_total":Decimal(Decimal(product['subtotal']) * int(product['quantity'])),
+                        }
+                        detail_instance = BuyDetailForm(data=productDict)
+                        if detail_instance.is_valid():
+                            detail_instance.save()
+                        else:
+                            data["error"] = detail_instance.errors
+
             else:
                 data['error'] = 'No se ha ingresado una opcion'
         except Exception as e:
             data['error'] = str(e)
 
         return JsonResponse(data, safe=False)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list_url'] = self.success_url
+        context['action'] = 'add'
+        return context

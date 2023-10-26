@@ -29,7 +29,7 @@ class Buy(BaseModel):
 
   def __str__(self):
     """Unicode representation of Buy."""
-    return '%s - %s - %s'
+    return '%s - %s - Q. %s' % (self.date, self.provider_id, self.total)
 
   # TODO: Define custom methods here
 
@@ -52,7 +52,7 @@ class BuyDetail(BaseModel):
 
   def __str__(self):
     """Unicode representation of BuyDetail."""
-    return '%s : %s - %s -%s' % (self.buy_id, self.product_id, self.quantity, self.sub_total)
+    return '%s: %s - %s -%s' % (self.buy_id.provider_id, self.product_id.name, self.quantity, self.sub_total)
 
   # TODO: Define custom methods here
 

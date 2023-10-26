@@ -39,47 +39,69 @@
       <table class="my-table">
         <thead>
           <tr>
-            <th>Código</th>
-            <th>Imagen</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Existencias</th>
-            <th>Garatía</th>
+            <th>Fecha</th>
+            <th>Serie</th>
+            <th>Referencia</th>
+            <th>Proveedor</th>
+            <th>Pagado</th>
+            <th>Total</th>
             <th>Opciones</th>
           </tr>
         </thead>
         <tbody>
-          {% for product in instance %}
+          {% for inst in instance %}
           <tr>
-            <td>{{product.pk}}</td>
-            <td class="table-img">
-              <picture class="">
-              {% if product.image %}
-                <img src="{{product.get_url_img}}" /></td>
-              {% else %}
-                <img src="{% static 'base/img/not-found.png' %}" /></td>
-              {% endif %}
-              </picture>
-            <td>{{product.name}}</td>
-            <td>{{product.get_price}}</td>
-            <td>{{product.get_stock}}</td>
+            <td>{{inst.date|date:"Y-m-d"}}</td>
+            <td>{{inst.serie}}</td>
+            <td>{{inst.reference}}</td>
+            <td>{{inst.provider_id}}</td>
             <td>
-              {% if product.get_garanty %}
+              {% if inst.is_paid %}
                 <i class="fas fa-check-circle text-green-200 text-4xl"></i>
               {% else %}
                 <i class="fas fa-times-circle text-red-700 text-4xl"></i>
               {% endif %}
             </td>
+            <td>Q. {{inst.total|stringformat:".2f"}}</td>
             <td class="actions">
-              <div class="actions-container">
-                <a href="{% url 'products_edit' product.pk %}" class='table-btn btn-edit'>
-                  <i class="fas fa-edit"></i>
-                  <span>Editar</span>
-                </a>
-                <a href="{% url 'products_delete' product.id %}" class='table-btn btn-delete edit_client'>
-                  <i class="fas fa-trash-alt"></i>
-                  <span>Eliminar</span>
-                </a>
+              <div class="actions-container dropdown-actions">
+                <button
+                  id="dropdownActions-{{product.id}}"
+                  data-dropdown-toggle='dropdowItem-{{product.id}}'
+                  data-dropdown-trigger="hover"
+                  class="flex dropdownBtn gap-4 text-center inline-flex items-center text-white table-btn secondary-btn"
+                >
+                Acciones
+                <i class="fas fa-sort-down"></i>
+                </button>
+                <div id="dropdowItem-{{product.id}}" class="table-dropdownMenu">
+                  <ul>
+                    <li>
+                      <a class="dropdown-link" href="">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Ver</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-link" href="">
+                        <i class="fas fa-edit"></i>
+                        <span>Editar</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-link" href="">
+                        <i class="fas fa-trash-alt"></i>
+                        <span>Eliminar</span>
+                      </a>
+                    </li>
+                    <li>
+                      <a class="dropdown-link" href="">
+                        <i class="fas fa-print"></i>
+                        <span>Imprimir</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </td>
           </tr>
@@ -90,3 +112,7 @@
   {% endif %}
 
 {% endblock content %}
+
+{% block js_block %}
+  <script src="{% static 'compra/js/buys_list.js' %}"></script>
+{% endblock js_block %}
