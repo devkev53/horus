@@ -1,14 +1,28 @@
 .compra-container {
   padding: 1rem;
-  display: grid;
-  grid-template-columns: auto 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.compra-container .buy-data-card {
+  font-size: clamp(10px, 5vw, 12px);
+  order: 1;
+}
+.compra-container .detail-card {
+  order: 2;
+}
+
+.compra-container .buy-data-card .row {
+  display: flex;
   gap: 2rem;
 }
 .compra-container .card {
+  max-width: 100%;
   box-shadow: 2px 2px 1rem rgba(51,51,51,.4);
   border-radius: 5px;
 }
 .compra-container .card-title {
+  width: 100%;
   font-size: 17px;
   font-weight: bold;
   color: white;
@@ -75,9 +89,14 @@
   background: rgb(235, 235, 235);
 }
 .items-list.show {
+  z-index: 10;
   border: 1px solid rgba(51,51,51,.4);
 }
 .item-conainer {
+  font-size: 12px;
+  display: grid;
+  grid-template-columns: 50px, auto, 100px;
+  grid-auto-flow: column;
   cursor: pointer;
   border-radius: 5px;
 }
@@ -100,15 +119,51 @@
 
 
 
+.table-container {
+  font-size: 12px;
+}
 
 .my-table.products-table {
   font-size: 12px;
 }
-
+.my-table.products-table .btn-delete {
+  width: min-content;
+  padding: 5px 10px;
+  background: rgb(222, 55, 25);
+  border-radius: 5px;
+}
+.my-table.products-table .product {
+  max-width: 175px;
+}
+.my-table.products-table .quantity input {
+  width: 50px;
+}
+#buy-prods-table {
+  margin-top: 1rem;
+}
 
 
 .card-footer.buttons {
   display: flex;
   gap: 2rem;
   padding: 2rem;
+}
+
+
+
+
+@media (min-width: 768px) {
+  .compra-container {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: auto 350px;
+    gap: 2rem;
+  }
+  .compra-container .buy-data-card {
+    order: 2;
+    font-size: 12px;
+  }
+  .compra-container .detail-card {
+    order: 1;
+  }
 }

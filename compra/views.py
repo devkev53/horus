@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -44,10 +45,12 @@ class BuyCreateView(CreateBaseView):
                 data = []
                 term = request.POST['term']
                 if len(term) > 0:
-                    products = Product.objects.filter(name__icontains=request.POST['term'])
+                    products = Product.objects.filter(name__icontains=request.POST['term'])[0:10]
                     for i in products:
                         item = i.toJSON()
                         item['value'] = i.name
+                        item['quantity'] = 1
+                        item['subtotal'] = Decimal(item['price_sale'] * item['quantity'])
                         data.append(item)
             else:
                 data['error'] = 'No se ha ingresado una opcion'

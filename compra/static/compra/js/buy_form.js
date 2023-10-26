@@ -1,3 +1,4 @@
+var tblProdList;
 var buys = {
   items: {
     date: "",
@@ -7,33 +8,119 @@ var buys = {
     total: "",
     products: [],
   },
-  add: () => {},
+  calculate: function () {
+    var subtotal = 0;
+    $.each(this.items.products, function (pos, dic) {
+      subtotal += dic.quantity * parseFloat(dic.price_sale);
+    });
+    this.total = subtotal;
+    $("#id_total").val(this.total.toFixed(2));
+  },
+  add: function (item) {
+    this.items.products.push(item);
+    this.list();
+  },
+  list: function () {
+    this.calculate();
+    tblProdList = $("#buy-prods-table").DataTable({
+      responsive: true,
+      autoWidth: false,
+      destroy: true,
+      deferRender: true,
+      rowCallback: function (row, data) {
+        $(row).find('input[name="cantidad"]');
+      },
+      data: this.items.products,
+      columns: [
+        { data: "id" },
+        { data: "name" },
+        { data: "price_sale" },
+        { data: "quantity" },
+        { data: "subtotal" },
+      ],
+      columnDefs: [
+        {
+          targets: [0],
+          class: "",
+          ordenable: false,
+          render: function (data, type, row) {
+            return `<button rel="remove" class="btn-delete" type="button"><i class="fas fa-trash-alt"></i> </button>`;
+          },
+        },
+        {
+          targets: [1],
+          class: "product",
+          render: function (data, type, row) {
+            return `<p class="truncate text-ellipsis">${row.name}</p>`;
+          },
+        },
+        {
+          targets: [3],
+          class: "quantity",
+          render: function (data, type, row) {
+            return `<input onchange="${() =>
+              changeQuantity(event)}" name="quantity" id="cant-${
+              row.id
+            }" class="bg-gray-50 border border-zinc-300 text-zinc-600" type="number" value="${
+              row.quantity
+            }"/>`;
+          },
+        },
+        {
+          targets: [2, 4],
+          render: function (data, type, row) {
+            return `Q. ${parseFloat(data).toFixed(2)}`;
+          },
+        },
+      ],
+    });
+  },
 };
+
+function changeQuantity(event) {
+  console.log(event);
+}
 
 // Busqueda de productos
 const searchProdInput = document.querySelector("#search_prod");
 const containerListProducts = document.querySelector("#my-items-list");
+const dltBtn = document.querySelector("#delete_list");
 
-// searchProdInput.addEventListener("keyup", async (e, select) => {
-//   let terms = e.target.value;
-//   let list_products = await getProds(terms);
-//   if (list_products.length > 0) {
-//     // containerListProducts.classList.add("show");
-//     // let html = "<ul>";
-//     // list_products.forEach((item) => {
-//     //   html += "<li><button class='flex w-full'>";
-//     //   html += drawItem(item);
-//     //   html += `</button class="item-for-data" data="${item}"></li>`;
-//     // });
-//     // html += "</ul>";
-//     // containerListProducts.innerHTML = html;
-//   } else {
-//     containerListProducts.classList.remove("show");
-//     containerListProducts.innerHTML = "";
-//   }
-//   console.log(terms);
-//   console.log(list_products);
-// });
+dltBtn.addEventListener("click", () => {
+  searchProdInput.value = "";
+  containerListProducts.classList.remove("show");
+  containerListProducts.innerHTML = "";
+});
+
+var listFilterProds = [];
+const hadleClickItemList = function (event, item) {
+  event.stopPropagation();
+  listFilterProds = [];
+  searchProdInput.value = "";
+  containerListProducts.classList.remove("show");
+  containerListProducts.innerHTML = "";
+  buys.add(item);
+};
+
+searchProdInput.addEventListener("keyup", async (e, select) => {
+  let terms = e.target.value;
+  listFilterProds = await getProds(terms);
+  if (listFilterProds.length > 0) {
+    containerListProducts.classList.add("show");
+    let html = "<ul>";
+    listFilterProds.forEach((item) => {
+      data = JSON.stringify(item);
+      html += `<li><button onclick='hadleClickItemList(event, ${data})' class='flex w-full'>`;
+      html += drawItem(item);
+      html += `</button class="item-for-data" data="${item}"></li>`;
+    });
+    html += "</ul>";
+    containerListProducts.innerHTML = html;
+  } else {
+    containerListProducts.classList.remove("show");
+    containerListProducts.innerHTML = "";
+  }
+});
 
 const getProds = async (terms) => {
   url = window.location.pathname;
@@ -44,77 +131,18 @@ const getProds = async (terms) => {
   return response.data;
 };
 
-class myAutoComplete {
-  constructor(filterData, terms) {
-    this.terms = terms;
-    this.filterData = filterData;
-  }
-  autocomplete({ source, minLengt = 0, select }) {
-    let searchInput = document.querySelector("#my-Custom-Autocomplete");
-    searchInput.addEventListener("keyup", (e) => {
-      this.terms = e.target.value;
-      if (terms.length >= minLengt) {
-        this.filterData = source.filter((items) =>
-          JSON.stringify(items).includes(terms)
-        );
-        this.draw();
-      }
-    });
-  }
-  draw() {
-    console.log(this.filterData);
-    let html = "<ul>";
-    this.filterData.forEach((item) => {
-      html += "<li><button class='flex w-full'>";
-      html += drawItem(item);
-      html += `</button class="item-for-data" data="${item}"></li>`;
-    });
-    html += "</ul>";
-    containerListProducts.innerHTML = html;
-  }
-}
-var availableTags = [
-  "ActionScript",
-  "AppleScript",
-  "Asp",
-  "BASIC",
-  "C",
-  "C++",
-  "Clojure",
-  "COBOL",
-  "ColdFusion",
-  "Erlang",
-  "Fortran",
-  "Groovy",
-  "Haskell",
-  "Java",
-  "JavaScript",
-  "Lisp",
-  "Perl",
-  "PHP",
-  "Python",
-  "Ruby",
-  "Scala",
-  "Scheme",
-];
-const productsAutocomplete = new myAutoComplete();
-productsAutocomplete.autocomplete({
-  source: getProds(this.terms),
-  minLengt: 2,
-});
-
 const drawItem = (item) => {
-  // let name = "";
-  // if (item.name.length >= 50) {
-  //   name = item.name.slice(0, 50) + "...";
-  // } else {
-  //   name = item.name;
-  // }
+  let name = "";
+  if (item.name.length >= 50) {
+    name = item.name.slice(0, 50) + "...";
+  } else {
+    name = item.name;
+  }
   return `
-    <div class="item-conainer flex w-full p-2 gap-4 items-center" id="${item.id}">
-      <picture class="flex w-16 h-16" ><img class="object-fit rounded-xl" src="${item.image}" /></picture>
+    <div class="item-conainer w-full p-2 gap-4 items-center" id="${item.id}">
+      <picture class="flex w-20 h-20" ><img class="object-fit rounded-xl" src="${item.image}" /></picture>
       <span>${item.name}</span>
-      <span>Q. ${item.price_sale}</span>
+      <span><b>Q. ${item.price_sale}</b></span>
     </div>
   `;
 };

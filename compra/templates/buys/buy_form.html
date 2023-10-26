@@ -40,13 +40,13 @@
         <label for="">Buscar Productos</label>
         <div class="input-search">
           <input
-            name="search"
-            id="my-Custom-Autocomplete"
+            name="search_prod"
+            id="search_prod"
             type="text"
             placeholder="Ingrese una descripción para buscar un producto!"
           >
           <span>
-            <button class="btn-delete">
+            <button id="delete_list" class="btn-delete">
               <i class="fas fa-times"></i>
             </button>
           </span>
@@ -54,17 +54,19 @@
         </div>
       </div>
 
-      <table class="my-table products-table">
-        <thead>
-          <tr>
-            <th>Eliminar</th>
-            <th>Producto</th>
-            <th>P/U</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
-          </tr>
-        </thead>
-      </table>
+      <div class="table-container">
+        <table id="buy-prods-table" class="my-table products-table">
+          <thead>
+            <tr>
+              <th>Eliminar</th>
+              <th>Producto</th>
+              <th>P/U</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
 
     </div>
   </div>
@@ -82,25 +84,36 @@
     <!-- Carad Body -->
     <div class="card-body">
 
-      <div class="form-group">
-        <label for="">
-          Fecha de Compra:
-        </label>
-        <input class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg" type="date">
+      <div class="row">
+        <div class="form-group">
+          <label for="">
+            Fecha de Compra:
+          </label>
+          <input class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg" type="date">
+        </div>
+
+        <div class="form-group">
+          <label for="">
+            Total:
+          </label>
+          {{form.total}}
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="">
-          Serie:
-        </label>
-        {{form.serie}}
-      </div>
+      <div class="row">
+        <div class="form-group">
+          <label for="">
+            Serie:
+          </label>
+          {{form.serie}}
+        </div>
 
-      <div class="form-group">
-        <label for="">
-          Referencia:
-        </label>
-        {{form.reference}}
+        <div class="form-group">
+          <label for="">
+            Referencia:
+          </label>
+          {{form.reference}}
+        </div>
       </div>
 
       <div class="form-group">
@@ -110,19 +123,6 @@
         {{form.provider_id}}
       </div>
 
-      <div class="form-group">
-        <label for="">
-          Fecha de Compra:
-        </label>
-        {{form.date}}
-      </div>
-
-      <div class="form-group">
-        <label for="">
-          Total:
-        </label>
-        {{form.total}}
-      </div>
 
     </div>
 
