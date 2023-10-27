@@ -11,9 +11,9 @@
   <div></div>
   <div class='page_title'>
     <h3 class="font-bold text-6xl title">
-      <i class="fas fa-shopping-basket"></i>
+      <i class="fas fa-cash-register"></i>
       <span>
-        Ingresar Compra
+        Ingresar Venta
       </span>
     </h3>
   </div>
@@ -27,6 +27,7 @@
 <form action="post">
   <input type="hidden" name="action" value="{{action}}">
   <div class="compra-container">
+
     <div class="detail-card card">
       <!-- Carad Title -->
       <div class="card-title">
@@ -49,7 +50,7 @@
               placeholder="Ingrese una descripción para buscar un producto!"
             >
             <span>
-              <button id="delete_list" class="search-btn">
+              <button type="button" id="delete_list" class="search-btn">
                 <i class="fas fa-times"></i>
               </button>
             </span>
@@ -76,7 +77,7 @@
     </div>
 
     <div class="buy-data-card card">
-  
+
       <!-- Carad Title -->
       <div class="card-title">
         <h5>
@@ -87,7 +88,12 @@
   
       <!-- Carad Body -->
       <div class="card-body">
-  
+
+        <div class="form-group">
+          <label for="">NIT:</label>
+          {{form.nit}}
+        </div>
+
         <div class="row">
           <div class="form-group">
             <label for="">
@@ -119,22 +125,51 @@
   
           <div class="form-group">
             <label for="">
-              Referencia:
+              DTE:
             </label>
-            {{form.reference}}
+            {{form.dte}}
           </div>
         </div>
   
         <div class="form-group">
           <label for="">
-            Proveedor:
+            Autorización:
           </label>
-          {{form.provider_id}}
+          {{form.authorization}}
         </div>
-  
-  
+
+        <!-- Datos del Cliente -->
+        <div class="client-data">
+
+          <span class="text-cyan-800 font-bold text-xl w-full shadown-xl">Datos del Cliente</span>
+
+          <div class="row mb-4">
+            <div class="form-group">
+              <label for="">
+                Nombres:
+              </label>
+              {{form.dte}}
+            </div>
+
+            <div class="form-group">
+              <label for="">
+                Telefono:
+              </label>
+              {{form.dte}}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="">
+              Dirección:
+            </label>
+            {{form.dte}}
+          </div>
+        </div>
+
       </div>
-  
+
+
       <div class="card-footer buttons">
         <button class="btn primary-btn">
           <i class="fas fa-save"></i>
@@ -155,5 +190,5 @@
 {% block js_block %}
   <script>
   </script>
-  <script src="{% static 'compra/js/buy_form.js' %}"></script>
+  <script src="{% static 'ventas/js/ventas_form.js' %}"></script>
 {% endblock js_block %}

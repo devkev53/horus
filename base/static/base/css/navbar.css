@@ -25,6 +25,14 @@
   position: relative;
   font-weight: bold;
 }
+.menu ul li a {
+  transition: .3s all ease;
+}
+.menu ul li .active {
+  color: #3b616b;
+  transform: scale(1.2);
+  margin: 0 1rem;
+}
 .menu ul li:hover {
   color: #759AA5;
 }
@@ -89,6 +97,7 @@
   color: #515151;
   transition: .3s all ease;
 }
+
 .sidemenu ul li a:hover {
   background: #515151;
   color: white;

@@ -119,11 +119,15 @@
 .btn-delete {
   color:white
 }
+button[type="button"] {
+  background: rgb(222, 55, 25);
+  color: #efefef;
+}
 .table-btn.btn-delete {
   background: rgb(222, 55, 25);
   color: #efefef;
 }
-.search-btn {
+button[type="button"].search-btn {
   background: rgb(179, 43, 19);
   color: #efefef;
   transition: .3s ease all;

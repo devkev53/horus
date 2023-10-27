@@ -2,34 +2,43 @@
 
 
 <nav class="navbar">
-  <picture class="img-container">
-    <img src="{% static 'base/img/logo.png' %}" alt="">
-  </picture>
+  <a href="{% if user.is_authenticated %} / {% else %} /inicio {% endif %}">
+    <picture class="img-container">
+      <img src="{% static 'base/img/logo.png' %}" alt="">
+    </picture>
+  </a>
   <div class="menu">
     <ul>
       <li>
-        <a href="">
+        <a class="public-nav-link inicio" href="{% url 'inicio' %}">
           <i class="fas fa-home"></i>
           <span>Inicio</span>
         </a>
       </li>
       <li>
-        <a href="">
+        <a class="public-nav-link conocenos" href="{% url 'conocenos' %}">
           <i class="fas fa-info-circle"></i>
           <span>Conocenos</span>
         </a>
       </li>
       <li>
-        <a href="">
+        <a class="public-nav-link contacto" href="{% url 'contact' %}">
           <i class="fas fa-envelope"></i>
           <span>Contáctanos</span>
         </a>
       </li>
       <li>
-        <a href="/logout">
+        {% if user.is_authenticated %}
+        <a class="public-nav-link" href="/logout">
           <i class="fas fa-power-off"></i>
           <span>Cerrar Sesión</span>
         </a>
+        {% else %}
+        <a class="public-nav-link" href="/login">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Iniciar Sesión</span>
+        </a>
+        {% endif %}
       </li>
     </ul>
   </div>

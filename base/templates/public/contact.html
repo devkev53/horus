@@ -1,0 +1,29 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'base/css/public.css' %}">
+{% endblock css_block %}
+
+{% block main %}
+<div class="contact-content">
+  <div class="title">
+    <h3>Nos puedes ubicar por medio de:</h3>
+  </div>
+  <div class="contact-content-list">
+    <div class="tienda">
+      <h4>Visitanos en tienda:</h4>
+      <div>
+        <span>Jocotán, Chiquimula Barrio San Lorenzo a un costado de transportes Litegua.</span>
+      </div>
+      <div class="map">
+        <iframe class="rounded-lx" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d988177.4892161719!2d-89.53375037820082!3d14.65206333602702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f63cdff813c8f3d%3A0xe8cddc12f02e38e4!2sMultiservicios%20Jocotan!5e0!3m2!1ses!2sgt!4v1698438870629!5m2!1ses!2sgt" width="400" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+    <div class="phone">
+      <h4>Puedes comunicarte al:</h4>
+      <p><i class="fas fa-phone"></i><b>Telefono:</b><span>7933 4245</span></p>
+    </div>
+  </div>
+</div>
+{% endblock main %}

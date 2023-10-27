@@ -1,6 +1,13 @@
 var tblProdList;
 document.querySelector("#id_date").valueAsDate = new Date();
 
+let clientInput = $("#id_client_id").select2();
+let nitInput = document.querySelector("#id_nit");
+
+nitInput.addEventListener("keyup", (e) => {
+  console.log(e.target.value);
+});
+
 // Creacion del datatbale con el dicionario
 var buys = {
   items: {

@@ -12,6 +12,28 @@ from django.utils.decorators import method_decorator
 
 # Create your views here.
 
+class InicioView(TemplateView):
+    template_name = 'public/inicio.html'
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        return context
+
+class ConocenosView(TemplateView):
+    template_name = 'public/about.html'
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        return context
+
+class ContactView(TemplateView):
+    template_name = 'public/contact.html'
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        return context
+
+
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "base/dashboard.html"
     login_url= '/login'
@@ -23,19 +45,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
 
 
-
-
-class ListBaseView(LoginRequiredMixin, TemplateView):
-    login_url= '/login'
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        instance = self.form_class.Meta.model.objects.filter(is_active=True).all()
-        context['titulo'] = 'Iniciar Sesion'
-        context['instance'] = instance
-        return context
-
+# LOGIN VIEW
 
 class LoginFormView(LoginView):
     template_name = 'base/login.html'
@@ -51,7 +61,19 @@ class LoginFormView(LoginView):
         return context
 
 
-# BASE VIEWS
+
+# CUSTOM BASE VIEWS
+class ListBaseView(LoginRequiredMixin, TemplateView):
+    login_url= '/login'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        instance = self.form_class.Meta.model.objects.filter(is_active=True).all()
+        context['titulo'] = 'Iniciar Sesion'
+        context['instance'] = instance
+        return context
+
 
 class CreateBaseView(LoginRequiredMixin, CreateView):
     login_url= '/login'

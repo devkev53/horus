@@ -16,10 +16,12 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
   <!-- JQuery UI -->
   <link rel="stylesheet" href="{% static 'base/libs/jquery-ui-1.13.2/jquery-ui.min.css' %}">
-  <!-- Sweet Alert 2 -->
   <!-- Animated CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <!-- Sweet Alert 2 -->
   <script src="{% static 'base/js/sweetalert.js' %}"></script>
+  <!-- Select2 -->
+  <link rel="stylesheet" href="{% static 'base/libs/select2/css/select2.min.css' %}">
   <link rel="stylesheet" href="{% static 'base/css/_reset.css' %}">
   <link rel="stylesheet" href="{% static 'base/css/main.css' %}">
   <link rel="stylesheet" href="{% static 'base/css/navbar.css' %}">
@@ -42,7 +44,9 @@
 
   <div class="app">
     {% include 'base/navbar.html' %}
+
     <main class="main">
+    {% block main %}
       <section class="header-main-content">
       {% block header_main %}
       {% endblock header_main %}
@@ -54,6 +58,7 @@
         {% block content %}
         {% endblock content %}
       </section>
+    {% endblock main %}
     </main>
   </div>
 
@@ -69,6 +74,8 @@
   <script src="{% static 'base/js/functions.js' %}"></script>
   <script src="{% static 'base/js/custom-table.js' %}"></script>
   <script src="{% static 'base/libs/jquery-ui-1.13.2/jquery-ui.min.js' %}"></script>
+  <!-- Select2 -->
+  <script src="{% static 'base/libs/select2/js/select2.min.js' %}"></script>
   {% block js_block %}
   {% endblock js_block %}
 

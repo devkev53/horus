@@ -11,6 +11,7 @@ class Sale(BaseModel):
   """Model definition for Venta."""
 
   # TODO: Define fields here
+  date = models.DateField()
   client_id = models.ForeignKey(Client, on_delete=models.CASCADE)
   time = models.TimeField(auto_now_add=True)
   serie = models.CharField(max_length=255, blank=True, null=True)

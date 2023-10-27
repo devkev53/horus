@@ -160,15 +160,15 @@ function closeDeleteModal() {
   deleteModal.classList.remove("show");
 }
 
+// SideMenu Links
 const linksItem = document.querySelectorAll(".nav-link");
 
 function active_link() {
-  const path = location.pathname.split("/");
+  let path = location.pathname.split("/");
   if (path.includes("clients")) {
     linksItem.forEach((link) => {
       if (link.classList.contains("clients")) {
         link.classList.add("active");
-        console.log("Activar link Clientes");
       } else {
         link.classList.remove("active");
       }
@@ -177,7 +177,6 @@ function active_link() {
     linksItem.forEach((link) => {
       if (link.classList.contains("categories")) {
         link.classList.add("active");
-        console.log("Activar link Categorias");
       } else {
         link.classList.remove("active");
       }
@@ -186,7 +185,6 @@ function active_link() {
     linksItem.forEach((link) => {
       if (link.classList.contains("providers")) {
         link.classList.add("active");
-        console.log("Activar link Proveedores");
       } else {
         link.classList.remove("active");
       }
@@ -195,7 +193,6 @@ function active_link() {
     linksItem.forEach((link) => {
       if (link.classList.contains("products")) {
         link.classList.add("active");
-        console.log("Activar link Productos");
       } else {
         link.classList.remove("active");
       }
@@ -204,7 +201,6 @@ function active_link() {
     linksItem.forEach((link) => {
       if (link.classList.contains("buys")) {
         link.classList.add("active");
-        console.log("Activar link Ventas");
       } else {
         link.classList.remove("active");
       }
@@ -213,6 +209,39 @@ function active_link() {
 }
 
 active_link();
+
+// NavBar Links
+const navLinkItems = document.querySelectorAll(".public-nav-link");
+
+function active_public_link() {
+  let path = location.pathname.split("/");
+  if (path.includes("inicio")) {
+    navLinkItems.forEach((link) => {
+      if (link.classList.contains("inicio")) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  } else if (path.includes("conocenos") || path.includes("category")) {
+    navLinkItems.forEach((link) => {
+      if (link.classList.contains("conocenos")) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  } else if (path.includes("contacto")) {
+    navLinkItems.forEach((link) => {
+      if (link.classList.contains("contacto")) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
+}
+active_public_link();
 
 const submit_with_axios = (url, title, text, params, callback) => {
   Swal.fire({

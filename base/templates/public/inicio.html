@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'base/css/public.css' %}">
+{% endblock css_block %}
+
+{% block main %}
+<div class="inicio-content">
+  <div class="title">
+    <h3>Multiservicios Lemus</h3>
+  </div>
+  <div class="inicio-content-list">
+    <p><i class="far fa-check-square"></i> En multiservicios Lemus el cliente es un amigo.</p>
+    <p><i class="far fa-check-square"></i> Diversidad de productos para el servicio de tu vehículo.</p>
+    <p><i class="far fa-check-square"></i> Precios accesibles.</p>
+    <p><i class="far fa-check-square"></i> Productos garantizados por las marcas mas conocidas dentro del mercado.</p>
+  </div>
+</div>
+{% endblock main %}

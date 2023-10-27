@@ -11,6 +11,7 @@ from base.views import ListBaseView, CreateBaseView, UpdateBaseView
 from django.db import transaction
 
 from venta.form import SaleForm, SaleDetailForm
+from catalogo.forms import ProductForm
 # Create your views here.
 
 
@@ -44,83 +45,83 @@ class SaleListView(ListBaseView):
         return JsonResponse(data, safe=False)
 
 
-# class BuyCreateView(CreateBaseView):
-#     template_name = "buys/buy_form.html"
-#     model = BuyForm.Meta.model
-#     form_class = BuyForm
-#     success_url = reverse_lazy('buys_list')
-#     url_redirect = success_url
+class SaleCreateView(CreateBaseView):
+    template_name = "sales/sales_form.html"
+    model = SaleForm.Meta.model
+    form_class = SaleForm
+    success_url = reverse_lazy('buys_list')
+    url_redirect = success_url
 
-#     @method_decorator(csrf_exempt)
-#     def dispatch(self, request, *args, **kwargs):
-#         return super().dispatch(request, *args, **kwargs)
-
-
-#     def post(self, request, *args, **kwargs):
-#         data = {}
-#         try:
-#             action = request.POST['action']
-#             if action == 'search_products':
-#                 data = []
-#                 term = request.POST['term']
-#                 if len(term) > 0:
-#                     products = Product.objects.filter(name__icontains=request.POST['term'])[0:10]
-#                     for i in products:
-#                         item = i.toJSON()
-#                         item['value'] = i.name
-#                         item['quantity'] = 1
-#                         item['subtotal'] = Decimal(item['price_sale'] * item['quantity'])
-#                         data.append(item)
-#             elif action == 'add':
-#                 with transaction.atomic():
-#                     Transforma el array en JSON
-#                     buys = json.loads(request.POST['buys'])
-
-#                     Crea el diccionario del encabezado de la compra
-#                     buy = {
-#                         "date":buys['date'],
-#                         "serie":buys['serie'],
-#                         "reference":buys['reference'],
-#                         "provider_id":buys['provider_id'],
-#                         "total": buys['total']
-#                     }
-#                     Pasa los datos del encabezado al formulario
-#                     instance = self.form_class(data=buy)
-#                     Valida si es correcto
-#                     if instance.is_valid():
-#                         Guarda el objecto
-#                         buy_data = instance.save()
-#                     else:
-#                         data['error'] = instance.errors
-
-#                     Tomla el listado de productos de la compra
-#                     products_list = buys['products']
-#                     for product in products_list:
-#                         productDict = {
-#                             "buy_id":buy_data.id,
-#                             "product_id":product['id'],
-#                             "quantity": product['quantity'],
-#                             "sub_total":Decimal(Decimal(product['subtotal']) * int(product['quantity'])),
-#                         }
-#                         detail_instance = BuyDetailForm(data=productDict)
-#                         if detail_instance.is_valid():
-#                             detail_instance.save()
-#                         else:
-#                             data["error"] = detail_instance.errors
-
-#             else:
-#                 data['error'] = 'No se ha ingresado una opcion'
-#         except Exception as e:
-#             data['error'] = str(e)
-
-#         return JsonResponse(data, safe=False)
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['list_url'] = self.success_url
-#         context['action'] = 'add'
-#         return context
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_products':
+                data = []
+                term = request.POST['term']
+                if len(term) > 0:
+                    products = ProductForm.Meta.model.objects.filter(name__icontains=request.POST['term'])[0:10]
+                    for i in products:
+                        item = i.toJSON()
+                        item['value'] = i.name
+                        item['quantity'] = 1
+                        item['subtotal'] = Decimal(item['price_sale'] * item['quantity'])
+                        data.append(item)
+            elif action == 'add':
+                with transaction.atomic():
+                    # Transforma el array en JSON
+                    buys = json.loads(request.POST['buys'])
+
+                    # Crea el diccionario del encabezado de la compra
+                    buy = {
+                        "date":buys['date'],
+                        "serie":buys['serie'],
+                        "reference":buys['reference'],
+                        "provider_id":buys['provider_id'],
+                        "total": buys['total']
+                    }
+                    # Pasa los datos del encabezado al formulario
+                    instance = self.form_class(data=buy)
+                    # Valida si es correcto
+                    if instance.is_valid():
+                        # Guarda el objecto
+                        buy_data = instance.save()
+                    else:
+                        data['error'] = instance.errors
+
+                    # Tomla el listado de productos de la compra
+                    products_list = buys['products']
+                    for product in products_list:
+                        productDict = {
+                            "buy_id":buy_data.id,
+                            "product_id":product['id'],
+                            "quantity": product['quantity'],
+                            "sub_total":Decimal(Decimal(product['subtotal']) * int(product['quantity'])),
+                        }
+                        detail_instance = SaleDetailForm(data=productDict)
+                        if detail_instance.is_valid():
+                            detail_instance.save()
+                        else:
+                            data["error"] = detail_instance.errors
+
+            else:
+                data['error'] = 'No se ha ingresado una opcion'
+        except Exception as e:
+            data['error'] = str(e)
+
+        return JsonResponse(data, safe=False)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['list_url'] = self.success_url
+        context['action'] = 'add'
+        return context
 
 
 # class BuyEditView(UpdateBaseView):
