@@ -4,7 +4,6 @@
   min-width: 100vw;
   min-height: 100vh;
   z-index: 10;
-  display: grid;
   place-items: center;
   display: none;
 }
@@ -12,30 +11,33 @@
   display: grid;
 }
 
-.card_modal {
-  width: 100%;
-  max-width: 400px;
-  background: #ededed;
+.modal-content {
+  min-width: 220px;
+  max-width: 800px;
+  background: #eeeeee;
   border-radius: 10px;
   box-shadow: 2px 2px 10px rgba(51,51,51,.7);
 }
 
-.card_title {
+.modal-title {
   display: flex;
   align-items: center;
-  justify-content: center;
+  background: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  justify-content: flex-start;
   border-bottom: 2px solid #ccc;
   position: relative;
   padding: 1rem 2rem;
 }
 
-.card_title h3 {
-  font-size: 24px;
+.modal-title {
+  font-size: 22px;
   font-weight: bold;
 }
 
 
-.card_title button {
+.modal-title button {
   color: rgb(222, 55, 25);
   font-size: 28px;
   position: absolute;
@@ -43,10 +45,30 @@
 }
 
 
-.card_modal .body form {
+.modal-content .body form {
   padding: 2rem;
 }
-.card_modal .buttons {
+.modal-content .buttons {
   display: flex;
   gap: 2rem;
 }
+
+.modal-body {
+  margin-bottom: 2rem;
+}
+.modal-body .table-container{
+  padding: 2rem;
+}
+
+.modal-body .table-container thead tr th {
+  background: transparent;
+  color: #515151;
+  border: none;
+}
+.modal-body .table-container thead tr th {
+  border-bottom: 3px solid #515151;
+}
+.modal-body .table-container tbody td {
+  border: none;
+}
+

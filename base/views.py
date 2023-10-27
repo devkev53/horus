@@ -12,6 +12,18 @@ from django.utils.decorators import method_decorator
 
 # Create your views here.
 
+class DashboardView(LoginRequiredMixin, TemplateView):
+    template_name = "base/dashboard.html"
+    login_url= '/login'
+
+    def get_context_data(self, **kwargs) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context[""] = ''
+        return context
+
+
+
+
 
 class ListBaseView(LoginRequiredMixin, TemplateView):
     login_url= '/login'
@@ -37,13 +49,6 @@ class LoginFormView(LoginView):
         context = super().get_context_data(**kwargs)
         context['titulo'] = 'Iniciar Sesion'
         return context
-
-
-
-class DashboardView(LoginRequiredMixin, TemplateView):
-    template_name = "base/dashboard.html"
-    login_url= '/login'
-
 
 
 # BASE VIEWS

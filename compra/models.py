@@ -3,6 +3,8 @@ from base.models import BaseModel
 from django.utils.translation import gettext as _
 from proveedor.models import Providers
 from catalogo.models import Product
+from django.forms import model_to_dict
+
 
 # Create your models here.
 
@@ -32,6 +34,11 @@ class Buy(BaseModel):
     return '%s - %s - Q. %s' % (self.date, self.provider_id, self.total)
 
   # TODO: Define custom methods here
+  def toJSON(self):
+    item = model_to_dict(self, exclude=['document'])
+    item['provider_id'] = self.provider_id.toJSON()
+    item['det'] = [i.toJSON() for i in self.buydetail_set.all()]
+    return item
 
 
 
@@ -55,6 +62,12 @@ class BuyDetail(BaseModel):
     return '%s: %s - %s -%s' % (self.buy_id.provider_id, self.product_id.name, self.quantity, self.sub_total)
 
   # TODO: Define custom methods here
+
+  def toJSON(self):
+    item = model_to_dict(self, exclude=['buy_id'])
+    item['product_id'] = self.product_id.toJSON()
+    item['sub_total'] = format(self.sub_total, '.2f')
+    return item
 
 
 

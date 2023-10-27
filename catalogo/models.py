@@ -95,4 +95,7 @@ class Product(BaseModel):
     item = model_to_dict(self)
     item['image'] = self.get_url_img()
     item['stock'] = self.get_stock()
+    item['provider_id'] = self.provider_id.toJSON()
+    item['price_sale'] = format(self.price_sale, '.2f')
+    item['price_cost'] = format(self.price_cost, '.2f')
     return item

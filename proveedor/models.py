@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from base.models import BaseModel
+from django.forms import model_to_dict
+
 
 # Create your models here.
 
@@ -30,6 +32,11 @@ class Providers(BaseModel):
     )
 
   # TODO: Define custom methods here
+
+  def toJSON(self):
+    item = model_to_dict(self)
+    item['logo'] = self.get_url_img()
+    return item
 
   def get_url_img(self):
     if self.logo:

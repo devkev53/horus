@@ -70,6 +70,7 @@
   max-height: calc(100vh - (14rem + 100px));
   border-radius: 5px;
   overflow: scroll;
+  padding: 1rem 0;
 }
 
 
@@ -114,6 +115,9 @@
 }
 .secondary-btn:hover {
   background: #18181b;
+}
+.btn-delete {
+  color:white
 }
 .table-btn.btn-delete {
   background: rgb(222, 55, 25);
@@ -316,6 +320,21 @@ input:read-only {
   height: 100%;
   object-fit: contain;
   border-radius: 5px;
+}
+
+.my-table.dataTable {
+  padding-top: 2rem;
+}
+.my-table.dataTable thead th {
+  text-align: center;
+}
+.dataTables_info,
+.dataTables_length {
+  padding-left: 1rem;
+}
+.dataTables_paginate,
+.dataTables_filter {
+  padding-right: 1rem;
 }
 
 @media (min-width: 768px) {

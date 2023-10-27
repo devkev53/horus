@@ -15,7 +15,7 @@ class Sale(BaseModel):
   time = models.TimeField(auto_now_add=True)
   serie = models.CharField(max_length=255, blank=True, null=True)
   dte = models.CharField(max_length=255, blank=True, null=True)
-  autorizathion = models.CharField(max_length=255, blank=True, null=True)
+  authorization = models.CharField(max_length=255, blank=True, null=True)
   total = models.DecimalField(max_digits=10, decimal_places=2,default=0.00)
 
   class Meta:

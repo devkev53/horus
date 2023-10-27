@@ -1,0 +1,159 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'compra/css/compra.css' %}">
+<link rel="stylesheet" href="{% static 'base/css/table.css' %}">
+{% endblock css_block %}
+
+{% block header_main %}
+<div class="content_header">
+  <div></div>
+  <div class='page_title'>
+    <h3 class="font-bold text-6xl title">
+      <i class="fas fa-shopping-basket"></i>
+      <span>
+        Ingresar Compra
+      </span>
+    </h3>
+  </div>
+  <div class="button-container align-middle">
+  </div>
+</div>
+{% endblock header_main %}
+
+
+{% block content %}
+<form action="post">
+  <input type="hidden" name="action" value="{{action}}">
+  <div class="compra-container">
+    <div class="detail-card card">
+      <!-- Carad Title -->
+      <div class="card-title">
+        <h5>
+          <i class="fas fa-shopping-cart"></i>
+          Detalle de productos
+        </h5>
+      </div>
+      <!-- Card Body -->
+      <div class="card-body">
+  
+        <div class="search-prod">
+          <label for="">Buscar Productos</label>
+          <div class="input-search">
+            <input
+              name="search_prod"
+              id="search_prod"
+              type="text"
+              autocomplete="off"
+              placeholder="Ingrese una descripción para buscar un producto!"
+            >
+            <span>
+              <button id="delete_list" class="search-btn">
+                <i class="fas fa-times"></i>
+              </button>
+            </span>
+            <div class="items-list" id="my-items-list"></div>
+          </div>
+        </div>
+  
+        <div class="table-container">
+          <table id="buy-prods-table" class="my-table products-table">
+            <thead>
+              <tr>
+                <th>Eliminar</th>
+                <th>Producto</th>
+                <th>P/U</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+  
+      </div>
+    </div>
+
+    <div class="buy-data-card card">
+  
+      <!-- Carad Title -->
+      <div class="card-title">
+        <h5>
+          <i class="fas fa-file-invoice"></i>
+          Datos de Compra
+        </h5>
+      </div>
+  
+      <!-- Carad Body -->
+      <div class="card-body">
+  
+        <div class="row">
+          <div class="form-group">
+            <label for="">
+              Fecha de Compra:
+            </label>
+            <input
+              id="id_date"
+              name="date"
+              class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg" 
+              type="date"
+            >
+          </div>
+  
+          <div class="form-group">
+            <label for="">
+              Total:
+            </label>
+            {{form.total}}
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="form-group">
+            <label for="">
+              Serie:
+            </label>
+            {{form.serie}}
+          </div>
+  
+          <div class="form-group">
+            <label for="">
+              Referencia:
+            </label>
+            {{form.reference}}
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="">
+            Proveedor:
+          </label>
+          {{form.provider_id}}
+        </div>
+  
+  
+      </div>
+  
+      <div class="card-footer buttons">
+        <button class="btn primary-btn">
+          <i class="fas fa-save"></i>
+          <span>Guardar</span>
+        </button>
+        <a href="{{request.META.HTTP_REFERER|escape}}" class="btn secondary-btn">
+          <i class="fas fa-undo-alt"></i>
+          <span>Volver</span>
+        </a>
+      </div>
+  
+    </div>
+  </div>
+</form>
+{% endblock content %}
+
+
+{% block js_block %}
+  <script>
+  </script>
+  <script src="{% static 'compra/js/buy_form.js' %}"></script>
+{% endblock js_block %}

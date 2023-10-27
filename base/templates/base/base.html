@@ -17,6 +17,8 @@
   <!-- JQuery UI -->
   <link rel="stylesheet" href="{% static 'base/libs/jquery-ui-1.13.2/jquery-ui.min.css' %}">
   <!-- Sweet Alert 2 -->
+  <!-- Animated CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <script src="{% static 'base/js/sweetalert.js' %}"></script>
   <link rel="stylesheet" href="{% static 'base/css/_reset.css' %}">
   <link rel="stylesheet" href="{% static 'base/css/main.css' %}">
@@ -34,6 +36,7 @@
 
 </head>
 <body>
+
   {% block modal %}
   {% endblock modal %}
 
@@ -54,7 +57,6 @@
     </main>
   </div>
 
-  <div class="modal fade" id="popup"></div>
 
 
   <script>

@@ -2,12 +2,13 @@ from decimal import Decimal
 import json
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from base.views import ListBaseView, CreateBaseView
+from base.views import ListBaseView, CreateBaseView, UpdateBaseView
 from django.db import transaction
-
 
 
 
@@ -22,10 +23,30 @@ class BuysListView(ListBaseView):
     template_name = "buys/buys_list.html"
     form_class = BuyForm
 
+    @method_decorator(csrf_exempt)
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'searchData':
+                data = []
+                for i in self.form_class.Meta.model.objects.all():
+                    data.append(i.toJSON())
+            elif action == 'search_details':
+                data = []
+                buy = BuyForm.Meta.model.objects.filter(id=request.POST['id']).get()
+                for d in BuyDetailForm.Meta.model.objects.filter(buy_id=buy):
+                    data.append(d.toJSON())
+            else:
+                data['error'] = 'Ha ocurrido un error'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)
 
-def buysCreate(request, pk=None):
-    pass
 
 class BuyCreateView(CreateBaseView):
     template_name = "buys/buy_form.html"
@@ -42,7 +63,6 @@ class BuyCreateView(CreateBaseView):
     def post(self, request, *args, **kwargs):
         data = {}
         try:
-            # print(request.POST)
             action = request.POST['action']
             if action == 'search_products':
                 data = []
@@ -80,7 +100,6 @@ class BuyCreateView(CreateBaseView):
                     # Tomla el listado de productos de la compra
                     products_list = buys['products']
                     for product in products_list:
-                        print(product)
                         productDict = {
                             "buy_id":buy_data.id,
                             "product_id":product['id'],
@@ -106,3 +125,113 @@ class BuyCreateView(CreateBaseView):
         context['list_url'] = self.success_url
         context['action'] = 'add'
         return context
+
+
+class BuyEditView(UpdateBaseView):
+    template_name = "buys/buy_edit.html"
+    model = BuyForm.Meta.model
+    form_class = BuyForm
+    success_url = reverse_lazy('buys_list')
+    url_redirect = success_url
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        data = {}
+        try:
+            action = request.POST['action']
+            if action == 'search_products':
+                data = []
+                term = request.POST['term']
+                if len(term) > 0:
+                    products = Product.objects.filter(name__icontains=request.POST['term'])[0:10]
+                    for i in products:
+                        item = i.toJSON()
+                        item['value'] = i.name
+                        item['quantity'] = 1
+                        item['subtotal'] = Decimal(item['price_sale'] * item['quantity'])
+                        data.append(item)
+            elif action == 'search_details':
+                data = []
+                buy = BuyForm.Meta.model.objects.filter(id=request.POST['id']).get()
+                for d in BuyDetailForm.Meta.model.objects.filter(buy_id=buy):
+                    data.append(d.toJSON())
+            elif action == 'edit':
+                with transaction.atomic():
+                    # Transforma el array en JSON
+                    buys = json.loads(request.POST['buys'])
+
+                    # Crea el diccionario del encabezado de la compra
+                    buy = {
+                        "date":buys['date'],
+                        "serie":buys['serie'],
+                        "reference":buys['reference'],
+                        "provider_id":buys['provider_id'],
+                        "total": buys['total']
+                    }
+                    # Pasa los datos del encabezado al formulario
+                    instance = self.form_class(data=buy, instance=self.get_object())
+                    # Valida si es correcto
+                    if instance.is_valid():
+                        # Guarda el objecto
+                        buy_data = instance.save()
+                    else:
+                        data['error'] = instance.errors
+
+                    # Elimina el detalle para actualizar el nuevo
+                    buy_data.buydetail_set.all().delete()
+                    # Tomla el listado de productos de la compra
+                    products_list = buys['products']
+                    for product in products_list:
+                        productDict = {
+                            "buy_id":buy_data.id,
+                            "product_id":product['id'],
+                            "quantity": product['quantity'],
+                            "sub_total":Decimal(Decimal(product['subtotal']) * int(product['quantity'])),
+                        }
+                        detail_instance = BuyDetailForm(data=productDict)
+                        if detail_instance.is_valid():
+                            detail_instance.save()
+                        else:
+                            data["error"] = detail_instance.errors
+
+            else:
+                data['error'] = 'No se ha ingresado una opcion'
+        except Exception as e:
+            data['error'] = str(e)
+
+        return JsonResponse(data, safe=False)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        buy = self.get_object()
+        items = []
+        query_items = BuyDetailForm.Meta.model.objects.filter(buy_id=buy.id, is_active=True)
+        for item in query_items:
+            items.append(item)
+        context['list_url'] = self.success_url
+        context['action'] = 'edit'
+        return context
+
+def deactivateBuy(request, pk):
+    object = BuyForm.Meta.model.objects.filter(pk=pk).first()
+    template_name='buys/buy_delete.html'
+    success_url = reverse_lazy('buys_list')
+    url_redirect=success_url
+    context = {}
+
+    if not object:
+        return redirect
+
+    if request.method == 'GET':
+        context={'object':object}
+
+    if request.method == 'POST':
+        object.is_active = False
+        object.save()
+        return redirect(url_redirect)
+
+    return render(request, template_name, context)

@@ -42,6 +42,7 @@ var buys = {
     this.list();
   },
   list: function () {
+    console.log(this.items.products);
     this.calculate();
     tblProdList = $("#buy-prods-table").DataTable({
       responsive: true,
@@ -118,7 +119,6 @@ $("#buy-prods-table tbody")
     let tr = tblProdList.cell($(this).closest("td, li")).index();
 
     buys.items.products[tr.row].quantity = cant;
-    // console.log(buys.items.products[tr.row].subtotal);
     let rowId = buys.items.products[tr.row].id;
     let rowSubtotal = (
       buys.items.products[tr.row].subtotal *
@@ -210,8 +210,6 @@ $("form").on("submit", function (e) {
   let params = new FormData();
   params.append("action", $('input[name="action"]').val());
   params.append("buys", JSON.stringify(buys.items));
-  console.log(buys.items);
-  console.log(params);
   submit_with_axios(
     window.location.pathname,
     "Notificación",
