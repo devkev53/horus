@@ -101,14 +101,13 @@ const get_det = async () => {
   let response = await axios.post(window.location.pathname, data);
   let myData = response.data.map((item) => {
     return (prod = {
-      id: item.id,
+      id: item.product_id.id,
       name: item.product_id.name,
       price_sale: item.product_id.price_sale,
       quantity: item.quantity,
       subtotal: item.sub_total,
     });
   });
-  console.log(myData);
   buys.items.products = myData;
   buys.list();
 };
@@ -139,12 +138,9 @@ $("#buy-prods-table tbody")
     let tr = tblProdList.cell($(this).closest("td, li")).index();
 
     buys.items.products[tr.row].quantity = cant;
-    // console.log(buys.items.products[tr.row].subtotal);
     let rowId = buys.items.products[tr.row].id;
-    let rowSubtotal = (
-      buys.items.products[tr.row].subtotal *
-      buys.items.products[tr.row].quantity
-    ).toFixed(2);
+    let price = buys.items.products[tr.row].price_sale;
+    let rowSubtotal = (price * buys.items.products[tr.row].quantity).toFixed(2);
     $("td:eq(4)", tblProdList.row(tr.row).node()).html(`Q. ${rowSubtotal}`);
     buys.calculate();
   });
@@ -168,7 +164,6 @@ const hadleClickItemList = function (event, item) {
   containerListProducts.classList.remove("show");
   containerListProducts.innerHTML = "";
   buys.add(item);
-  console.log(buys);
 };
 
 searchProdInput.addEventListener("keyup", async (e, select) => {
@@ -208,10 +203,21 @@ const drawItem = (item) => {
     name = item.name;
   }
   return `
-    <div class="item-conainer w-full p-2 gap-4 items-center" id="${item.id}">
-      <picture class="flex w-20 h-20" ><img class="object-fit rounded-xl" src="${item.image}" /></picture>
-      <span>${item.name}</span>
-      <span><b>Q. ${item.price_sale}</b></span>
+    <div class="item-conainer" id="${item.id}">
+      <picture class="flex min-w-20 w-20 h-20" >
+        <img class="object-fill min-w-20 h-20 rounded-xl" src="${item.image}" />
+      </picture>
+      <div class="w-full flex flex-col items-start">
+        <p class="text-ellipsis overflow-hidden break-normal">${item.name}</p>
+        <p class='${
+          item.stock < 3
+            ? "text-red-700"
+            : item.stock < 6
+            ? "text-orange-700"
+            : "text-green-700"
+        } font-bold'> - Stock: ${item.stock} - </p>
+        <p><b>Q. ${item.price_sale}</b></p>
+      </div>
     </div>
   `;
 };
@@ -232,8 +238,6 @@ $("form").on("submit", function (e) {
   let params = new FormData();
   params.append("action", $('input[name="action"]').val());
   params.append("buys", JSON.stringify(buys.items));
-  console.log(buys.items);
-  console.log(params);
   submit_with_axios(
     window.location.pathname,
     "Notificación",

@@ -1,0 +1,18 @@
+#addClientModal .modal-content {
+  min-width: 300px;
+}
+
+#addClientModal .modal-body {
+  padding: 2rem;
+}
+
+#addClientModal form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#addClientModal form .buttons {
+  display: flex;
+  gap: 2rem;
+}

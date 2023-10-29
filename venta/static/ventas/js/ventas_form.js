@@ -1,20 +1,87 @@
 var tblProdList;
+
+// ------------------------ FUNCION QUE CIERRA EL MODAL DEL CLIENTE ------------------------
+function closeModal(addClientModal) {
+  addClientModal.classList.remove("show");
+  document.querySelector("#addClientForm").reset();
+}
+
+const addClientModal = document.querySelector("#addClientModal");
+const btnCloseModal = document.querySelector(".btnClose-modal");
 document.querySelector("#id_date").valueAsDate = new Date();
 
-let clientInput = $("#id_client_id").select2();
-let nitInput = document.querySelector("#id_nit");
+const listClient = () => {};
 
-nitInput.addEventListener("keyup", (e) => {
-  console.log(e.target.value);
+// ------------------------ MANEJO DE LOS DATOS DEL CLIENTE ------------------------
+let clientInput = $("#id_client_id").select2();
+let clienteView = $("#id_cliente");
+let nitInput = document.querySelector("#id_search_nit");
+let formSearchNit = new FormData();
+let responseData = {};
+var clientData = {};
+
+// ------------------------ FUNCION OBTENER CLIENTE CON AXIOS SEGUN NIT ------------------------
+async function get_client_for_nit(value) {
+  formSearchNit.append("action", "search_client");
+  formSearchNit.append("nit", value);
+  let response = await axios.post(window.location.pathname, formSearchNit);
+  if (!response.data.hasOwnProperty("error")) {
+    clienteView.val(response.data.get_full_name);
+    clientData = response.data;
+  } else {
+    clienteView.val("Consumidor Final");
+    clientData = {};
+  }
+}
+
+// ------------------------ EVENTO DE KEY UP SOBRE EL INPUT NIT ------------------------
+nitInput.addEventListener("keyup", async (e) => {
+  if (e.target.value.length > 5) {
+    get_client_for_nit(e.target.value);
+  }
+});
+// ------------------------ EVENTO DE FOCUS SOBRE EL INPUT NIT ------------------------
+nitInput.addEventListener("focus", (e) => {
+  if (e.target.value === "C/F") {
+    e.target.value = "";
+  }
+});
+// ------------------------ EVENTO LOST FOCUS SOBRE EL INPUT NIT ------------------------
+nitInput.addEventListener("focusout", (e) => {
+  if (e.target.value === "") {
+    e.target.value = "C/F";
+    clienteView.val("Consumidor Final");
+  } else if (e.target.value.length > 5) {
+    if (Object.keys(clientData).length <= 0) {
+      Swal.fire({
+        title: "Notificacion",
+        icon: "info",
+        text: "Desea registrar un nuevo cliente..?",
+        confirmButtonColor: "#759AA5",
+        cancleButtonColor: "#52525b",
+        showCancelButton: true,
+        confirmButtonText: "Si, Registrar!",
+        cancleButtonText: "No, Cancelar",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          $("#id_nit").val(e.target.value);
+          addClientModal.classList.add("show");
+        }
+      });
+    }
+  } else {
+    e.target.value = "C/F";
+  }
 });
 
-// Creacion del datatbale con el dicionario
-var buys = {
+// -*-*-*-*-*-*-*-*-*-*-*-*-*-*- CREACION DEL DICCIONARIO SALES -*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+var sales = {
   items: {
     date: "",
     serie: "",
-    reference: "",
-    provider_id: "",
+    dte: "",
+    authorization_date: "",
+    client_id: "",
     total: "",
     products: [],
   },
@@ -49,9 +116,8 @@ var buys = {
     this.list();
   },
   list: function () {
-    console.log(this.items.products);
     this.calculate();
-    tblProdList = $("#buy-prods-table").DataTable({
+    tblProdList = $("#sale-prods-table").DataTable({
       responsive: true,
       autoWidth: false,
       destroy: true,
@@ -102,7 +168,7 @@ var buys = {
   },
 };
 
-$("#buy-prods-table tbody")
+$("#sale-prods-table tbody")
   // Elimnar un elemento de la tabla de productos
   .on("click", 'button[rel="remove"]', function () {
     let tr = tblProdList.cell($(this).closest("td, li")).index();
@@ -110,32 +176,46 @@ $("#buy-prods-table tbody")
       "Notificación",
       "Estas seguro de eliminar el producto del detalle",
       () => {
-        buys.items.products.splice(tr.row, 1);
-        buys.list();
+        sales.items.products.splice(tr.row, 1);
+        sales.list();
       }
     );
   })
+  // ------------------------ EVENTO ONCHANGE SOBRE EL INPUT DE CANTINDAD ------------------------
+
   // Cambiar a cantidad de articulos del producto en la tabala de productos
   .on("change", 'input[name="quantity"]', function () {
     let cant = $(this).val();
     if (parseInt(cant) <= 0) {
       $(this).val(1);
-      alert("No se permiten valores negativos");
+      myError("Error Cantidad", "No se permiten valores negativos");
       return;
     }
     let tr = tblProdList.cell($(this).closest("td, li")).index();
+    let stock_aviable = sales.items.products[tr.row].stock;
+    if (parseInt(cant) > stock_aviable) {
+      $(this).val(stock_aviable);
+      myError(
+        "Error Cantidad",
+        `Unicamente se cuentan con: ${stock_aviable} unidades del producto: ${
+          sales.items.products[tr.row].name
+        }`
+      );
+      return;
+    }
 
-    buys.items.products[tr.row].quantity = cant;
-    let rowId = buys.items.products[tr.row].id;
+    sales.items.products[tr.row].quantity = cant;
+    let rowId = sales.items.products[tr.row].id;
     let rowSubtotal = (
-      buys.items.products[tr.row].subtotal *
-      buys.items.products[tr.row].quantity
+      sales.items.products[tr.row].subtotal *
+      sales.items.products[tr.row].quantity
     ).toFixed(2);
     $("td:eq(4)", tblProdList.row(tr.row).node()).html(`Q. ${rowSubtotal}`);
-    buys.calculate();
+    sales.calculate();
   });
 
-// Busqueda de productos
+// ------------------------ GUARDAMOS EN VARIABLES LOS ELEMENTOS NECESARIOS
+// ------------------------ PARA EL AUTCOMPLETADO DEL BUSCAR PRODUCTOS ------------------------
 const searchProdInput = document.querySelector("#search_prod");
 const containerListProducts = document.querySelector("#my-items-list");
 const dltBtn = document.querySelector("#delete_list");
@@ -153,9 +233,10 @@ const hadleClickItemList = function (event, item) {
   searchProdInput.value = "";
   containerListProducts.classList.remove("show");
   containerListProducts.innerHTML = "";
-  buys.add(item);
+  sales.add(item);
 };
 
+// ------------------------ EVENTO KEY UP DE BUSCAR PRODUCTOS ------------------------
 searchProdInput.addEventListener("keyup", async (e, select) => {
   let terms = e.target.value;
   listFilterProds = await getProds(terms);
@@ -176,6 +257,7 @@ searchProdInput.addEventListener("keyup", async (e, select) => {
   }
 });
 
+// ------------------------ FUNCION QUE REALIZA LA CONSULTA DE PRODUCTOS ------------------------
 const getProds = async (terms) => {
   url = window.location.pathname;
   data = new FormData();
@@ -185,6 +267,7 @@ const getProds = async (terms) => {
   return response.data;
 };
 
+// ------------------------ FUNCION QUE DIBUJA AL OBJECTO DEL AUTOCOMPLETADO ------------------------
 const drawItem = (item) => {
   let name = "";
   if (item.name.length >= 50) {
@@ -193,34 +276,62 @@ const drawItem = (item) => {
     name = item.name;
   }
   return `
-    <div class="item-conainer w-full p-2 gap-4 items-center" id="${item.id}">
-      <picture class="flex w-20 h-20" ><img class="object-fit rounded-xl" src="${item.image}" /></picture>
-      <span>${item.name}</span>
-      <span><b>Q. ${item.price_sale}</b></span>
+    <div class="item-conainer" id="${item.id}">
+      <picture class="flex min-w-20 w-20 h-20" >
+        <img class="object-fill min-w-20 h-20 rounded-xl" src="${item.image}" />
+      </picture>
+      <div class="w-full flex flex-col items-start">
+        <p class="text-ellipsis overflow-hidden break-normal">${item.name}</p>
+        <p class='${
+          item.stock < 3
+            ? "text-red-700"
+            : item.stock < 6
+            ? "text-orange-700"
+            : "text-green-700"
+        } font-bold'> - Stock: ${item.stock} - </p>
+        <p><b>Q. ${item.price_sale}</b></p>
+      </div>
     </div>
   `;
 };
 
-$("form").on("submit", function (e) {
+// *-*-*-*-*-*-*-*-*-*-*- Crear un Cliente con Modal *-*-*-*-*-*-*-*-*-*-*-
+$("#addClientForm").on("submit", async function (e) {
   e.preventDefault();
-  if (buys.items.products.length <= 0) {
+  let params = new FormData(this);
+  let clientCreated = await submit_with_axios(
+    window.location.pathname,
+    "Notificacion",
+    "Estas seguro de crear este cliente..?",
+    params,
+    () => closeModal(addClientModal)
+  );
+  get_client_for_nit(clientCreated.nit);
+});
+
+// *-*-*-*-*-*-*-*-*-*-*- Agregar una Venta *-*-*-*-*-*-*-*-*-*-*-
+$("#addSaleForm").on("submit", function (e) {
+  e.preventDefault();
+  if (sales.items.products.length <= 0) {
     return myAlert(
       "Notificación",
       "No se han registrado productos a la compra..!"
     );
   }
-  buys.items.date = $("#id_date").val();
-  buys.items.serie = $("#id_serie").val();
-  buys.items.reference = $("#id_reference").val();
-  buys.items.provider_id = $("#id_provider_id").val();
-  buys.items.total = $("#id_total").val();
+  sales.items.date = $("#id_date").val();
+  sales.items.serie = $("#id_serie").val();
+  sales.items.dte = $("#id_dte").val();
+  sales.items.authorization_date = $("#id_authorization_date");
+  sales.items.total = $("#id_total").val();
+  sales.items.client_id = clientData.id;
   let params = new FormData();
-  params.append("action", $('input[name="action"]').val());
-  params.append("buys", JSON.stringify(buys.items));
+  params.append("action", "add");
+  params.append("sale", JSON.stringify(sales.items));
+  console.log(params);
   submit_with_axios(
     window.location.pathname,
     "Notificación",
-    "¿Esta seguro de realizar la siguiente acción?",
+    "¿Esta seguro de realizar la siguiente acción..?",
     params,
     () => {
       location.href = url_redirect;
@@ -228,4 +339,4 @@ $("form").on("submit", function (e) {
   );
 });
 
-buys.list();
+sales.list();

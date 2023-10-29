@@ -1,2 +1,208 @@
 {% extends 'base/base.html' %}
 {% load static %}
+
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'base/css/dash-cards.css' %}">
+{% endblock css_block %}
+
+{% block header_main %}
+<div class="content_header">
+  <div></div>
+  <div class='page_title'>
+    <h3 class="font-bold text-6xl title">
+      <i class="fas fa-tachometer-alt"></i>
+      <span>
+        Dashboard
+      </span>
+    </h3>
+  </div>
+  <div class="button-container align-middle">
+  </div>
+</div>
+{% endblock header_main %}
+
+{% block content %}
+  <div class="welcome flex w-full align-center flex-col">
+    <h4>Bienvenido: <span>{{user}}</span></h4>
+    <h5>{{today}}</h5>
+  </div>
+  <div class="cards-container">
+
+    <div onclick="openModal(salesModal)" class="dash-card bg-amber-400 hover:bg-amber-500 transition text-white rounded-xl">
+
+      <span class="icon-container">
+        <i class="fas fa-coins"></i>
+      </span>
+
+      <div class="title-dash-card">
+        <h3 class="cash">Q. {{get_total_today.total}}</h3>
+        <small class="mb-3">Total</small>
+        <small>Vendido {{today}}</small>
+      </div>
+
+    </div>
+
+    <div onclick="openModal(rankingModal)" class="dash-card bg-violet-400 hover:bg-violet-600 transition text-white rounded-xl">
+
+      <span class="icon-container">
+        <i class="fas fa-trophy"></i>
+      </span>
+
+      <div class="title-dash-card">
+        <h3>{{get_then_more_sale|length}}</h3>
+        <small class="mb-3">Productos</small>
+        <small>Más Vendidos</small>
+      </div>
+
+      <div class="content-dash-card ">
+
+        <ul>
+          {% for prod in get_then_more_sale|slice:3|dictsortreversed:'quantity' %}
+            <li class="">
+              <p class="truncate">{{prod.product_id__name}}</p>
+            </t>
+          {% endfor %}
+        </ul>
+
+      </div>
+
+    </div>
+
+    <div onclick="openModal(alertModal)" class="dash-card bg-red-600 hover:bg-red-800 transition text-white rounded-xl">
+
+      <span class="icon-container">
+        <i class="fas fa-exclamation-triangle"></i>
+      </span>
+
+      <div class="title-dash-card">
+        <h3>{{products_alert|length}}</h3>
+        <small class="mb-3">Productos</small>
+        <small>Alerta Stock</small>
+      </div>
+
+      <div class="content-dash-card ">
+
+        <ul>
+          {% for prod in products_alert|slice:"3" %}
+            <li class="">
+              <p class="truncate">{{prod.name}}</p>
+            </t>
+          {% endfor %}
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+{% endblock content %}
+
+{% block modal %}
+  <div class="modal fade animate__animated animate__fadeIn" id="salesModal">
+    <div class="modal-content">
+      <div class="modal-title">
+        <h1 class="text-cyan-800">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Ventas de hoy {{today}}</span>
+        </h1>
+        <button onclick="closeModal(salesModal)" class="btnClose-modal" rel="salesModal">
+          <i class="fas fa-times-circle"></i>
+        </button>
+        <button></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-container">
+          <table class="my-table products-table" id="tbl-detail">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Serie</th>
+                <th>DTE</th>
+                <th>Ciente</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade animate__animated animate__fadeIn" id="rankingModal">
+    <div class="modal-content">
+      <div class="modal-title">
+        <h1 class="text-cyan-800">
+          <i class="fas fa-trophy"></i>
+          <span>Los 10 articulos mas vendidos:</span>
+        </h1>
+        <button onclick="closeModal(rankingModal)" class="btnClose-modal" rel="rankingModal">
+          <i class="fas fa-times-circle"></i>
+        </button>
+        <button></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-container">
+          <table class="my-table w-full" id="tbl-ranking">
+            <thead>
+              <tr>
+                <th class="">Producto</th>
+                <th>P/U</th>
+                <th>U/Vendidas</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for prod in get_then_more_sale|dictsortreversed:'quantity' %}
+                <tr>
+                  <td class="truncate  p-y-4">{{prod.product_id__name}}</td>
+                  <td class="text-center p-y-4">Q. {{prod.product_id__price_sale}}</td>
+                  <td class="text-center p-y-4">{{prod.quantity}}</td>
+                  <td class="text-center p-y-4">Q. {{prod.total}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="modal fade animate__animated animate__fadeIn" id="alertModal">
+    <div class="modal-content">
+      <div class="modal-title">
+        <h1 class="text-cyan-800">
+          <i class="fas fa-shopping-cart"></i>
+          <span>Detalle de Venta</span>
+        </h1>
+        <button onclick="closeModal(alertModal)" class="btnClose-modal" rel="alertModal">
+          <i class="fas fa-times-circle"></i>
+        </button>
+        <button></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-container">
+          <table class="my-table products-table" id="tbl-alert">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Producto</th>
+                <th>Imagén</th>
+                <th>P/U</th>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock modal %}
+
+{% block js_block %}
+  <script src="{% static 'base/js/dash.js' %}"></script>
+{% endblock js_block %}

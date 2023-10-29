@@ -4,6 +4,7 @@
 
 {% block css_block %}
 <link rel="stylesheet" href="{% static 'base/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'products/css/products.css' %}">
 {% endblock css_block %}
 
 
@@ -36,7 +37,7 @@
     </div>
   {% else %}
     <div class="table-container">
-      <table class="my-table">
+      <table class="my-table" id="productsTbl">
         <thead>
           <tr>
             <th>Código</th>
@@ -52,15 +53,15 @@
           {% for product in instance %}
           <tr>
             <td>{{product.pk}}</td>
-            <td class="table-img">
+            <td class="w-8 h-8">
               <picture class="">
               {% if product.image %}
-                <img src="{{product.get_url_img}}" /></td>
+                <img class="object-fit" src="{{product.get_url_img}}" /></td>
               {% else %}
                 <img src="{% static 'base/img/not-found.png' %}" /></td>
               {% endif %}
               </picture>
-            <td>{{product.name}}</td>
+            <td class="product-name">{{product.name}}</td>
             <td>{{product.get_price}}</td>
             <td>{{product.get_stock}}</td>
             <td>
@@ -90,3 +91,7 @@
   {% endif %}
 
 {% endblock content %}
+
+{% block js_block %}
+  <script src="{% static 'products/js/products.js' %}"></script>
+{% endblock js_block %}

@@ -1,0 +1,113 @@
+.welcome {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  align-items: center;
+  gap: 1rem;
+}
+.welcome h4 {
+  font-size: 32px;
+  font-style: italic;
+  width: 100%;
+  text-align: center;
+  border-bottom: 4px solid #759AA5;
+}
+.welcome h4 span {
+  font-weight: bold;
+}
+
+.cards-container {
+  padding: 2rem;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  place-items: center;
+}
+
+.dash-card {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  width: 100%;
+  max-width: 350px;
+  gap: 1rem;
+  position: relative;
+}
+.icon-container {
+  position: absolute;
+  font-size: 150px;
+  right: -2rem;
+  top: -4rem;
+  transform: rotate(-15deg);
+  color: rgba(255,255,255,.3);
+}
+
+.title-dash-card {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.title-dash-card h3 {
+  font-size: 72px;
+  font-weight: bold;
+  margin-top: -2rem;
+  margin-bottom: -1rem;
+  padding: 0 .5rem;
+}
+.title-dash-card .cash {
+  font-size: clamp(36px, 5vw, 48px);
+  margin-bottom: 6px;
+}
+.title-dash-card small {
+  font-size: 12px;
+  width: max-content;
+  margin-top: -1rem;
+  font-weight: bold;
+}
+
+.content-dash-card {
+  display: flex;
+  text-transform: capitalize;
+  width: 100%;
+  height: 100%;
+  align-items: flex-end;
+  overflow-x: hidden;
+}
+.content-dash-card ul {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: flex-end;
+  overflow-x: hidden;
+}
+.content-dash-card ul li {
+  display: flex;
+  font-size: 12px;
+}
+.content-dash-card ul li p {
+  margin-bottom: 5px;
+}
+
+
+.my-table th {
+  background: rgba(0,0,0,.9);
+}
+
+@media (min-width: 768px) {
+  .cards-container {
+    grid-template-rows: repeat(auto-fill, 16rem);
+  }
+  .dash-card {
+    flex-direction: row;
+    gap: 2rem;
+    align-items: end;
+  }
+  .title-dash-card {
+    width: max-content;
+    justify-content: flex-end;
+  }
+}

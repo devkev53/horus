@@ -8,7 +8,7 @@ from venta.models import Sale, SaleDetail
 class SaleAdmin(admin.ModelAdmin):
   '''Admin View for Sale'''
 
-  # list_display = ('',)
+  list_display = ('date', 'authorization_date', 'client_id', 'is_active', 'total')
   # list_filter = ('',)
   # inlines = [
   #   Inline,
@@ -25,7 +25,7 @@ class SaleAdmin(admin.ModelAdmin):
 class SaleDetailAdmin(admin.ModelAdmin):
   '''Admin View for SaleDetail'''
 
-  # list_display = ('',)
+  list_display = ('sale_id', 'product_id', 'quantity', 'total',)
   # list_filter = ('',)
   # inlines = [
   #   Inline,

@@ -13,7 +13,7 @@
   <!-- Tailwind CSN -->
   <script src="{% static 'base/css/tailwindcss.css' %}"></script>
   <!-- Data Tables JS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="{% static 'base/libs/dataTables/datatables.min.css' %}">
   <!-- JQuery UI -->
   <link rel="stylesheet" href="{% static 'base/libs/jquery-ui-1.13.2/jquery-ui.min.css' %}">
   <!-- Animated CSS -->
@@ -22,6 +22,8 @@
   <script src="{% static 'base/js/sweetalert.js' %}"></script>
   <!-- Select2 -->
   <link rel="stylesheet" href="{% static 'base/libs/select2/css/select2.min.css' %}">
+
+
   <link rel="stylesheet" href="{% static 'base/css/_reset.css' %}">
   <link rel="stylesheet" href="{% static 'base/css/main.css' %}">
   <link rel="stylesheet" href="{% static 'base/css/navbar.css' %}">
@@ -69,13 +71,16 @@
   </script>
   <!-- JQuery -->
   <script src="{% static 'base/js/jquery-3.7.1.min.js' %}"></script>
-  <!-- DataTables -->
-  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <!-- JQuery UI -->
+  <script src="{% static 'base/libs/jquery-ui-1.13.2/jquery-ui.min.js' %}"></script>
+
   <script src="{% static 'base/js/functions.js' %}"></script>
   <script src="{% static 'base/js/custom-table.js' %}"></script>
-  <script src="{% static 'base/libs/jquery-ui-1.13.2/jquery-ui.min.js' %}"></script>
+  <!-- Data Tables JS -->
+  <script src="{% static 'base/libs/dataTables/datatables.min.js' %}"></script>
   <!-- Select2 -->
   <script src="{% static 'base/libs/select2/js/select2.min.js' %}"></script>
+
   {% block js_block %}
   {% endblock js_block %}
 

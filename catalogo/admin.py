@@ -15,14 +15,14 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
   '''Admin View for Product'''
 
-  list_display = ('id', 'preview_img', 'name',)
+  list_display = ('id', 'preview_img', 'name', 'stock')
   list_filter = ('category_id',)
-  list_display_links = ('id', 'preview_img', 'name',)
+  list_display_links = ('preview_img', 'name',)
   # inlines = [
   #   Inline,
   # ]
   # raw_id_fields = ('',)
   # readonly_fields = ('',)
-  search_fields = ('name', 'category_id')
+  search_fields = ('name', 'category_id__name')
   # date_hierarchy = ''
   # ordering = ('',)

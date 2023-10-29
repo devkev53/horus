@@ -117,7 +117,8 @@
   background: #18181b;
 }
 .btn-delete {
-  color:white
+  color:white;
+  background: rgb(222, 55, 25);
 }
 button[type="button"] {
   background: rgb(222, 55, 25);

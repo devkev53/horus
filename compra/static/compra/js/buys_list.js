@@ -27,7 +27,6 @@ tblBuys = $("#buys-table").DataTable({
   autoWidth: false,
   destroy: true,
   deferRender: true,
-  // data:
   language: changeLanguageDataTable,
   ajax: {
     url: window.location.pathname,
@@ -123,7 +122,7 @@ $("#buys-table tbody").on("click", 'button[rel="view"]', function () {
     ],
     columnDefs: [
       {
-        targets: [5],
+        targets: [3, 5],
         render: function (data, type, row) {
           return `Q. ${parseFloat(data).toFixed(2)}`;
         },

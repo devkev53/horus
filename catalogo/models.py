@@ -47,8 +47,9 @@ class Product(BaseModel):
   category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
   price_cost = models.DecimalField(_('Cost Price'), max_digits=10, decimal_places=2, default=0.00)
   price_sale = models.DecimalField(_('Sale Price'), max_digits=10, decimal_places=2, default=0.00)
-  # stock = models.PositiveSmallIntegerField(_('Stock'), default=0)
+  stock = models.PositiveSmallIntegerField(_('Stock'), default=0)
   provider_id = models.ForeignKey(Providers, on_delete=models.CASCADE, blank=True, null=True)
+  show_alert = models.PositiveSmallIntegerField(_('Min Alert'), default=3)
 
   class Meta:
     """Meta definition for Producto."""
@@ -64,7 +65,7 @@ class Product(BaseModel):
   # TODO: Define custom methods here
 
   def get_stock(self):
-    return 0
+    return self.stock
 
   def get_price(self):
     return "Q. {:.2f}".format(Decimal(self.price_sale))

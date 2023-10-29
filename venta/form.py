@@ -2,7 +2,10 @@ from django import forms
 from venta.models import Sale, SaleDetail
 
 class SaleForm(forms.ModelForm):
-  nit = forms.CharField()
+  search_nit = forms.CharField(initial='C/F', max_length=9, required=False)
+  cliente = forms.CharField(initial='Consumidor Final', disabled=True, required=False)
+
+
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
     for form in self.visible_fields():
@@ -12,9 +15,9 @@ class SaleForm(forms.ModelForm):
   class Meta:
     model = Sale
     fields = (
-      'nit', 'date', 'id', 'client_id',
+      'search_nit', 'date', 'id', 'client_id', 'cliente',
       'serie', 'dte',
-      'authorization', 'total',
+      'authorization_date', 'total',
     )
 
 

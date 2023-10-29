@@ -13,10 +13,10 @@ from django.db import transaction
 
 
 from catalogo.models import Product
+from catalogo.utils import update_product_stock
 
 from compra.forms import BuyForm, BuyDetailForm
 # Create your views here.
-
 
 
 class BuysListView(ListBaseView):
@@ -32,6 +32,8 @@ class BuysListView(ListBaseView):
         data = {}
         try:
             action = request.POST['action']
+
+            # *-*-*-*-*- SI RECIBE BUSCAR PRODUCTOS *-*-*-*-*-*
             if action == 'searchData':
                 data = []
                 for i in self.form_class.Meta.model.objects.all():
@@ -64,6 +66,8 @@ class BuyCreateView(CreateBaseView):
         data = {}
         try:
             action = request.POST['action']
+
+            # *-*-*-*-*- SI RECIBE BUSCAR PRODUCTOS *-*-*-*-*-*
             if action == 'search_products':
                 data = []
                 term = request.POST['term']
@@ -75,6 +79,8 @@ class BuyCreateView(CreateBaseView):
                         item['quantity'] = 1
                         item['subtotal'] = Decimal(item['price_sale'] * item['quantity'])
                         data.append(item)
+
+            # *-*-*-*-*- SI RECIBE CREAR COMPRA *-*-*-*-*-*
             elif action == 'add':
                 with transaction.atomic():
                     # Transforma el array en JSON
@@ -109,9 +115,15 @@ class BuyCreateView(CreateBaseView):
                         detail_instance = BuyDetailForm(data=productDict)
                         if detail_instance.is_valid():
                             detail_instance.save()
+
+
                         else:
                             data["error"] = detail_instance.errors
 
+
+                    # Llama al metodo para aumentar el stock
+                    print(buy_data)
+                    update_product_stock()
             else:
                 data['error'] = 'No se ha ingresado una opcion'
         except Exception as e:
@@ -142,6 +154,8 @@ class BuyEditView(UpdateBaseView):
         data = {}
         try:
             action = request.POST['action']
+
+            # *-*-*-*-*- SI RECIBE BUSCAR PRODUCTOS *-*-*-*-*-*
             if action == 'search_products':
                 data = []
                 term = request.POST['term']
@@ -153,11 +167,15 @@ class BuyEditView(UpdateBaseView):
                         item['quantity'] = 1
                         item['subtotal'] = Decimal(item['price_sale'] * item['quantity'])
                         data.append(item)
+
+            # *-*-*-*-*- SI RECIBE BUSCAR EL LISTADO DE DETALLES DE VENTA *-*-*-*-*-*
             elif action == 'search_details':
                 data = []
                 buy = BuyForm.Meta.model.objects.filter(id=request.POST['id']).get()
                 for d in BuyDetailForm.Meta.model.objects.filter(buy_id=buy):
                     data.append(d.toJSON())
+
+            # *-*-*-*-*- SI RECIBE LA ACCION DE EDITAR COMPRA *-*-*-*-*-*
             elif action == 'edit':
                 with transaction.atomic():
                     # Transforma el array en JSON
@@ -179,6 +197,7 @@ class BuyEditView(UpdateBaseView):
                         buy_data = instance.save()
                     else:
                         data['error'] = instance.errors
+                        data['error_in'] = 'Create Buy instance'
 
                     # Elimina el detalle para actualizar el nuevo
                     buy_data.buydetail_set.all().delete()
@@ -194,8 +213,15 @@ class BuyEditView(UpdateBaseView):
                         detail_instance = BuyDetailForm(data=productDict)
                         if detail_instance.is_valid():
                             detail_instance.save()
+
                         else:
                             data["error"] = detail_instance.errors
+                            data['error_in'] = detail_instance.data
+
+
+                    # Llama al metodo para modificar el stock
+                    print(buy_data)
+                    update_product_stock()
 
             else:
                 data['error'] = 'No se ha ingresado una opcion'

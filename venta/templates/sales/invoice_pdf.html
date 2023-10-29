@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factura {{sale.date}}</title>
+</head>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  p {
+    font-size: 12px;
+  }
+  span {
+    font-weight: bold;
+  }
+  div {
+    display: flex;
+    margin-bottom: 6px;
+  }
+  div p {
+    width: 100%;
+  }
+  header {
+    margin-bottom: 24px;
+  }
+  .invoice-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    border-bottom: 4px solid #759AA5;
+  }
+  .invoice-table thead th,
+  .invoice-table tbody td {
+    padding: 5px;
+  }
+  .invoice-table thead th {
+    background: #759AA5;
+    text-align: center;
+    color: white;
+  }
+  .invoice-table tbody tr {
+    border-bottom: 1px solid #dadada;
+  }
+  .invoice-table tbody tr:last-child {
+    border-top: 2px solid #759AA5;
+    font-weight: bold;
+  }
+
+</style>
+<body>
+  <header style="text-align: center;">
+    <h3>Multiserviciós Lemús</h3>
+  </header>
+
+  <div style="text-align: end;">
+    <p class=""><span>Boleta No. </span>{{sale.id}}</p>
+  </div>
+  <div class="">
+    <p><span>Cliente: </span>{{sale.client_id.get_full_name}}</p>
+    <p><span>NIT: </span>{{sale.client_id.nit}}</p>
+  </div>
+  <div class="">
+    <p><span>Dirección: </span>{{sale.client_id.address}}</p>
+    <p><span>Telefóno: </span>{{sale.client_id.phone}}</p>
+  </div>
+  <table class="invoice-table">
+    <thead>
+      <tr>
+        <th>Articulo</th>
+        <th>Precio Unidad</th>
+        <th>Cantidad</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for detail in details %}
+        <tr>
+          <td>{{detail.product_id.name}}</td>
+          <td>Q. {{detail.product_id.price_sale|stringformat:".2f"}}</td>
+          <td>{{detail.quantity}}</td>
+          <td>Q. {{detail.total|stringformat:".2f"}}</td>
+        </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="3" style="text-align: end;">Total</td>
+        <td>Q. {{sale.total|stringformat:".2f"}}</td>
+      </tr>
+    </tbody>
+  </table>
+</body>
+</html>
+

@@ -9,7 +9,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from base.views import CreateBaseView, UpdateBaseView
-
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 from cliente.models import Client
 from cliente.forms import ClientForm
@@ -68,3 +69,20 @@ def deactivateClient(request, pk):
         return redirect(url_redirect)
 
     return render(request, template_name, context)
+
+@csrf_exempt
+def getClientDataByNit(request, pk=None):
+
+    if request.method =='POST':
+        data = {}
+        try:
+            nit = request.POST['nit']
+            client = ClientForm.Meta.model.objects.filter(nit=nit, is_active=True).first()
+            if client is not None:
+                print(client)
+                data = client.toJSON()
+            else:
+                data['error'] = 'not found'
+        except Exception as e:
+            data['error'] = str(e)
+        return JsonResponse(data, safe=False)

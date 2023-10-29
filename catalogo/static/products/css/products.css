@@ -1,0 +1,10 @@
+.my-table {
+  font-size: 12px;
+}
+.my-table tr th,
+.my-table tr td {
+  width: min-content;
+}
+.my-table .product-name {
+  width: 100%;
+}

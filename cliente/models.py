@@ -13,7 +13,7 @@ class Client(BaseModel):
   name = models.CharField(_('Name'), max_length=100)
   last_name = models.CharField(_('Last Name'), max_length=100, blank=True, null=True)
   address = models.CharField(_('Address'), max_length=255, blank=True, null=True)
-  nit = models.CharField(_('NIT'), max_length=25, default='C/F', blank=True, null=True)
+  nit = models.CharField(_('NIT'), max_length=25, default='C/F', blank=True, null=True, unique=True)
   phone = models.CharField(_('Phone'), max_length=15, blank=True, null=True)
 
   class Meta:

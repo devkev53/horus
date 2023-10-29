@@ -37,14 +37,14 @@
     </div>
   {% else %}
     <div class="table-container">
-      <table id="buys-table" class="my-table">
+      <table id="sales-table" class="my-table">
         <thead>
           <tr>
             <th>Fecha</th>
+            <th>Hora</th>
             <th>Serie</th>
-            <th>Referencia</th>
-            <th>Proveedor</th>
-            <th>Pagado</th>
+            <th>DTE</th>
+            <th>Cliente</th>
             <th>Total</th>
             <th>Opciones</th>
           </tr>
@@ -54,15 +54,8 @@
           <tr>
             <td>{{inst.date|date:"Y-m-d"}}</td>
             <td>{{inst.serie}}</td>
-            <td>{{inst.reference}}</td>
-            <td>{{inst.provider_id}}</td>
-            <td>
-              {% if inst.is_paid %}
-                <i class="fas fa-check-circle text-green-200 text-4xl"></i>
-              {% else %}
-                <i class="fas fa-times-circle text-red-700 text-4xl"></i>
-              {% endif %}
-            </td>
+            <td>{{inst.dte}}</td>
+            <td>{{inst.client_id}}</td>
             <td>Q. {{inst.total|stringformat:".2f"}}</td>
             <td class="actions">
               <div class="actions-container dropdown-actions">
@@ -122,7 +115,7 @@
           <i class="fas fa-shopping-cart"></i>
           <span>Detalle de Venta</span>
         </h1>
-        <button class="btnClose-modal" rel="detailModal">
+        <button onclick="closeModal(detailModal)" class="btnClose-modal" rel="detailModal">
           <i class="fas fa-times-circle"></i>
         </button>
         <button></button>
@@ -152,5 +145,5 @@
   <script>
     var data = []
   </script>
-  <script src="{% static 'compra/js/buys_list.js' %}"></script>
+  <script src="{% static 'ventas/js/ventas_list.js' %}"></script>
 {% endblock js_block %}

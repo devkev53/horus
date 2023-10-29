@@ -29,7 +29,7 @@ const myAlert = (title, text) => {
 
 const myError = (title, text) => {
   Swal.fire({
-    icon: "danger",
+    icon: "error",
     title: title,
     html: text,
     confirmButtonColor: "#759AA5",
@@ -165,9 +165,26 @@ const linksItem = document.querySelectorAll(".nav-link");
 
 function active_link() {
   let path = location.pathname.split("/");
+  console.log(path);
   if (path.includes("clients")) {
     linksItem.forEach((link) => {
       if (link.classList.contains("clients")) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  } else if (path[1] === "") {
+    linksItem.forEach((link) => {
+      if (link.classList.contains("dashboard")) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  } else if (path.includes("sales")) {
+    linksItem.forEach((link) => {
+      if (link.classList.contains("sales")) {
         link.classList.add("active");
       } else {
         link.classList.remove("active");
@@ -244,7 +261,7 @@ function active_public_link() {
 active_public_link();
 
 const submit_with_axios = (url, title, text, params, callback) => {
-  Swal.fire({
+  return Swal.fire({
     icon: "info",
     title: title,
     text: text,
@@ -260,7 +277,8 @@ const submit_with_axios = (url, title, text, params, callback) => {
       console.log(response.data.hasOwnProperty("error"));
       if (!response.data.hasOwnProperty("error")) {
         callback();
-        return false;
+
+        return response.data;
       } else {
         let errorHtml = error_to_html(response.data.error);
         console.log(errorHtml);
