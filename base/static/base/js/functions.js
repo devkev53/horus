@@ -174,7 +174,7 @@ function active_link() {
         link.classList.remove("active");
       }
     });
-  } else if (path[1] === "") {
+  } else if (path.includes("dash")) {
     linksItem.forEach((link) => {
       if (link.classList.contains("dashboard")) {
         link.classList.add("active");
@@ -232,7 +232,7 @@ const navLinkItems = document.querySelectorAll(".public-nav-link");
 
 function active_public_link() {
   let path = location.pathname.split("/");
-  if (path.includes("inicio")) {
+  if (path.includes(path[1] === "")) {
     navLinkItems.forEach((link) => {
       if (link.classList.contains("inicio")) {
         link.classList.add("active");
