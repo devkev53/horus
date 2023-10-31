@@ -43,6 +43,8 @@ let saleTbl = $("#sales-table").DataTable({
     { data: "serie" },
     { data: "dte" },
     { data: "client_id" },
+    { data: "subtotal" },
+    { data: "discount" },
     { data: "total" },
     { data: "id" },
   ],
@@ -64,13 +66,13 @@ let saleTbl = $("#sales-table").DataTable({
       },
     },
     {
-      target: [5],
+      target: [5, 6, 7],
       render: function (data, type, row) {
         return `Q. ${parseFloat(data).toFixed(2)}`;
       },
     },
     {
-      target: [6],
+      target: [8],
       render: function (data, type, row) {
         return `<div class="flex gap-4 justify-center">${viewBtnHtml} ${editBtnHtml(
           data

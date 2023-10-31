@@ -2,7 +2,7 @@
 
 
 <nav class="navbar">
-  <a href="{% if user.is_authenticated %} / {% else %} {% url 'inicio' %} {% endif %}">
+  <a href="{% if user.is_authenticated %} {% url 'dashboard' %} {% else %} {% url 'inicio' %} {% endif %}">
     <picture class="img-container">
       <img src="{% static 'base/img/logo.png' %}" alt="">
     </picture>

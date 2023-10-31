@@ -22,6 +22,7 @@
 {% endblock header_main %}
 
 {% block content %}
+
   <div class="welcome flex w-full align-center flex-col">
     <h4>Bienvenido: <span>{{user}}</span></h4>
     <h5>{{today}}</h5>
@@ -98,7 +99,7 @@
 {% endblock content %}
 
 {% block modal %}
-  <div class="modal fade animate__animated animate__fadeIn" id="salesModal">
+  <div onclick="closeModalClickOutput()" class="modal fade animate__animated animate__fadeIn" id="salesModal">
     <div class="modal-content">
       <div class="modal-title">
         <h1 class="text-cyan-800">
@@ -119,18 +120,51 @@
                 <th>Hora</th>
                 <th>Serie</th>
                 <th>DTE</th>
-                <th>Ciente</th>
+                <th>Autorización</th>
+                <th>Cliente</th>
+                <th>NIT</th>
                 <th>Total</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              {% for sale in get_total_today.sales %}
+                <tr>
+                  <td>{{sale.date}}</td>
+                  <td>{{sale.time}}</td>
+                  <td>
+                    {% if sale.serie.lenght > 0 %}
+                      sale.serie
+                    {% else %}
+                      N/I
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if sale.dte.lenght > 0 %}
+                      sale.dte
+                    {% else %}
+                      N/I
+                    {% endif %}
+                  </td>
+                  <td>
+                    {% if sale.authorization.lenght > 0 %}
+                      sale.authorization
+                    {% else %}
+                      N/I
+                    {% endif %}
+                  </td>
+                  <td>{{sale.client_id.get_full_name}}</td>
+                  <td>{{sale.client_id.nit}}</td>
+                  <td>Q. {{sale.total|floatformat:".2f"}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
           </table>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="modal fade animate__animated animate__fadeIn" id="rankingModal">
+  <div onclick="closeModalClickOutput()" class="modal fade animate__animated animate__fadeIn" id="rankingModal">
     <div class="modal-content">
       <div class="modal-title">
         <h1 class="text-cyan-800">
@@ -168,14 +202,13 @@
       </div>
     </div>
   </div>
-  
 
-  <div class="modal fade animate__animated animate__fadeIn" id="alertModal">
+  <div onclick="closeModalClickOutput(event)" class="modal fade animate__animated animate__fadeIn" id="alertModal">
     <div class="modal-content">
       <div class="modal-title">
         <h1 class="text-cyan-800">
-          <i class="fas fa-shopping-cart"></i>
-          <span>Detalle de Venta</span>
+          <i class="fas fa-exclamation-triangle"></i>
+          <span>Productos con Alerta de Stock</span>
         </h1>
         <button onclick="closeModal(alertModal)" class="btnClose-modal" rel="alertModal">
           <i class="fas fa-times-circle"></i>
@@ -187,15 +220,26 @@
           <table class="my-table products-table" id="tbl-alert">
             <thead>
               <tr>
-                <th>No.</th>
-                <th>Producto</th>
-                <th>Imagén</th>
-                <th>P/U</th>
-                <th>Cantidad</th>
-                <th>Subtotal</th>
+                <th class="text-center p-y-4">No.</th>
+                <th class="truncate p-y-4">Producto</th>
+                <th class="text-center p-y-4">Imagén</th>
+                <th class="text-center p-y-4">P/U</th>
+                <th class="text-center p-y-4">Cantidad</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              {% for prod in products_alert|slice:"3" %}
+                <tr>
+                  <td class="text-center p-y-4">{{ forloop.counter }}</td>
+                  <td class="truncate p-y-4">{{prod.name}}</td>
+                  <td class="text-center p-y-4">
+                    <img class="w-24 h-24 rounded-xl" src="{{prod.get_url_img}}" alt="">
+                  </td>
+                  <td class="text-center p-y-4">Q. {{prod.price_sale}}</td>
+                  <td class="text-center p-y-4 font-bold text-red-700">{{prod.stock}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
           </table>
         </div>
       </div>

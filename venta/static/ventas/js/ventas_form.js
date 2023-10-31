@@ -82,18 +82,25 @@ var sales = {
     dte: "",
     authorization_date: "",
     client_id: "",
+    subtotal: "",
+    discount: "",
     total: "",
     products: [],
   },
   calculate: function () {
     rowSub = 0;
-    var subtotal = 0;
+    let subtotal = 0;
+    let discount = $("#id_discount").val();
     $.each(this.items.products, function (pos, dic) {
       subtotal += dic.quantity * parseFloat(dic.price_sale);
     });
 
-    this.total = subtotal;
-    $("#id_total").val(this.total.toFixed(2));
+    this.subtotal = subtotal;
+    this.discount = discount;
+    let total = (subtotal - discount).toFixed(2);
+    this.total = (subtotal - parseFloat(discount)).toFixed(2);
+    $("#id_subtotal").val(this.subtotal.toFixed(2));
+    $("#id_total").val(this.total);
   },
   add: function (item) {
     // Se realiza verificacion que el listado este vacio
@@ -168,6 +175,13 @@ var sales = {
   },
 };
 
+// ------------------------ EVENTO ONCHANGE SOBRE EL INPUT DE DESCUENTO ------------------------
+$("#id_discount").on("change", function (e) {
+  let discount = this.value;
+  sales.calculate();
+});
+
+// ------------------------ EVENTO ONCHANGE SOBRE EL INPUT DE LA CANTIDAD ------------------------
 $("#sale-prods-table tbody")
   // Elimnar un elemento de la tabla de productos
   .on("click", 'button[rel="remove"]', function () {
@@ -322,12 +336,14 @@ $("#addSaleForm").on("submit", function (e) {
   sales.items.serie = $("#id_serie").val();
   sales.items.dte = $("#id_dte").val();
   sales.items.authorization_date = $("#id_authorization_date");
+  sales.items.subtotal = $("#id_subtotal").val();
+  sales.items.discount = $("#id_discount").val();
   sales.items.total = $("#id_total").val();
   sales.items.client_id = clientData.id;
   let params = new FormData();
   params.append("action", "add");
   params.append("sale", JSON.stringify(sales.items));
-  console.log(params);
+  // console.log(params);
   submit_with_axios(
     window.location.pathname,
     "Notificación",

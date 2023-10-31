@@ -89,18 +89,15 @@
   
       <!-- Carad Body -->
       <div class="card-body">
-
-        <div class="form-group">
-          <label class="block text-lg mb-2 text-grat-900" for="">NIT:</label>
-          {{form.search_nit}}
-        </div>
-
-        <div class="form-group">
-          <label class="block text-lg mb-2 text-grat-900" for="">Cliente:</label>
-          {{form.cliente}}
-        </div>
-
+        
         <div class="row">
+          <!-- Input NIT -->
+          <div class="form-group">
+            <label class="block text-lg mb-2 text-grat-900" for="">NIT:</label>
+            {{form.search_nit}}
+          </div>
+
+          <!-- Fecha -->
           <div class="form-group">
             <label class="block text-lg mb-2 text-grat-900" for="">
               Fecha de Compra:
@@ -112,7 +109,33 @@
               type="date"
             >
           </div>
-  
+
+        </div>
+        
+        
+        <div class="form-group">
+          <label class="block text-lg mb-2 text-grat-900" for="">Cliente:</label>
+          {{form.cliente}}
+        </div>
+
+        <div class="row">
+          <!-- Subtotal -->
+          <div class="form-group">
+            <label class="block text-lg mb-2 text-grat-900" for="">
+              Subtotal:
+            </label>
+            {{form.subtotal}}
+          </div>
+          
+          <!-- Descuento -->
+          <div class="form-group">
+            <label class="block text-lg mb-2 text-grat-900" for="">
+              Descuento:
+            </label>
+            {{form.discount}}
+          </div>
+          
+          <!-- Total -->
           <div class="form-group">
             <label class="block text-lg mb-2 text-grat-900" for="">
               Total:
@@ -141,7 +164,7 @@
           <label class="block text-lg mb-2 text-grat-900" for="">
             Autorización:
           </label>
-          {{form.authorization}}
+          {{form.authorization_date}}
         </div>
 
       </div>

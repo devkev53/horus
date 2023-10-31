@@ -174,7 +174,7 @@ function active_link() {
         link.classList.remove("active");
       }
     });
-  } else if (path.includes("dash")) {
+  } else if (path.includes("dashboard")) {
     linksItem.forEach((link) => {
       if (link.classList.contains("dashboard")) {
         link.classList.add("active");

@@ -1,3 +1,9 @@
+#salesModal .modal-content,
+#rankingModal .modal-content,
+#alertModal .modal-content {
+  max-width: 1200px;
+}
+
 .welcome {
   display: flex;
   flex-direction: column;
@@ -99,6 +105,7 @@
 
 @media (min-width: 768px) {
   .cards-container {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     grid-template-rows: repeat(auto-fill, 16rem);
   }
   .dash-card {

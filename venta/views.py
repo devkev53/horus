@@ -156,6 +156,8 @@ class SaleCreateView(CreateBaseView):
                         "dte":sale['dte'],
                         "authorization_date": sale['authorization_date'],
                         "client_id":sale['client_id'],
+                        "subtotal": sale['subtotal'],
+                        "discount": sale['discount'],
                         "total": sale['total']
                     }
                     # Pasa los datos del encabezado al formulario
@@ -165,6 +167,7 @@ class SaleCreateView(CreateBaseView):
                         # Guarda el objecto
                         sale_data = instance.save()
                     else:
+                        data['sale'] = instance.data
                         data['error'] = instance.errors
 
                     # Tomla el listado de productos de la compra
@@ -260,6 +263,8 @@ class SaleEditView(UpdateBaseView):
                         "dte":sale['dte'],
                         "authorization_date": sale['authorization_date'],
                         "client_id":sale['client_id'],
+                        "subtotal": sale['subtotal'],
+                        "discount": sale['discount'],
                         "total": sale['total']
                     }
                     # Pasa los datos del encabezado al formulario

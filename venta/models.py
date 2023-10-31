@@ -24,6 +24,8 @@ class Sale(BaseModel):
   serie = models.CharField(max_length=255, blank=True, null=True)
   dte = models.CharField(max_length=255, blank=True, null=True)
   authorization_date = models.CharField(max_length=255, blank=True, null=True)
+  subtotal = models.DecimalField(max_digits=10, decimal_places=2,default=0.00)
+  discount = models.DecimalField(max_digits=10, decimal_places=2,default=0.00)
   total = models.DecimalField(max_digits=10, decimal_places=2,default=0.00)
 
   class Meta:

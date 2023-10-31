@@ -36,7 +36,7 @@
     </div>
   {% else %}
     <div class="table-container">
-      <table class="my-table">
+      <table class="my-table" id="tblProviders">
         <thead>
           <tr>
             <th>Código</th>
@@ -82,3 +82,15 @@
   {% endif %}
 
 {% endblock content %}
+
+{% block js_block %}
+  <script>
+    $("#tblProviders").DataTable({
+      responsive: true,
+      autoWidth: false,
+      destroy: true,
+      deferRender: true,
+      language: changeLanguageDataTable,
+    });
+  </script>
+{% endblock js_block %}

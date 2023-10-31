@@ -45,7 +45,6 @@
             <th>Nombre</th>
             <th>Precio</th>
             <th>Existencias</th>
-            <th>Garatía</th>
             <th>Opciones</th>
           </tr>
         </thead>
@@ -53,7 +52,7 @@
           {% for product in instance %}
           <tr>
             <td>{{product.pk}}</td>
-            <td class="w-8 h-8">
+            <td class="w-4 h-4">
               <picture class="">
               {% if product.image %}
                 <img class="object-fit" src="{{product.get_url_img}}" /></td>
@@ -64,13 +63,6 @@
             <td class="product-name">{{product.name}}</td>
             <td>{{product.get_price}}</td>
             <td>{{product.get_stock}}</td>
-            <td>
-              {% if product.get_garanty %}
-                <i class="fas fa-check-circle text-green-200 text-4xl"></i>
-              {% else %}
-                <i class="fas fa-times-circle text-red-700 text-4xl"></i>
-              {% endif %}
-            </td>
             <td class="actions">
               <div class="actions-container">
                 <a href="{% url 'products_edit' product.pk %}" class='table-btn btn-edit'>

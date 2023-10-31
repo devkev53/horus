@@ -17,8 +17,16 @@ class SaleForm(forms.ModelForm):
     fields = (
       'search_nit', 'date', 'id', 'client_id', 'cliente',
       'serie', 'dte',
-      'authorization_date', 'total',
+      'authorization_date', 'subtotal', 'discount', 'total',
     )
+    widgets = {
+      'subtotal': forms.NumberInput(
+        attrs={'readonly':True}
+      ),
+      'total': forms.NumberInput(
+        attrs={'readonly':True}
+      ),
+    }
 
 
 class SaleDetailForm(forms.ModelForm):

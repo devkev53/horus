@@ -87,18 +87,26 @@ var sales = {
     dte: "",
     authorization_date: "",
     client_id: "",
+    discount: "",
+    subtotal: "",
+    total: "",
     total: "",
     products: [],
   },
   calculate: function () {
     rowSub = 0;
-    var subtotal = 0;
+    let subtotal = 0;
+    let discount = $("#id_discount").val();
     $.each(this.items.products, function (pos, dic) {
       subtotal += dic.quantity * parseFloat(dic.price_sale);
     });
 
-    this.total = subtotal;
-    $("#id_total").val(this.total.toFixed(2));
+    this.subtotal = subtotal;
+    this.discount = discount;
+    let total = (subtotal - discount).toFixed(2);
+    this.total = (subtotal - parseFloat(discount)).toFixed(2);
+    $("#id_subtotal").val(this.subtotal.toFixed(2));
+    $("#id_total").val(this.total);
   },
   add: function (item) {
     // Se realiza verificacion que el listado este vacio
@@ -194,6 +202,12 @@ const get_det = async () => {
 
 get_det();
 
+// ------------------------ EVENTO ONCHANGE SOBRE EL INPUT DE DESCUENTO ------------------------
+$("#id_discount").on("change", function (e) {
+  let discount = this.value;
+  sales.calculate();
+});
+
 $("#sale-prods-table tbody")
   // Elimnar un elemento de la tabla de productos
   .on("click", 'button[rel="remove"]', function () {
@@ -214,7 +228,7 @@ $("#sale-prods-table tbody")
     let cant = $(this).val();
     if (parseInt(cant) <= 0) {
       $(this).val(1);
-      alert("No se permiten valores negativos");
+      myAlert("Wrror", "No se permiten valores negativos");
       return;
     }
     let tr = tblProdList.cell($(this).closest("td, li")).index();

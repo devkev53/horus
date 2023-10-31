@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-vwq11jn(s-@91%=+i!wdex5zidbed7v(qe##4whv*0n6$_*yxr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['xtestuser.pythonanywhere.com',]
+ALLOWED_HOSTS = ['xtestuser.pythonanywhere.com', 'localhost:8000', 'localhost']
 
 
 # Database
@@ -60,5 +60,5 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/dash'
 LOGOUT_REDIRECT_URL = '/login/'

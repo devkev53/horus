@@ -7,6 +7,6 @@ urlpatterns = [
   path('conocenos/', ConocenosView.as_view(), name='conocenos'),
   path('contacto/', ContactView.as_view(), name='contact'),
   path('login/', auth_views.LoginView.as_view(template_name ='base/login.html'), name='login'),
-  path('/dash', DashboardView.as_view(), name='dashboard'),
+  path('dash/', DashboardView.as_view(), name='dashboard'),
   path('logout/', auth_views.LogoutView.as_view(next_page='inicio'), name='logout'),
 ]
