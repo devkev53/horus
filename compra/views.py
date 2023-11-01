@@ -144,7 +144,6 @@ class BuyCreateView(CreateBaseView):
 
 
                     # Llama al metodo para aumentar el stock
-                    print(buy_data)
                     update_product_stock()
             else:
                 data['error'] = 'No se ha ingresado una opcion'
@@ -241,8 +240,7 @@ class BuyEditView(UpdateBaseView):
                             data['error_in'] = detail_instance.data
 
 
-                    # Llama al metodo para modificar el stock
-                    print(buy_data)
+                    # Llama al metodo para aumentar el stock
                     update_product_stock()
 
             else:
@@ -264,6 +262,7 @@ class BuyEditView(UpdateBaseView):
         context['action'] = 'edit'
         return context
 
+
 def deactivateBuy(request, pk):
     object = BuyForm.Meta.model.objects.filter(pk=pk).first()
     template_name='buys/buy_delete.html'
@@ -280,6 +279,8 @@ def deactivateBuy(request, pk):
     if request.method == 'POST':
         object.is_active = False
         object.save()
+        # Llama al metodo para aumentar el stock
+        update_product_stock()
         return redirect(url_redirect)
 
     return render(request, template_name, context)

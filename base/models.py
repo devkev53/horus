@@ -3,6 +3,7 @@ from usuario.models import User
 from datetime import date
 from crum import get_current_user
 from django.utils.translation import gettext as _
+from simple_history.models import HistoricalRecords
 
 # Create your models here.
 
@@ -29,6 +30,8 @@ class BaseModel(models.Model):
     blank=True, null=True
   )
   is_active = models.BooleanField(_('Is Active'), default=True)
+  history = HistoricalRecords()
+
 
   class Meta:
     """Meta definition for ModeloBase."""

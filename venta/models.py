@@ -7,8 +7,10 @@ from empleado.models import Employee
 from base.models import BaseModel
 from catalogo.models import Product
 from django.dispatch import receiver
-from django.db.models.signals import pre_delete
+from django.db.models.signals import pre_delete, post_delete
 from django.forms import model_to_dict
+from simple_history.models import HistoricalRecords
+
 
 
 # Create your models here.
@@ -27,6 +29,8 @@ class Sale(BaseModel):
   subtotal = models.DecimalField(max_digits=10, decimal_places=2,default=0.00)
   discount = models.DecimalField(max_digits=10, decimal_places=2,default=0.00)
   total = models.DecimalField(max_digits=10, decimal_places=2,default=0.00)
+  history = HistoricalRecords()
+
 
   class Meta:
     """Meta definition for Venta."""
@@ -37,12 +41,6 @@ class Sale(BaseModel):
   def __str__(self):
     """Unicode representation of Venta."""
     return '%s - %s -%s' % (self.created, self.client_id, self.total)
-
-  def save(self, *args, **kwargs):
-    if not self.pk is None:
-      from catalogo.utils import activate_sale_edit_stock
-      activate_sale_edit_stock(self)
-    return super(Sale, self).save(*args, **kwargs)
 
 
   # TODO: Define custom methods here
@@ -88,11 +86,9 @@ class SaleDetail(models.Model):
     return "{:.2f}".format(Decimal(total))
 
 
-
-# -*-*-*-*-*-*- PRE DELETE SIGNAL -*-*-*-*-*-*-
-# @receiver(pre_delete, sender=SaleDetail)
-# def delete_sale_detail_signal(sender, instance, **kwargs):
-#     from catalogo.utils import delete_SaleDetail_edit_stock
-#     delete_SaleDetail_edit_stock(instance)
-#     print('se ha borrado un detalle')
-#     # print(instance)
+# -*-*-*-*-*-*- POST DELETE SIGNAL -*-*-*-*-*-*-
+@receiver(post_delete, sender=SaleDetail)
+def delete_buy_detail_signal(sender, instance, *args, **kwargs):
+    from catalogo.utils import update_product_stock
+    update_product_stock()
+    # print(instance)

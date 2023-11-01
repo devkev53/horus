@@ -1,7 +1,8 @@
 from django.urls import path
-from venta.views import SaleListView, SaleCreateView, deactivateSale, SaleEditView, InvoicePDF
+from venta.views import SaleListView, SaleCreateView, deactivateSale, SaleEditView, InvoicePDF,SaleDetailView
 
 urlpatterns = [
+  path('sales/detail/<int:pk>', SaleDetailView.as_view(), name='sales_detail'),
   path('sales/', SaleListView.as_view(), name='sales_list'),
   path('sales/<int:pk>', SaleEditView.as_view(), name='sales_edit'),
   path('sales/add', SaleCreateView.as_view(), name='sales_add'),

@@ -24,6 +24,16 @@ from cliente.forms import ClientForm
 # Create your views here.
 
 
+class SaleDetailView(DetailView):
+    model = SaleForm.Meta.model
+    template_name = 'sales/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["deatils"] = SaleDetailForm.Meta.model.objects.filter(sale_id=self.object)
+        context["history"] = self.object.history.all()
+        return context
+
 class InvoicePDF(LoginRequiredMixin, DetailView):
     template_name = "sales/invoice_pdf.html"
     login_url= '/login'
@@ -60,6 +70,7 @@ class InvoicePDF(LoginRequiredMixin, DetailView):
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
+
 
 class SaleListView(ListBaseView):
     template_name = "sales/sales_list.html"
@@ -273,6 +284,7 @@ class SaleEditView(UpdateBaseView):
                     if instance.is_valid():
                         # Guarda el objecto
                         sale_data = instance.save()
+                        print('--------- Edit sale --------')
                     else:
                         data['error'] = instance.errors
 
@@ -293,6 +305,7 @@ class SaleEditView(UpdateBaseView):
                         else:
                             data["error"] = detail_instance.errors
                             data['data'] = detail_instance.data
+
                     # Llama al metodo para aumentar el stock
                     update_product_stock()
             else:
@@ -330,6 +343,8 @@ def deactivateSale(request, pk):
     if request.method == 'POST':
         object.is_active = False
         object.save()
+        # Llama al metodo para aumentar el stock
+        update_product_stock()
         return redirect(url_redirect)
 
     return render(request, template_name, context)

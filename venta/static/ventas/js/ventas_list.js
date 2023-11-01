@@ -21,6 +21,10 @@ const printBtnHtml = (id) => {
   let url = `${window.location.pathname}invoice/${id}`;
   return `<a href="${url}" target="_blank" class="table-btn bg-zinc-800" rel="view"><i class="fas fa-print"></i></a>`;
 };
+const historyBtnHtml = (id) => {
+  let url = `${window.location.pathname}detail/${id}`;
+  return `<a href="${url}" target="_blank" class="table-btn bg-zinc-800" rel="view"><i class="fas fa-history"></i></a>`;
+};
 
 // ------------------------ CREACION DE LA TABLA DE VENTAS ------------------------
 let saleTbl = $("#sales-table").DataTable({
@@ -76,7 +80,9 @@ let saleTbl = $("#sales-table").DataTable({
       render: function (data, type, row) {
         return `<div class="flex gap-4 justify-center">${viewBtnHtml} ${editBtnHtml(
           data
-        )} ${deleteBtnHtml(data)} ${printBtnHtml(data)} </div>`;
+        )} ${deleteBtnHtml(data)} ${printBtnHtml(data)} ${historyBtnHtml(
+          data
+        )} </div>`;
       },
     },
   ],

@@ -5,7 +5,7 @@ from proveedor.models import Providers
 from catalogo.models import Product
 from django.forms import model_to_dict
 from django.dispatch import receiver
-from django.db.models.signals import pre_delete
+from django.db.models.signals import post_delete
 
 
 # Create your models here.
@@ -121,9 +121,9 @@ class Payment(BaseModel):
 
 
 
-# -*-*-*-*-*-*- PRE DELETE SIGNAL -*-*-*-*-*-*-
-# @receiver(pre_delete, sender=BuyDetail)
-# def delete_buy_detail_signal(sender, instance, **kwargs):
-#     from catalogo.utils import update_product_stock
-#     update_product_stock()
-#     # print(instance)
+# -*-*-*-*-*-*- POST DELETE SIGNAL -*-*-*-*-*-*-
+@receiver(post_delete, sender=BuyDetail)
+def delete_buy_detail_signal(sender, instance, *args, **kwargs):
+    from catalogo.utils import update_product_stock
+    update_product_stock()
+    # print(instance)

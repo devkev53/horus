@@ -1,0 +1,33 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% url 'clients_add' as addClient%}
+
+{% block css_block %}
+<link rel="stylesheet" href="{% static 'base/css/table.css' %}">
+<link rel="stylesheet" href="{% static 'compra/css/compras_list.css' %}">
+{% endblock css_block %}
+
+
+
+{% block header_main %}
+<div class="content_header">
+  <div class="page_title">
+    <h3 class="font-bold title">
+      <i class="fas fa-cash-register"></i>
+      <span>Ventas</span>
+    </h3>
+    <div class="content_title_button">
+      <a href="{% url 'sales_add' %}" class="btn primary-btn hover:shadow hover:shadow-md title_button">
+        <i class="fas fa-plus"></i>
+        <span>Venta</span>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock header_main %}
+
+{% block content %}
+
+  <p>{{history}}</p>
+    
+{% endblock content %}
