@@ -24,7 +24,6 @@ class BuysListView(ListBaseView):
     form_class = BuyForm
 
     @method_decorator(csrf_exempt)
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
