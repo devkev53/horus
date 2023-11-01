@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 from django.utils.html import format_html
 from base.models import BaseModel
 from proveedor.models import Providers
+from app.settings.local import DOMAIN
 
 # Create your models here.
 
@@ -32,7 +33,7 @@ class Category(BaseModel):
 
   def get_url_img(self):
     if self.image:
-      return 'http://localhost:8000{}'.format(self.image.url)
+      return '{}{}'.format(DOMAIN, self.image.url)
     else:
       return ''
 
@@ -75,7 +76,7 @@ class Product(BaseModel):
 
   def get_url_img(self):
     if self.image:
-      return 'http://localhost:8000{}'.format(self.image.url)
+      return '{}{}'.format(DOMAIN, self.image.url)
     else:
       return ''
 

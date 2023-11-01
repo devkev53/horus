@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 from base.models import BaseModel
 from django.forms import model_to_dict
+from app.settings.local import DOMAIN
 
 
 # Create your models here.
@@ -40,7 +41,7 @@ class Providers(BaseModel):
 
   def get_url_img(self):
     if self.logo:
-      return 'http://localhost:8000{}'.format(self.logo.url)
+      return '{}{}'.format(DOMAIN, self.logo.url)
     else:
       return ''
 
