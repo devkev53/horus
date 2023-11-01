@@ -57,8 +57,8 @@
             <td>{{inst.reference}}</td>
             <td>{{inst.provider_id}}</td>
             <td>
-              {% if inst.is_paid %}
-                <i class="fas fa-check-circle text-green-200 text-4xl"></i>
+              {% if inst.check_payment %}
+                <i class="fas fa-check-circle text-green-400 text-4xl"></i>
               {% else %}
                 <i class="fas fa-times-circle text-red-700 text-4xl"></i>
               {% endif %}
@@ -115,24 +115,25 @@
 {% endblock content %}
 
 {% block modal %}
-  <div class="modal fade animate__animated animate__fadeIn" id="detailModal">
+
+<!-- Modal de Detalle -->
+  <div onclick="closeModalClickOutput(event)" class="modal fade animate__animated animate__fadeIn" id="detailModal">
     <div class="modal-content">
       <div class="modal-title">
         <h1 class="text-cyan-800">
           <i class="fas fa-shopping-cart"></i>
           <span>Detalle de Venta</span>
         </h1>
-        <button class="btnClose-modal" rel="detailModal">
+        <button onclick="closeModal(detailModal)" class="btnClose-modal" rel="detailModal">
           <i class="fas fa-times-circle"></i>
         </button>
-        <button></button>
       </div>
       <div class="modal-body">
         <div class="table-container">
           <table class="my-table products-table" id="tbl-detail">
             <thead>
               <tr>
-                <th>No.</th>
+                <th>Código.</th>
                 <th>Producto</th>
                 <th>Imagén</th>
                 <th>P/U</th>
@@ -146,6 +147,14 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Modal Listado de Pagos -->
+  {% include 'buys/pays_list_modal.html' %}
+
+  <!-- Modal Ingresar Pago -->
+  {% include 'buys/new_pay_modal.html' %}
+
 {% endblock modal %}
 
 {% block js_block %}

@@ -11,11 +11,41 @@ const deleteBtnHtml = (id) => {
 const payBtnHtml = (id) => {
   // let deleteUrl = `${window.location.pathname}delete/${id}`;
   let deleteUrl = `/`;
-  return `<a href="${deleteUrl}" class="table-btn bg-green-400" rel="view"><i class="fas fa-coins"></i></a>`;
+  return `<button class="table-btn bg-green-400" rel="payList"><i class="fas fa-coins"></i></button>`;
 };
+
+// ------------ SE OBTIENEN LAS VARIABLES A USARSE ---------------
+const paysListModal = document.querySelector("#payList");
 const detailModal = document.querySelector("#detailModal");
 const btnCloseModal = document.querySelector(".btnClose-modal");
+const btnAddPay = document.querySelector("#addPay");
+const addPayModal = document.querySelector("#addPayModal");
+const paymentForm = document.querySelector("#paymentForm");
+const addPaymentBtnSubmit = document.querySelector("#addPaymentBtnSubmit");
+var pagoInfo = "";
+var payId = "";
 
+// ------------------------ FUNCION PARA CERRAR EL MODAL ------------------------
+function closeModal(modal) {
+  modal.classList.remove("show");
+}
+
+function closeModalClickOutput(e) {
+  e.target.classList.remove("show");
+}
+
+// ------------------- FUNCION ADD PAY CLICK -------------------
+btnAddPay.addEventListener("click", function () {
+  // Cerrar Modal Listaode Pagos
+  paysListModal.classList.remove("show");
+  document.querySelector(".payInstance").innerHTML = pagoInfo;
+
+  setTimeout(() => {
+    addPayModal.classList.add("show");
+  }, 300);
+});
+
+// ------------------- DEFINICION DE LA TABLA COMPRAS -------------------
 let tblBuys;
 
 btnCloseModal.addEventListener("click", function () {
@@ -65,8 +95,8 @@ tblBuys = $("#buys-table").DataTable({
     {
       target: [4],
       render: function (data, type, row) {
-        if (data) {
-          return `<i class="fas fa-check-circle text-green-200 text-4xl"></i>`;
+        if (row.chek_payment) {
+          return `<i class="fas fa-check-circle text-green-500 text-4xl"></i>`;
         } else {
           return `<i class="fas fa-times-circle text-red-700 text-4xl"></i>`;
         }
@@ -89,10 +119,72 @@ tblBuys = $("#buys-table").DataTable({
   ],
 });
 
+// ------------------- EVENTO CLIC SOBRE EL BOTON LISTADO DE PAGOS MODAL ---------------------------
+$("#buys-table tbody").on("click", 'button[rel="payList"]', function () {
+  let tr = tblBuys.cell($(this).closest("td, li")).index();
+  let data = tblBuys.row(tr.row).data();
+  pagoInfo = `${data.date} - ${data.provider_id.company_name} - Q. ${data.total}`;
+  payId = data.id;
+  document.querySelector(".payInfo").innerHTML = pagoInfo;
+
+  $("#tblPays").DataTable({
+    responsive: true,
+    autoWidth: false,
+    destroy: true,
+    deferRender: true,
+    language: changeLanguageDataTable,
+    ajax: {
+      url: window.location.pathname,
+      type: "POST",
+      data: {
+        action: "search_pays",
+        id: payId,
+      },
+      dataSrc: "",
+    },
+    language: changeLanguageDataTable,
+    columns: [
+      { data: "id" },
+      { data: "date" },
+      { data: "payment_type" },
+      { data: "document" },
+      { data: "total" },
+    ],
+    columnDefs: [
+      {
+        targets: [0],
+        render: function (data, type, row, meta) {
+          return meta.row;
+        },
+      },
+      {
+        target: [3],
+        render: function (date, type, row) {
+          if (row.chek_payment) {
+            return `<i class="fas fa-check-circle text-green-500 text-4xl"></i>`;
+          } else {
+            return `<i class="fas fa-times-circle text-red-700 text-4xl"></i>`;
+          }
+        },
+      },
+      {
+        targets: [4],
+        render: function (data, type, row, meta) {
+          return `Q. ${parseFloat(data).toFixed(2)}`;
+        },
+      },
+    ],
+    pageLength: 5,
+    lengthMenu: [5, 10, 20, "Todos"],
+  });
+
+  paysListModal.classList.add("show");
+});
+
+// ------------------- EVENTO CLIC SOBRE EL BOTON DETALLE COMPRA ---------------------------
 $("#buys-table tbody").on("click", 'button[rel="view"]', function () {
   let tr = tblBuys.cell($(this).closest("td, li")).index();
   let data = tblBuys.row(tr.row).data();
-  console.log(data);
 
   $("#tbl-detail").DataTable({
     responsive: true,
@@ -134,6 +226,25 @@ $("#buys-table tbody").on("click", 'button[rel="view"]', function () {
         },
       },
     ],
+    pageLength: 5,
+    lengthMenu: [5, 10, 20, "Todos"],
   });
   detailModal.classList.add("show");
+});
+
+// ------------------- EVENTO SUBMIT DEL PAGO ---------------------------
+addPaymentBtnSubmit.addEventListener("click", () => {
+  document.querySelector("#id_buy_id").value = payId;
+  let params = new FormData(paymentForm);
+  params.append("action", "addPay");
+
+  submit_with_axios(
+    window.location.pathname,
+    "Notificacion",
+    "Agregar pago",
+    params,
+    () => {
+      window.location.reload();
+    }
+  );
 });

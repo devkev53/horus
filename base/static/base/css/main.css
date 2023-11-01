@@ -10,7 +10,7 @@
   border-radius: 20px;
 }
 *::-webkit-scrollbar-thumb:active {
-  background-color: #123a46;
+  background-color: #|;
   border-radius: 20px;
 }
 *::-webkit-scrollbar-track:hover,

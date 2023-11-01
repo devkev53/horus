@@ -1,0 +1,33 @@
+{% extends "base/base_delete_form.html" %}
+{% load static %}
+
+{% block header_main %}
+<div class="content_header">
+  <div class="page_title">
+    <h3 class="font-bold title">
+      <i class="fas fa-users"></i>
+      <span>
+        Eliminar Empleado
+      </span>
+    </h3>
+  </div>
+</div>
+{% endblock header_main %}
+
+{% block content %}
+<div class="card-delete">
+  <div class="title"></div>
+  <div class="body">
+    <div class="message-content">
+      <i class="icon-delete fas fa-exclamation-triangle"></i>
+      <p>Esta seguro de realizar la elminacion de la compra: <b>{{object}}</b></p>
+      <span class="msg-delete">La eliminacion sera unicamente logica, es decir no se eliminara de la base de datos..!</span>
+    </div>
+    <form method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn primary-btn">Eliminar</button>
+      <a href="{{request.META.HTTP_REFERER|escape}}" class="btn secondary-btn">Cancelar</a>
+    </form>
+  </div>
+</div>
+{% endblock content %}

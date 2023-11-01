@@ -35,11 +35,19 @@ class Buy(BaseModel):
     """Unicode representation of Buy."""
     return '%s - %s - Q. %s' % (self.date, self.provider_id, self.total)
 
+  def check_payment(self):
+    total = 0
+    for pay in Payment.objects.filter(is_active=True, buy_id=self.id):
+      total += pay.total
+    return total > self.total
+
+
   # TODO: Define custom methods here
   def toJSON(self):
     item = model_to_dict(self, exclude=['document'])
     item['provider_id'] = self.provider_id.toJSON()
     item['det'] = [i.toJSON() for i in self.buydetail_set.all()]
+    item['chek_payment'] = self.check_payment()
     return item
 
 
@@ -73,9 +81,6 @@ class BuyDetail(BaseModel):
 
 
 
-
-
-
 class Payment(BaseModel):
   """Model definition for Payment."""
 
@@ -99,12 +104,26 @@ class Payment(BaseModel):
 
   # TODO: Define custom methods here
 
+  def toJSON(self):
+    item = model_to_dict(self, exclude=['document'])
+    item['buy_id'] = self.buy_id.toJSON()
+    item['date'] = self.created
+    item['document'] = self.get_document_url()
+    item['total'] = format(self.total, '.2f')
+    return item
+
+  def get_document_url(self):
+    if self.document:
+      return True
+    else:
+      return False
+
 
 
 
 # -*-*-*-*-*-*- PRE DELETE SIGNAL -*-*-*-*-*-*-
-@receiver(pre_delete, sender=BuyDetail)
-def delete_buy_detail_signal(sender, instance, **kwargs):
-    from catalogo.utils import update_product_stock
-    update_product_stock()
-    # print(instance)
+# @receiver(pre_delete, sender=BuyDetail)
+# def delete_buy_detail_signal(sender, instance, **kwargs):
+#     from catalogo.utils import update_product_stock
+#     update_product_stock()
+#     # print(instance)

@@ -77,7 +77,7 @@ class SaleListView(ListBaseView):
             # *-*-*-*-*- SI RECIBE BUSCAR LA DATA ENVIA EL LISTADO DE VENTAS *-*-*-*-*-*
             if action == 'searchData':
                 data = []
-                for i in self.form_class.Meta.model.objects.all():
+                for i in self.form_class.Meta.model.objects.filter(is_active=True).all():
                     data.append(i.toJSON())
 
 
@@ -317,7 +317,7 @@ class SaleEditView(UpdateBaseView):
 def deactivateSale(request, pk):
     object = SaleForm.Meta.model.objects.filter(pk=pk).first()
     template_name='sales/sale_delete.html'
-    success_url = reverse_lazy('buys_list')
+    success_url = reverse_lazy('sale_list')
     url_redirect=success_url
     context = {}
 

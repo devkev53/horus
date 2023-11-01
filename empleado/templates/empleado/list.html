@@ -12,13 +12,13 @@
 <div class="content_header">
   <div class="page_title">
     <h3 class="font-bold title">
-      <i class="fas fa-user"></i>
-      Clientes
+      <i class="fas fa-users"></i>
+      Empleados
     </h3>
     <div class="content_title_button">
-      <a href="{% url 'clients_add' %}" class="btn primary-btn hover:shadow hover:shadow-md title_button">
+      <a href="{% url 'employees_add' %}" class="btn primary-btn hover:shadow hover:shadow-md title_button">
         <i class="fas fa-plus"></i>
-        <span>Ingresar Cliente</span>
+        <span>Ingresar Empleado</span>
       </a>
     </div>
   </div>
@@ -28,7 +28,7 @@
 
 {% block content %}
 
-{% if clients|length <= 0 %}
+{% if instance|length <= 0 %}
   <div class="message-none">
     <i class="fas fa-exclamation-circle"></i>
     <span>No se han resgistrado clientes..!</span>
@@ -38,29 +38,31 @@
     <table class="my-table" id="tblClients">
       <thead>
         <tr>
+          <th>Usuario</th>
           <th>Nombres</th>
           <th>Apellidos</th>
           <th>Dirección</th>
-          <th>Teléfono</th>
-          <th>NIT</th>
+          <th>Cumpleaños</th>
+          <th>Salario</th>
           <th>Opciones</th>
         </tr>
       </thead>
       <tbody>
-        {% for client in clients %}
+        {% for employee in instance %}
         <tr>
-          <td>{{client.name}}</td>
-          <td>{{client.last_name}}</td>
-          <td>{{client.address}}</td>
-          <td>{{client.phone}}</td>
-          <td>{{client.nit}}</td>
+          <td>{{employee.user_id}}</td>
+          <td>{{employee.user_id.name}}</td>
+          <td>{{employee.user_id.last_name}}</td>
+          <td>{{employee.address}}</td>
+          <td>{{employee.birthday}}</td>
+          <td>{{employee.salary}}</td>
           <td class="actions">
             <div class="actions-container">
-              <a href="/clients/update/{{client.id}}" class='table-btn btn-edit'>
+              <a href="/employees/update/{{employee.id}}" class='table-btn btn-edit'>
                 <i class="fas fa-edit"></i>
                 <span>Editar</span>
               </a>
-              <a href="{% url 'clients_delete' client.id %}" class='table-btn btn-delete edit_client'>
+              <a href="{% url 'employees_del' employee.id %}" class='table-btn btn-delete edit_client'>
                 <i class="fas fa-trash-alt"></i>
                 <span>Eliminar</span>
               </a>

@@ -1,0 +1,76 @@
+
+<div onclick="closeModalClickOutput(event)" class="modal fade animate__animated animate__fadeIn" id="addPayModal">
+  <div class="modal-content">
+    <div class="modal-title">
+      <h1 class="text-cyan-800 truncate">
+        <i class="fas fa-money-bill-alt"></i>
+        <span>Agregar Nuevo Pago</span>
+      </h1>
+      <button onclick="closeModal(addPayModal)" class="btnClose-modal" rel="addPayModal">
+        <i class="fas fa-times-circle"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <span class="payInstance p-4 font-bold font-size-4xl text-center text-cyan-800 mb-4"></span>
+
+      <form class="p-4" id="paymentForm" method="post">
+        {% csrf_token %}
+
+        {{addPayForm.buy_id}}
+
+        <div class="flex flex-col mb-4">
+          <label for=""
+          class="block text-lg mb-2 text-grat-900">
+            Referencia:
+          </label>
+          {{addPayForm.reference}}
+        </div>
+
+        <div class="flex flex-col mb-4">
+          <label for=""
+          class="block text-lg mb-2 text-grat-900">
+            Tipo de Pago:
+          </label>
+          {{addPayForm.payment_type}}
+        </div>
+
+        <div class="flex flex-col mb-4">
+          <label for=""
+          class="block text-lg mb-2 text-grat-900">
+            Documento:
+          </label>
+          {{addPayForm.document}}
+        </div>
+
+        <div class="flex flex-col mb-4">
+          <label for=""
+          class="block text-lg mb-2 text-grat-900">
+            Cantidad:
+          </label>
+          {{addPayForm.total}}
+        </div>
+
+        <div class="flex p-4 gap-4">
+          <button
+            id="addPaymentBtnSubmit"
+            type="button"
+            class="btn primary-btn"
+          >
+            <i class="fas fa-save"></i>
+            <span>Guardar</span>
+          </button>
+
+          <button
+            type="button"
+            onclick="closeModal(addPayModal)"
+            class="btn secondary-btn"
+          >
+            <i class="fas fa-undo-alt"></i>
+            <span>Cancelar</span>
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

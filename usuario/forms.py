@@ -1,7 +1,7 @@
 from django import forms
-from empleado.models import Employee
+from usuario.models import User
 
-class EmpleadoForm(forms.ModelForm):
+class UserForm(forms.ModelForm):
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
@@ -10,8 +10,7 @@ class EmpleadoForm(forms.ModelForm):
       form.field.widget.attrs['autocomplete'] = 'off'
 
   class Meta:
-    model = Employee
+    model = User
     fields = (
-      'user_id', 'address', 'birthday',
-      'salary', 'start_at_work'
+      'username', 'email', 'name', 'last_name'
     )

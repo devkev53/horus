@@ -15,7 +15,7 @@ from django.db import transaction
 from catalogo.models import Product
 from catalogo.utils import update_product_stock
 
-from compra.forms import BuyForm, BuyDetailForm
+from compra.forms import BuyForm, BuyDetailForm, PaymentForm
 # Create your views here.
 
 
@@ -38,16 +38,39 @@ class BuysListView(ListBaseView):
                 data = []
                 for i in self.form_class.Meta.model.objects.all():
                     data.append(i.toJSON())
+
+            # *-*-*-*-*- SI RECIBE BUSCAR DETALLE DE PRODUCTOS *-*-*-*-*-*
             elif action == 'search_details':
                 data = []
                 buy = BuyForm.Meta.model.objects.filter(id=request.POST['id']).get()
                 for d in BuyDetailForm.Meta.model.objects.filter(buy_id=buy):
                     data.append(d.toJSON())
+
+            # *-*-*-*-*- SI RECIBE BUSCAR ADD PAY *-*-*-*-*-*
+            elif action == 'addPay':
+                payment = PaymentForm(data=request.POST)
+                if payment.is_valid():
+                    payment.save()
+                else:
+                    data['error'] = payment.errors
+                    data['params'] = payment.data
+            # *-*-*-*-*- SI RECIBE BUSCAR ADD PAY *-*-*-*-*-*
+            elif action == 'search_pays':
+                data = []
+                for p in PaymentForm.Meta.model.objects.filter(buy_id=request.POST['id'], is_active=True):
+                    print(p)
+                    data.append(p.toJSON())
+
             else:
                 data['error'] = 'Ha ocurrido un error'
         except Exception as e:
             data['error'] = str(e)
         return JsonResponse(data, safe=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['addPayForm'] = PaymentForm
+        return context
 
 
 class BuyCreateView(CreateBaseView):

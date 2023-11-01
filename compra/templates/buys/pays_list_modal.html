@@ -1,0 +1,44 @@
+<div onclick="closeModalClickOutput(event)" class="modal fade animate__animated animate__fadeIn" id="payList">
+  <div class="modal-content">
+    <div class="modal-title">
+      <h1 class="text-cyan-800">
+        <i class="fas fa-money-bill-alt"></i>
+        <span>Detalle de pagos de la compra:</span>
+        <span class="payInfo"></span>
+      </h1>
+      <button onclick="closeModal(paysListModal)" class="btnClose-modal" rel="payList">
+        <i class="fas fa-times-circle"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div style="border-bottom:4px solid #123a46; " class="flex aling-end p-8 justify-end option">
+        <button class="btn primary-btn" id="addPay">
+          <i class="fas fa-money-bill-wave"></i>
+          <span>Nuevo Pago</span>
+        </button>
+      </div>
+      <div class="table-container">
+        <table class="my-table products-table" id="tblPays">
+          <thead>
+            <tr>
+              <th class="text-center p-y-4">No.</th>
+              <th class="truncate p-y-4">Fecha</th>
+              <th class="text-center p-y-4">Tipo de Pago</th>
+              <th class="text-center p-y-4">Documento</th>
+              <th class="text-center p-y-4">Cantidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>2023-10-29</td>
+              <td>Efectivo</td>
+              <td>N/I</td>
+              <td>Q. 5000.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

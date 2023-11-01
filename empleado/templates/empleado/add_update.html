@@ -1,0 +1,167 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block css_block %}
+  <link rel="stylesheet" href="{% static 'cliente/css/form.css' %}">
+{% endblock css_block %}
+
+
+{% block header_main %}
+<div class="content_header">
+  <div></div>
+  <div class='page_title'>
+    <h3 class="font-bold text-6xl title">
+      <i class="fas fa-users"></i>
+      <span>
+        Ingresar Empleado
+      </span>
+    </h3>
+  </div>
+  <div class="button-container align-middle">
+  </div>
+</div>
+{% endblock header_main %}
+
+{% block content %}
+<form
+  style="width:100%; max-width: 900px;"
+  class="w-full form-add my-6 justify-center"
+  id="client_form"
+  method="POST"
+>
+  {% csrf_token %}
+  <div class="flex flex-col gap-8">
+    <!-- Datos del Usuario -->
+    <div class="input-groups w-full" style="max-width: 100%;">
+      <span class="mb-4 text-left">Datos del Usuario</span>
+      <div class="row flex flex-col gap-8 lg:flex-row">
+
+        <div class="flex flex-col mb-4">
+          <label
+            for=""
+            class="block text-lg mb-2 text-grat-900">
+            Nombre de Usuario:
+          </label>
+          <input
+            class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+            type="text"
+            value="{{object.user_id.username}}"
+          >
+        </div>
+
+        <div class="flex flex-col mb-4">
+          <label
+            for=""
+            class="block text-lg mb-2 text-grat-900">
+            Correo:
+          </label>
+          <input
+            class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+            type="text"
+            value="{{object.user_id.email}}"
+          >
+        </div>
+
+      </div>
+
+      <div class="row flex flex-col gap-8 lg:flex-row">
+
+        <div class="flex flex-col mb-4">
+          <label
+            for=""
+            class="block text-lg mb-2 text-grat-900">
+            Nombres
+          </label>
+          <input
+            class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+            type="text"
+            value="{{object.user_id.name}}"
+          >
+        </div>
+
+        <div class="flex flex-col mb-4">
+          <label
+            for=""
+            class="block text-lg mb-2 text-grat-900">
+            Apellidos
+          </label>
+          <input
+            class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+            type="text"
+            value="{{object.user_id.last_name}}"
+          >
+        </div>
+
+      </div>
+
+    </div>
+
+      <!-- Datos del Empleado -->
+    <div class="input-groups w-full" style="max-width: 100%;">
+      <span class="mb-4 text-left">Datos del Empleado</span>
+
+      <div class="row flex flex-col gap-8 lg:flex-row">
+
+        <div class="flex flex-col mb-4">
+          <label
+            for=""
+            class="block text-lg mb-2 text-grat-900">
+            Dirección:
+          </label>
+          {{form.address}}
+        </div>
+
+        <div class="flex flex-col mb-4">
+          <label
+            for=""
+            class="block text-lg mb-2 text-grat-900">
+            Cumpleaños:
+          </label>
+          {{form.birthday}}
+        </div>
+
+      </div>
+
+      <div class="row flex flex-col gap-8 lg:flex-row">
+
+        <div class="flex flex-col mb-4">
+          <label
+            for=""
+            class="block text-lg mb-2 text-grat-900">
+            Salario
+          </label>
+          {{form.salary}}
+        </div>
+
+        <div class="flex flex-col mb-4">
+          <label
+            for=""
+            class="block text-lg mb-2 text-grat-900">
+            Inicio a Laboral
+          </label>
+          {{form.start_at_work}}
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <div class="options mb-4" style="max-width: 300px;">
+    <div class="icon-action edit-icon">
+      <i class="fas fa-edit"></i>
+    </div>
+
+    <button class="btn primary-btn">
+      <i class="fas fa-save"></i>
+      <span>Guardar</span>
+    </button>
+    <a href="{{request.META.HTTP_REFERER|escape}}" class="btn secondary-btn">
+      <i class="fas fa-undo-alt"></i>
+      <span>Volver</span>
+    </a>
+  </div>
+</form>
+{% endblock content %}

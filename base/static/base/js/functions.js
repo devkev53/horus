@@ -222,6 +222,14 @@ function active_link() {
         link.classList.remove("active");
       }
     });
+  } else if (path.includes("employees")) {
+    linksItem.forEach((link) => {
+      if (link.classList.contains("employees")) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
   }
 }
 
