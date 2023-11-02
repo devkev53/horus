@@ -5,7 +5,7 @@ from proveedor.models import Providers
 from catalogo.models import Product
 from django.forms import model_to_dict
 from django.dispatch import receiver
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save, pre_save
 
 
 # Create your models here.
@@ -39,7 +39,7 @@ class Buy(BaseModel):
     total = 0
     for pay in Payment.objects.filter(is_active=True, buy_id=self.id):
       total += pay.total
-    return total > self.total
+    return total
 
 
   # TODO: Define custom methods here
@@ -127,3 +127,16 @@ def delete_buy_detail_signal(sender, instance, *args, **kwargs):
     from catalogo.utils import update_product_stock
     update_product_stock()
     # print(instance)
+
+
+# -*-*-*-*-*-*- POST SAVE SIGNAL -*-*-*-*-*-*-
+@receiver(post_save, sender=Payment)
+def update_buy_state(sender, instance, *args, **kwargs):
+  total_payment = 0
+  print(instance.buy_id.id)
+  buy = Buy.objects.filter(pk=instance.buy_id.pk).get()
+  for pays in Payment.objects.filter(buy_id=instance.buy_id):
+    total_payment += pays.total
+  if total_payment >= buy.total:
+    buy.is_paid = True
+    buy.save()

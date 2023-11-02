@@ -26,7 +26,7 @@
 <form
   style="width:100%; max-width: 900px;"
   class="w-full form-add my-6 justify-center"
-  id="client_form"
+  id="employeeForm"
   method="POST"
 >
   {% csrf_token %}
@@ -43,7 +43,7 @@
             class="block text-lg mb-2 text-grat-900">
             Nombre de Usuario:
           </label>
-          {{userForm.username}}
+          {{user_form.username}}
         </div>
 
         <div class="flex flex-col mb-4">
@@ -52,7 +52,7 @@
             class="block text-lg mb-2 text-grat-900">
             Correo:
           </label>
-          {{userForm.email}}
+          {{user_form.email}}
         </div>
 
       </div>
@@ -65,7 +65,7 @@
             class="block text-lg mb-2 text-grat-900">
             Nombres
           </label>
-          {{userForm.name}}
+          {{user_form.name}}
         </div>
 
         <div class="flex flex-col mb-4">
@@ -74,7 +74,39 @@
             class="block text-lg mb-2 text-grat-900">
             Apellidos
           </label>
-          {{userForm.last_name}}
+          {{user_form.last_name}}
+        </div>
+
+      </div>
+
+      <div class="row flex flex-col gap-8 lg:flex-row">
+
+        <div class="flex flex-col mb-4">
+          <label
+            for=""
+            class="block text-lg mb-2 text-grat-900">
+            Contraseña:
+          </label>
+          <input
+            name="password"
+            id="id_password"
+            type="password"
+            class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+          >
+        </div>
+
+        <div class="flex flex-col mb-4">
+          <label
+            for=""
+            class="block text-lg mb-2 text-grat-900">
+            Contraseña:
+          </label>
+          <input
+            name="password2"
+            id="id_password2"
+            type="password"
+            class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+          >
         </div>
 
       </div>
@@ -102,7 +134,12 @@
             class="block text-lg mb-2 text-grat-900">
             Cumpleaños:
           </label>
-          {{form.birthday}}
+          <input
+            name="birthday"
+            id="id_birthday"
+            type="date"
+            class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+          >
         </div>
 
       </div>
@@ -124,7 +161,12 @@
             class="block text-lg mb-2 text-grat-900">
             Inicio a Laboral
           </label>
-          {{form.start_at_work}}
+          <input
+            name="start_at_work"
+            id="id_start_at_work"
+            type="date"
+            class="w-full bg-gray-50 border border-zinc-300 text-zinc-600 focus:outline-none focus:border-zinc-500 p-1.5 px-2 rounded-lg"
+          >
         </div>
 
       </div>
@@ -151,3 +193,32 @@
   </div>
 </form>
 {% endblock content %}
+
+
+{% block js_block %}
+<script>
+  const password = document.querySelector('#id_password')
+  document.querySelector('#id_password2').addEventListener('focusout', function(e) {
+    console.log(e.target.value)
+    console.log(password.value)
+    if(e.target.value !== password.value) {
+      myAlert('Error en Contraseña', "Las contraseñas no coinciden..!")
+      e.target.value = ''
+    }
+  })
+  const employeeFrom = document.querySelector('#employeeForm')
+  employeeFrom.addEventListener('submit', (e) => {
+    e.preventDefault()
+    const params = new FormData(e.target)
+    params.append('action', 'add')
+    submit_with_axios(
+      window.location.pathname,
+      'Notificacion',
+      'Seguro de crear el empleado',
+      params,
+      () => {window.location.href = '/employees'}
+    )
+  })
+</script>
+{% endblock js_block %}
+

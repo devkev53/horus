@@ -325,6 +325,20 @@ const drawItem = (item) => {
   `;
 };
 
+// *-*-*-*-*-*-*-*-*-*-*- Crear un Cliente con Modal *-*-*-*-*-*-*-*-*-*-*-
+$("#addClientForm").on("submit", async function (e) {
+  e.preventDefault();
+  let params = new FormData(this);
+  let clientCreated = await submit_with_axios(
+    window.location.pathname,
+    "Notificacion",
+    "Estas seguro de crear este cliente..?",
+    params,
+    () => closeModal(addClientModal)
+  );
+  get_client_for_nit(clientCreated.nit);
+});
+
 // *-*-*-*-*-*-*-*-*-*-*- Agregar una Venta *-*-*-*-*-*-*-*-*-*-*-
 $("#addSaleForm").on("submit", function (e) {
   e.preventDefault();
@@ -337,7 +351,9 @@ $("#addSaleForm").on("submit", function (e) {
   sales.items.date = $("#id_date").val();
   sales.items.serie = $("#id_serie").val();
   sales.items.dte = $("#id_dte").val();
-  sales.items.authorization_date = $("#id_authorization_date");
+  sales.items.authorization_date = $("#id_authorization_date").val();
+  sales.items.subtotal = $("#id_subtotal").val();
+  sales.items.discount = $("#id_discount").val();
   sales.items.total = $("#id_total").val();
   sales.items.client_id = clientData.id;
   let params = new FormData();
@@ -353,20 +369,6 @@ $("#addSaleForm").on("submit", function (e) {
       location.href = url_redirect;
     }
   );
-});
-
-// *-*-*-*-*-*-*-*-*-*-*- Crear un Cliente con Modal *-*-*-*-*-*-*-*-*-*-*-
-$("#addClientForm").on("submit", async function (e) {
-  e.preventDefault();
-  let params = new FormData(this);
-  let clientCreated = await submit_with_axios(
-    window.location.pathname,
-    "Notificacion",
-    "Estas seguro de crear este cliente..?",
-    params,
-    () => closeModal(addClientModal)
-  );
-  get_client_for_nit(clientCreated.nit);
 });
 
 sales.list();

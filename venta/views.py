@@ -279,22 +279,22 @@ class SaleEditView(UpdateBaseView):
                         "total": sale['total']
                     }
                     # Pasa los datos del encabezado al formulario
-                    instance = self.form_class(data=saleDict, instance=self.get_object())
+                    instance_sale = self.form_class(data=saleDict, instance=self.get_object())
                     # Valida si es correcto
-                    if instance.is_valid():
+                    if instance_sale.is_valid():
                         # Guarda el objecto
-                        sale_data = instance.save()
-                        print('--------- Edit sale --------')
+                        sale_edit = instance_sale.save()
                     else:
-                        data['error'] = instance.errors
+                        data['error'] = instance_sale.errors
+                        data['error_in'] = 'Update Sale Error'
 
                     # Elimina el detalle para actualizar el nuevo
-                    sale_data.saledetail_set.all().delete()
+                    sale_edit.saledetail_set.all().delete()
                     # Tomla el listado de productos de la compra
                     products_list = sale['products']
                     for product in products_list:
                         productDict = {
-                            "sale_id":sale_data.id,
+                            "sale_id":sale_edit.id,
                             "product_id":product['id'],
                             "quantity": product['quantity'],
                             "total":Decimal(product['subtotal']),

@@ -335,7 +335,7 @@ $("#addSaleForm").on("submit", function (e) {
   sales.items.date = $("#id_date").val();
   sales.items.serie = $("#id_serie").val();
   sales.items.dte = $("#id_dte").val();
-  sales.items.authorization_date = $("#id_authorization_date");
+  sales.items.authorization_date = $("#id_authorization_date").val();
   sales.items.subtotal = $("#id_subtotal").val();
   sales.items.discount = $("#id_discount").val();
   sales.items.total = $("#id_total").val();

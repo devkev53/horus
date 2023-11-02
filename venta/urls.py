@@ -4,7 +4,7 @@ from venta.views import SaleListView, SaleCreateView, deactivateSale, SaleEditVi
 urlpatterns = [
   path('sales/detail/<int:pk>', SaleDetailView.as_view(), name='sales_detail'),
   path('sales/', SaleListView.as_view(), name='sales_list'),
-  path('sales/<int:pk>', SaleEditView.as_view(), name='sales_edit'),
+  path('sales/<int:pk>/', SaleEditView.as_view(), name='sales_edit'),
   path('sales/add', SaleCreateView.as_view(), name='sales_add'),
   path('sales/delete/<int:pk>', deactivateSale, name='sales_delete'),
   path('sales/invoice/<int:pk>', InvoicePDF.as_view(), name='invoice')

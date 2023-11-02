@@ -72,9 +72,11 @@ tblBuys = $("#buys-table").DataTable({
     { data: "reference" },
     { data: "provider_id" },
     { data: "is_paid" },
+    { data: "chek_payment" },
     { data: "total" },
     { data: "id" },
   ],
+  order: [[0, "desc"]],
   columnDefs: [
     {
       target: [1, 2],
@@ -103,13 +105,13 @@ tblBuys = $("#buys-table").DataTable({
       },
     },
     {
-      target: [5],
+      target: [5, 6],
       render: function (data, type, row) {
         return `Q. ${parseFloat(data).toFixed(2)}`;
       },
     },
     {
-      target: [6],
+      target: [7],
       render: function (data, type, row) {
         return `<div class="flex gap-4 justify-center">${viewBtnHtml} ${editBtnHtml(
           data

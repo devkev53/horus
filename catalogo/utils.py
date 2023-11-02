@@ -30,18 +30,20 @@ def update_product_stock():
         for buy in Buy.objects.filter(is_active=False).all():
             for detail in BuyDetail.objects.filter(buy_id=buy).all():
                 if prod == detail.product_id:
-                    stock_increment += detail.quantity
+                    stock_decrement += detail.quantity
                     # print('Restando compras inactivas')
         # Sumando la cantidad de productos en ventas activas
         for sale in Sale.objects.filter(is_active=True).all():
             for detail in SaleDetail.objects.filter(sale_id=sale).all():
                 if prod == detail.product_id:
-                    stock_increment += detail.quantity
+                    stock_decrement += detail.quantity
                     # print('Restando ventas activas')
 
-        # print('------------- MOSTRANDO STOCKS STOCK -------------')
-        # print(stock_increment)
-        # print(stock_decrement)
+        print('------------- MOSTRANDO STOCKS STOCK -------------')
+        print('{} - {}'.format(prod.name, stock_increment))
+        print('{} - {}'.format(prod.name, stock_decrement))
 
         prod.stock = stock_increment - stock_decrement
         prod.save()
+        print('------------- DATO DESPUES DE GUARDAR -------------')
+        print('{} - {}'.format(prod.name, prod.stock))
