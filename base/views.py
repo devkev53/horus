@@ -16,6 +16,7 @@ from django.db.models.functions import Coalesce
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from app.settings.local import DOMAIN
 
 from catalogo.models import Product
 from venta.models import Sale, SaleDetail
@@ -150,6 +151,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         context["get_total_today"] = self.get_total_sale_today()
         context['get_sales_year_month'] = self.get_sales_year_month()
         context['today'] = datetime.date.today()
+        context['domain'] = DOMAIN
         return context
 
 

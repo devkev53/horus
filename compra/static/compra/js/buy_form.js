@@ -77,16 +77,23 @@ var buys = {
           },
         },
         {
-          targets: [3],
-          class: "quantity",
+          targets: [2],
+          class: "",
           render: function (data, type, row) {
-            return `<input name="quantity" min="1" id="cant-${row.id}" class="bg-gray-50 border border-zinc-300 text-zinc-600" type="number" value="${row.quantity}"/>`;
+            return `<p class="flex">Q. <input id="buyPrice" type="number" step="" class="ml-2 rounded text-center w-32 bg-gray-50 border border-zinc-300 text-zinc-600" value="${data}"/></p>`;
           },
         },
         {
-          targets: [2, 4],
+          targets: [3],
+          class: "quantity",
           render: function (data, type, row) {
-            return `Q. ${parseFloat(data).toFixed(2)}`;
+            return `<input name="quantity" min="1" id="cant-${row.id}" class="bg-gray-50 text-center rounded border border-zinc-300 text-zinc-600" type="number" value="${row.quantity}"/>`;
+          },
+        },
+        {
+          targets: [4],
+          render: function (data, type, row) {
+            return `<p class="flex">Q. <input id="subtotal" type="number" readonly step="" class="ml-2 rounded text-center w-36 bg-gray-50 border border-zinc-300 text-zinc-600" value="${data}"/></p>`;
           },
         },
       ],
@@ -107,12 +114,39 @@ $("#buy-prods-table tbody")
       }
     );
   })
+  // Cambiar el precio de compra del articulo
+  .on("change", 'input[id="buyPrice"]', function () {
+    let buyPrice = $(this).val();
+    if (parseInt(buyPrice) <= 0) {
+      myAlert("Error", "No se permiten valores negativos..!");
+      return;
+    }
+
+    let tr = tblProdList.cell($(this).closest("td, li")).index();
+    buys.items.products[tr.row].price_sale = buyPrice;
+    let rowSubtotal =
+      parseFloat(buyPrice) * buys.items.products[tr.row].quantity;
+    buys.items.products[tr.row].subtotal = rowSubtotal;
+    $("td:eq(4)", tblProdList.row(tr.row).node()).html(`
+      <p class="flex">Q.
+        <input
+          id="subtotal"
+          type="number"
+          readonly
+          step="0.01"
+          class="ml-2 rounded text-center w-36 bg-gray-50 border border-zinc-300 text-zinc-600" 
+          value="${rowSubtotal}"
+        />
+      </p>
+    `);
+    buys.calculate();
+  })
   // Cambiar a cantidad de articulos del producto en la tabala de productos
   .on("change", 'input[name="quantity"]', function () {
     let cant = $(this).val();
     if (parseInt(cant) <= 0) {
       $(this).val(1);
-      alert("No se permiten valores negativos");
+      myAlert("Error", "No se permiten valores negativos..!");
       return;
     }
     let tr = tblProdList.cell($(this).closest("td, li")).index();

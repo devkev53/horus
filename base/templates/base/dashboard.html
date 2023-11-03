@@ -96,6 +96,7 @@
     </div>
 
   </div>
+
 {% endblock content %}
 
 {% block modal %}
@@ -181,6 +182,7 @@
               <tr>
                 <th class="">Producto</th>
                 <th>P/U</th>
+                <th>Imágen</th>
                 <th>U/Vendidas</th>
                 <th>Total</th>
               </tr>
@@ -189,6 +191,9 @@
               {% for prod in get_then_more_sale|dictsortreversed:'quantity' %}
                 <tr>
                   <td class="truncate  p-y-4">{{prod.product_id__name}}</td>
+                  <td class="text-center p-y-4">
+                    <img class="w-16 h-16 rounded-xl bg-zinc-200" src="{{domain}}media/{{prod.product_id__image}}" alt="">
+                  </td>
                   <td class="text-center p-y-4">Q. {{prod.product_id__price_sale}}</td>
                   <td class="text-center p-y-4">{{prod.quantity}}</td>
                   <td class="text-center p-y-4">Q. {{prod.total}}</td>
@@ -230,7 +235,7 @@
                   <td class="text-center p-y-4">{{ forloop.counter }}</td>
                   <td class="truncate p-y-4">{{prod.name}}</td>
                   <td class="text-center p-y-4">
-                    <img class="w-24 h-24 rounded-xl" src="{{prod.get_url_img}}" alt="">
+                    <img class="w-16 h-16 rounded-xl bg-zinc-200" src="{{prod.get_url_img}}" alt="">
                   </td>
                   <td class="text-center p-y-4">Q. {{prod.price_sale}}</td>
                   <td class="text-center p-y-4 font-bold text-red-700">{{prod.stock}}</td>
