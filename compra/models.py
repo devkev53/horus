@@ -6,6 +6,7 @@ from catalogo.models import Product
 from django.forms import model_to_dict
 from django.dispatch import receiver
 from django.db.models.signals import post_delete, post_save, pre_save
+from simple_history.models import HistoricalRecords
 
 
 # Create your models here.
@@ -24,6 +25,7 @@ class Buy(BaseModel):
   is_paid = models.BooleanField(_('Is Paid'), default=False)
   document = models.FileField(_('Document'), upload_to='buy/document/', blank=True, null=True)
   total = models.DecimalField(_('Total'), decimal_places=2, max_digits=10, default=0.00)
+  history = HistoricalRecords()
 
   class Meta:
     """Meta definition for Buy."""

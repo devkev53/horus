@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from base.views import ListBaseView, CreateBaseView, UpdateBaseView
+from base.views import ListBaseView, CreateBaseView, UpdateBaseView, ValidatePermissionRequiredMixin
 from django.db import transaction
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -31,8 +31,8 @@ class SaleDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["deatils"] = SaleDetailForm.Meta.model.objects.filter(sale_id=self.object)
-        context["history"] = self.object.history.all()
         return context
+
 
 class InvoicePDF(LoginRequiredMixin, DetailView):
     template_name = "sales/invoice_pdf.html"
@@ -72,7 +72,8 @@ class InvoicePDF(LoginRequiredMixin, DetailView):
         return JsonResponse(data, safe=False)
 
 
-class SaleListView(ListBaseView):
+class SaleListView(ValidatePermissionRequiredMixin, ListBaseView):
+    permission_required = ['venta.view_sale']
     template_name = "sales/sales_list.html"
     form_class = SaleForm
 
@@ -216,7 +217,8 @@ class SaleCreateView(CreateBaseView):
         return context
 
 
-class SaleEditView(UpdateBaseView):
+class SaleEditView(ValidatePermissionRequiredMixin, UpdateBaseView):
+    permission_required = ['venta.change_sale']
     template_name = "sales/sales_edit.html"
     model = SaleForm.Meta.model
     form_class = SaleForm
@@ -326,6 +328,7 @@ class SaleEditView(UpdateBaseView):
         context['list_url'] = self.success_url
         context['action'] = 'edit'
         return context
+
 
 def deactivateSale(request, pk):
     object = SaleForm.Meta.model.objects.filter(pk=pk).first()

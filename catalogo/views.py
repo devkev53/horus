@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from base.views import CreateBaseView, UpdateBaseView, ListBaseView
+from base.views import CreateBaseView, UpdateBaseView, ListBaseView, ValidatePermissionRequiredMixin
 
 from catalogo.forms import CategoryCreateForm, ProductForm
 
@@ -65,7 +65,8 @@ class ProductCreateView(CreateBaseView):
 
 
 
-class ProductEditView(UpdateBaseView):
+class ProductEditView(ValidatePermissionRequiredMixin, UpdateBaseView):
+    permission_required = ['catalogo.update_product',]
     model = ProductForm.Meta.model
     form_class = ProductForm
     success_url = reverse_lazy('products_list')

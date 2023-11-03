@@ -1,14 +1,16 @@
 from decimal import Decimal
 import json
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from base.views import ListBaseView, CreateBaseView, UpdateBaseView
+from base.views import ListBaseView, CreateBaseView, UpdateBaseView, ValidatePermissionRequiredMixin
 from django.db import transaction
+from django.views.generic.detail import DetailView
+
 
 
 
@@ -19,7 +21,18 @@ from compra.forms import BuyForm, BuyDetailForm, PaymentForm
 # Create your views here.
 
 
-class BuysListView(ListBaseView):
+class BuyDetailView(DetailView):
+    model = BuyForm.Meta.model
+    template_name = 'buys/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["deatils"] = BuyDetailForm.Meta.model.objects.filter(buy_id=self.object)
+        return context
+
+
+class BuysListView(ValidatePermissionRequiredMixin, ListBaseView):
+    permission_required = ['compra.view_buy',]
     template_name = "buys/buys_list.html"
     form_class = BuyForm
 
@@ -72,7 +85,8 @@ class BuysListView(ListBaseView):
         return context
 
 
-class BuyCreateView(CreateBaseView):
+class BuyCreateView(PermissionRequiredMixin, CreateBaseView):
+    permission_required = ('compra.add_buy',)
     template_name = "buys/buy_form.html"
     model = BuyForm.Meta.model
     form_class = BuyForm

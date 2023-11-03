@@ -69,10 +69,14 @@
                   <i class="fas fa-edit"></i>
                   <span>Editar</span>
                 </a>
-                <a href="{% url 'products_delete' product.id %}" class='table-btn btn-delete edit_client'>
-                  <i class="fas fa-trash-alt"></i>
-                  <span>Eliminar</span>
-                </a>
+
+                {% if perms.catalogo.delete_product %}
+                  <a href="{% url 'products_delete' product.id %}" class='table-btn btn-delete edit_client'>
+                    <i class="fas fa-trash-alt"></i>
+                    <span>Eliminar</span>
+                  </a>
+                {% endif %}
+
               </div>
             </td>
           </tr>

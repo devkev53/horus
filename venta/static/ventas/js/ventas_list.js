@@ -23,7 +23,7 @@ const printBtnHtml = (id) => {
 };
 const historyBtnHtml = (id) => {
   let url = `${window.location.pathname}detail/${id}`;
-  return `<a href="${url}" target="_blank" class="table-btn bg-zinc-800" rel="view"><i class="fas fa-history"></i></a>`;
+  return `<a href="${url}" class="table-btn bg-zinc-800" rel="view"><i class="fas fa-history"></i></a>`;
 };
 
 // ------------------------ CREACION DE LA TABLA DE VENTAS ------------------------

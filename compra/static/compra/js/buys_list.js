@@ -13,6 +13,10 @@ const payBtnHtml = (id) => {
   let deleteUrl = `/`;
   return `<button class="table-btn bg-green-400" rel="payList"><i class="fas fa-coins"></i></button>`;
 };
+const historyBtnHtml = (id) => {
+  let url = `${window.location.pathname}detail/${id}`;
+  return `<a href="${url}" class="table-btn bg-zinc-800" rel="view"><i class="fas fa-history"></i></a>`;
+};
 
 // ------------ SE OBTIENEN LAS VARIABLES A USARSE ---------------
 const paysListModal = document.querySelector("#payList");
@@ -115,7 +119,9 @@ tblBuys = $("#buys-table").DataTable({
       render: function (data, type, row) {
         return `<div class="flex gap-4 justify-center">${viewBtnHtml} ${editBtnHtml(
           data
-        )} ${deleteBtnHtml(data)} ${payBtnHtml(data)} </div>`;
+        )} ${deleteBtnHtml(data)} ${payBtnHtml(data)} ${historyBtnHtml(
+          data
+        )} </div>`;
       },
     },
   ],

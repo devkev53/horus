@@ -40,7 +40,7 @@ class Sale(BaseModel):
 
   def __str__(self):
     """Unicode representation of Venta."""
-    return '%s - %s -%s' % (self.created, self.client_id, self.total)
+    return '%s - %s - Q. %s' % (self.created, self.client_id, self.total)
 
 
   # TODO: Define custom methods here

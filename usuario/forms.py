@@ -1,5 +1,6 @@
 from django import forms
 from usuario.models import User
+from django.contrib.auth import get_user_model
 
 class UserForm(forms.ModelForm):
 

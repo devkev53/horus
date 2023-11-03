@@ -11,6 +11,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from base.views import CreateBaseView, UpdateBaseView
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.contrib.auth import get_user_model
 from django.db import transaction
 import json
 
@@ -68,7 +69,15 @@ class CreateEmployeetView(CreateBaseView):
                     # Valida si es correcto
                     if instance.is_valid():
                         # Guarda el objecto
-                        user_data = instance.save()
+                        user_data = UserForm.Meta.model(
+                            username=userDict['username'],
+                            email=userDict['email'],
+                            name=userDict['name'],
+                            last_name=userDict['last_name'],
+                            password=userDict['password'],
+                        )
+                        user_data.set_password(userDict['password'])
+                        user_data.save()
                     else:
                         data['user'] = instance.data
                         data['error'] = instance.errors

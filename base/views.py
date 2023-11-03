@@ -5,6 +5,7 @@ from typing import Any
 from django.contrib.auth.views import LoginView
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView, FormView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -14,6 +15,7 @@ from django.db.models import Sum
 from django.db.models.functions import Coalesce
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from catalogo.models import Product
 from venta.models import Sale, SaleDetail
@@ -225,3 +227,26 @@ class CustomDeleteBaseView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['lazyUrl'] = self.url_redirect
         return context
+
+
+class ValidatePermissionRequiredMixin(object):
+    permission_required = ''
+    url_redirect = None
+
+    def get_perms(self):
+        if isinstance(self.permission_required, str):
+            perms = (self.permission_required)
+        else:
+            perms = self.permission_required
+        return perms
+
+    def get_url_redirect(self):
+        if self.url_redirect is None:
+            return reverse_lazy('dashboard')
+        return self.url_redirect
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.has_perms(self.get_perms()):
+            return super().dispatch(request, *args, **kwargs)
+        messages.error(request, 'No cuentas con los privilegios para ingresar a este modulo..!')
+        return HttpResponseRedirect(self.get_url_redirect())
