@@ -128,7 +128,14 @@ class SaleCreateView(CreateBaseView):
                 data = []
                 term = request.POST['term']
                 if len(term) > 0:
-                    products = ProductForm.Meta.model.objects.filter(name__icontains=request.POST['term'], is_active=True, stock__gt=0)[0:10]
+                    products = ProductForm.Meta.model.objects.filter(name__icontains=request.POST['term'], is_active=True, stock__gt=0).exclude(category_id__name='servicios')[0:10]
+                    for i in products:
+                        item = i.toJSON()
+                        item['value'] = i.name
+                        item['quantity'] = 1
+                        item['subtotal'] = Decimal(item['price_sale'] * item['quantity'])
+                        data.append(item)
+                    services = ProductForm.Meta.model.objects.filter(name__icontains=request.POST['term'], is_active=True, stock__gt=0).exclude(category_id__name='servicios')[0:10]
                     for i in products:
                         item = i.toJSON()
                         item['value'] = i.name

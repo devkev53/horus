@@ -9,12 +9,16 @@ from app.settings.local import DOMAIN
 
 # Create your models here.
 
+CHOICES_CATEGORIES = [
+  ('servicios', 'Servicios'),
+]
+
 
 class Category(BaseModel):
   """Model definition for Categoria."""
 
   # TODO: Define fields here
-  name = models.CharField(_('Name'), max_length=255)
+  name = models.CharField(_('Name'), max_length=255, choices=CHOICES_CATEGORIES)
   image = models.ImageField(upload_to='categories/image', blank=True, null=True)
 
 
