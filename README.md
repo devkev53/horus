@@ -1,3 +1,5 @@
+<a name="readme-top"></a>
+
 <div align="center">
 
 # Horus👨‍🔧🚘
@@ -49,7 +51,7 @@ To install the dependencies, you must locate them at the **requirements.txt** fi
 ```bash
 pip install -r requirements.txt
 ```
-> **Installing the dependencies**
+> **Performing Database Migrations**
 Run database migrations
 
 This command prepares the migrations to create the tables in the database
@@ -86,7 +88,7 @@ If everything is ok it will show the following message
 
 #### Run the server and launch 🚀 the web application 💻
 If everything worked correctly it should show that the application is running showing the address and port.
-<img src="/imgs/runserver.png" style="border-radius:5px">
+<img src="/imgs/runserver.png" style="border-radius:512x">
 
 ----
 
@@ -98,15 +100,15 @@ After configuring the server, upon entering the application it will show us the 
 
 ##### Home Page
 The home page shows the options that can be found in Lemus multiservices, the company for which the application was developed.
-<img src="./imgs/HomePage.png" style="border-radius: 6px" alt="Home Page" />
+<img src="./imgs/HomePage.png" style="border-radius: 12px" alt="Home Page" />
 
 ##### About
 The get to know us page shows the vision, mission and values ​​that govern the company.
-<img src="./imgs/About.png" style="border-radius: 6px" alt="About Page" />
+<img src="./imgs/About.png" style="border-radius: 12px" alt="About Page" />
 
 ##### Contact
 The contact page shows the location obtained from Google Maps, as well as the telephone contact.
-<img src="./imgs/Contact.png" style="border-radius: 6px" alt="Contact Page" />
+<img src="./imgs/Contact.png" style="border-radius: 12px" alt="Contact Page" />
 </details>
 
 
@@ -114,29 +116,29 @@ The contact page shows the location obtained from Google Maps, as well as the te
 <summary>Web Application</summary>
 
 ##### Login
-The get to know us page shows the vision, mission and values ​​that govern the company.
-<img src="./imgs/Login.png" style="border-radius: 6px" alt="Login" />
+This page shows the form for user login
+<img src="./imgs/Login.png" style="border-radius: 12px" alt="Login" />
 
 ##### Dashboard
 The dashboard is the main page where you can obtain quick information about the application, in order to make decisions based on the information.
-<img src="./imgs/dashboard.png" style="border-radius: 6px" alt="Dashboard" />
+<img src="./imgs/dashboard.png" style="border-radius: 12px" alt="Dashboard" />
 
 
 ##### Enter Sale
 The sales record is one of the fundamental parts for the application since it is one of the controls by which its development was carried out.
-<img src="./imgs/Sale.png" style="border-radius: 6px" alt="Enter Sale" />
+<img src="./imgs/Sale.png" style="border-radius: 12px" alt="Enter Sale" />
 
 ##### Shopping
 Purchasing is where we manage the inventory of the products, and it is a fundamental part of the application since if there are no registered purchases we will not have stock and the sale cannot be made.
-<img src="./imgs/Sale.png" style="border-radius: 6px" alt="Shopping" />
+<img src="./imgs/Sale.png" style="border-radius: 12px" alt="Shopping" />
 
 </details>
 
-**Gracias por todo, estás invitado a contribuir o aportar ideas o temas.**
+**Thank you for everything, you are invited to contribute or provide ideas or topics.**
 
 [![Contributors](https://contrib.rocks/image?repo=devkev53/horus)](https://github.com/devkev53/horus/graphs/contributors)
 
-<p align="right">(<a href="#readme-top">volver arriba</a>)</p>
+<p align="right">(<a href="#readme-top">go back top</a>)</p>
 
 ----
 
